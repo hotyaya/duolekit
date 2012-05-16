@@ -31,7 +31,7 @@
         <property name="dateline" type="java.lang.Integer">
             <column name="dateline" not-null="true" />
         </property>
-        <property name="message" type="java.lang.String">
+        <property name="message" type="java.sql.Blob">
             <column name="message" length="16777215" not-null="true" />
         </property>
         <property name="useip" type="java.lang.String">
