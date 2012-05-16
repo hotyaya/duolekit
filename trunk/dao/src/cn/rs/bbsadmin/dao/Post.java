@@ -1,5 +1,10 @@
 package cn.rs.bbsadmin.dao;
-// default package
+
+import java.io.ByteArrayInputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
+
+import org.hibernate.Hibernate;
 
 
 
@@ -24,7 +29,8 @@ public class Post  implements java.io.Serializable {
      private Integer authorid;
      private String subject;
      private Integer dateline;
-     private String message;
+     //private java.sql.Blob message;
+     private String messageString;
      private String useip;
      private Integer invisible;
      private Boolean anonymous;
@@ -47,7 +53,7 @@ public class Post  implements java.io.Serializable {
 
     
     /** full constructor */
-    public Post(Short fid, Integer tid, Boolean first, String author, Integer authorid, String subject, Integer dateline, String message, String useip, Integer invisible, Boolean anonymous, Boolean usesig, Boolean htmlon, Boolean bbcodeoff, Boolean smileyoff, Boolean parseurloff, Boolean attachment, Short rate, Short ratetimes, Boolean status) {
+    public Post(Short fid, Integer tid, Boolean first, String author, Integer authorid, String subject, Integer dateline, java.sql.Blob message, String useip, Integer invisible, Boolean anonymous, Boolean usesig, Boolean htmlon, Boolean bbcodeoff, Boolean smileyoff, Boolean parseurloff, Boolean attachment, Short rate, Short ratetimes, Boolean status) {
         this.fid = fid;
         this.tid = tid;
         this.first = first;
@@ -55,7 +61,7 @@ public class Post  implements java.io.Serializable {
         this.authorid = authorid;
         this.subject = subject;
         this.dateline = dateline;
-        this.message = message;
+        this.messageString = convertBlobToString(message);
         this.useip = useip;
         this.invisible = invisible;
         this.anonymous = anonymous;
@@ -137,12 +143,12 @@ public class Post  implements java.io.Serializable {
         this.dateline = dateline;
     }
 
-    public String getMessage() {
-        return this.message;
+    public java.sql.Blob getMessage() {
+        return Hibernate.createBlob(messageString.getBytes());//this.message;//Hibernate.createBlob(companyName.getBytes())
     }
     
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessage(java.sql.Blob message) {
+        this.messageString = convertBlobToString(message);
     }
 
     public String getUseip() {
@@ -241,12 +247,26 @@ public class Post  implements java.io.Serializable {
         this.status = status;
     }
    
+    private String convertBlobToString(Blob blob){
+        String result = "";
+        try {
+            ByteArrayInputStream msgContent =(ByteArrayInputStream) blob.getBinaryStream();
+            byte[] byte_data = new byte[msgContent.available()];
+            msgContent.read(byte_data, 0,byte_data.length);
+            result = new String(byte_data);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
+    //2012-05-16
+	public String getMessageString() {
+		return messageString;
+	}
 
-
-
-
-
-
-
+    //2012-05-16
+	public void setMessageString(String messageString) {
+		this.messageString = messageString;
+	}
 }

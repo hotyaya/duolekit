@@ -49,17 +49,23 @@ public class Test extends TestCase {
 //        System.out.println("befor24Time:" +format.format(calendar.getTime()));
 //        long l2 = (format.parse(format.format(calendar.getTime())).getTime()-date2.getTime())/1000;
 //        
-        List list = postdao.findAll();//.findAfterDateline(new TimeStampUtil().getTimestampBeforeNowByHours(50));
+        //List list = postdao.findAll();//.findAfterDateline(new TimeStampUtil().getTimestampBeforeNowByHours(50));
+        
+        Post p = postdao.findById(6857076);
+        p.setSubject(p.getSubject()+"$");
+        postdao.merge(p);
+
+        System.out.println("保存成功！");
 //        System.out.println("36小时找到记录："+list.size());
-		Object o;
-		Iterator iterator= list.iterator();
-		int i=0;
-		while (iterator.hasNext()){
-			i++;
-			o = iterator.next();
-			if (o instanceof Post){
-				System.out.println(""+i + ((Post)o).getAuthor() + ""+((Post)o).getSubject());
-			}
-		}
+//		Object o;
+//		Iterator iterator= list.iterator();
+//		int i=0;
+//		while (iterator.hasNext()){
+//			i++;
+//			o = iterator.next();
+//			if (o instanceof Post){
+//				System.out.println(""+i + ((Post)o).getAuthor() + ""+((Post)o).getSubject());
+//			}
+//		}
 	}
 }
