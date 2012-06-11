@@ -23,7 +23,7 @@ public class Test {
 			// HttpClient主要负责执行请求
 			HttpClient httpclient = new DefaultHttpClient();
 			// 利用HTTP GET向服务器发起请求
-			HttpGet get = new HttpGet("http://www.sina.com.cn/");// http://localhost:8080/cms
+			HttpGet get = new HttpGet("http://www.ccopyright.com.cn/cpcc/RRegisterAction.do?method=list&no=fck");// http://localhost:8080/cms
 			// 获得服务器响应的的所有信息
 			HttpResponse response = httpclient.execute(get);
 			// 获得服务器响应回来的消息体（不包括HTTP HEAD）
