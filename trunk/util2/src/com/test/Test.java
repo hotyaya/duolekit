@@ -33,7 +33,7 @@ public class Test {
 			do {
 				str1 = forwardLink(httpclient, url);
 				url = sitename + str1;
-				Thread.sleep(500);
+				Thread.sleep(5000);
 			} while (str1.length() > 0);
 			httpclient.getConnectionManager().shutdown();
 		} catch (Exception e) {
