@@ -88,6 +88,12 @@ public class Test {
 			//HttpClient httpclient = new DefaultHttpClient();
 			// 利用HTTP GET向服务器发起请求
 			HttpGet get = new HttpGet(url);// http://localhost:8080/cms
+			get.addHeader("Accept","text/html, application/xhtml+xml, */*");
+			get.addHeader("Accept-Language","zh-CN,en-US;q=0.5");
+			get.addHeader("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
+			get.addHeader("Accept-Encoding","gzip, deflate");
+			get.addHeader("Host","localhost:9999");
+			get.addHeader("Connection","Keep-Alive");
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String responseBody = httpclient.execute(get, responseHandler);
 			Parser pdata = new Parser();
