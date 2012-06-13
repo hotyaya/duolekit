@@ -26,7 +26,7 @@ public class Test {
 		HttpClient httpclient = null;
 		try {
 			httpclient = new DefaultHttpClient();
-			//String sitename = "http://www.ccopyright.com.cn";//124.193.201.195
+			//String sitename = "http://www.ccopyright.com.cn/cpcc/RRegisterAction.do?method=list&no=fck";//124.193.201.195
 			String sitename = "http://124.193.201.195";//
 			String str1 = "/cpcc/RRegisterAction.do?method=list&no=fck";
 			String url = sitename + str1;
