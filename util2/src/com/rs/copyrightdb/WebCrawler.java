@@ -21,11 +21,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.rs.cr.dao.Softitem;
 import cn.rs.cr.dao.SoftitemDAO;
+import cn.rs.cr.dao.Softitem;
 
 public class WebCrawler {
-	
+	private int ifindRepeatRecord = 0;
+	private int icount = 0;
+	private int ipagecount = 0;
 	public void doCrawler(){
 		HttpClient httpclient = null;
+		icount = 0;
+		ipagecount = 0;
 		try {
 			httpclient = new DefaultHttpClient();
 			//String sitename = "http://www.ccopyright.com.cn/cpcc/RRegisterAction.do?method=list&no=fck";//124.193.201.195
@@ -33,10 +38,23 @@ public class WebCrawler {
 			String str1 = "/cpcc/RRegisterAction.do?method=list&no=fck";
 			String url = sitename + str1;
 			do {
+				ifindRepeatRecord = 0;	//已发现的重复的记录
 				str1 = forwardLink(httpclient, url);
 				url = sitename + str1;
+				ipagecount ++ ;
+				/**
+				 * 初始化时不应该启动此项
+				 */
+				if (ifindRepeatRecord>=5){	
+					System.out.println("发现重复记录组！");
+					break;
+				}
 				Thread.sleep(5000);
 			} while (str1.length() > 0);
+			
+			System.out.println("记录当前页码"+ipagecount);
+			System.out.println("记录当前记录"+icount);
+			
 			httpclient.getConnectionManager().shutdown();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +74,7 @@ public class WebCrawler {
 			get.addHeader("Accept-Language","zh-CN,en-US;q=0.5");
 			get.addHeader("User-Agent","Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)");
 			get.addHeader("Accept-Encoding","gzip, deflate");
-			get.addHeader("Host","localhost:9999");
+			get.addHeader("Host","ocalhost:9999");
 			get.addHeader("Connection","Keep-Alive");
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String responseBody = httpclient.execute(get, responseHandler);
@@ -121,6 +139,8 @@ public class WebCrawler {
 				public boolean accept(Node node) {
 					if (node instanceof TableRow
 							&& ((TableRow) node).getColumns().length == 8) {
+						
+						icount ++;//统计记录数
 						System.out.print("");
 						System.out.print(((TableRow) node).getColumns()[0]
 								.getStringText() + ";");
@@ -139,6 +159,21 @@ public class WebCrawler {
 						System.out.print(((TableRow) node).getColumns()[7]
 								.getStringText() + ";");
 						System.out.print("\n");
+						
+						/**
+						 * 
+						 * 		Softitem item = new Softitem();
+								item.setRegisterid("1");
+								item.setTypecode("xxx-xxx");
+								item.setSoftname("软件1");
+								item.setSoftbrief("1");
+								item.setVersion("v1.0");
+								item.setAuthor("lh");
+								item.setPublishdate("2011-10-01");
+								item.setRegisterdate("2012-06-12");
+						 */
+						
+						
 						return true;
 					}
 					return false;
