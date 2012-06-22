@@ -21,9 +21,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.rs.cr.dao.Softitem;
 import cn.rs.cr.dao.SoftitemDAO;
-import cn.rs.cr.dao.Softitem;
 
 public class WebCrawler {
+	
+	public WebCrawler(SoftitemDAO dao) {
+		super();
+		this.dao = dao;
+	}
+
+	private SoftitemDAO dao = null;
 	private int ifindRepeatRecord = 0;
 	private int icount = 0;
 	private int ipagecount = 0;
@@ -161,7 +167,6 @@ public class WebCrawler {
 						System.out.print("\n");
 						
 						/**
-						 * 
 						 * 		Softitem item = new Softitem();
 								item.setRegisterid("1");
 								item.setTypecode("xxx-xxx");
@@ -172,8 +177,10 @@ public class WebCrawler {
 								item.setPublishdate("2011-10-01");
 								item.setRegisterdate("2012-06-12");
 						 */
-						
-						
+						Softitem item = new Softitem();
+						if ((dao!=null) && (dao.findById("xxxx")!=null)){
+							dao.save(item);
+						}
 						return true;
 					}
 					return false;
