@@ -1,6 +1,7 @@
 package com.rs.copyrightdb;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -40,6 +41,8 @@ public class WebCrawler {
 			//String sitename = "http://www.ccopyright.com.cn/cpcc/RRegisterAction.do?method=list&no=fck";//124.193.201.195
 			String sitename = "http://124.193.201.195";//
 			String str1 = "/cpcc/RRegisterAction.do?method=list&no=fck";
+			//中断的页面2012/06/23
+			str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&count=10&curPage=4025";
 			String url = sitename + str1;
 			do {
 				ifindRepeatRecord = 0;	//已发现的重复的记录
@@ -53,16 +56,19 @@ public class WebCrawler {
 //					System.out.println("发现重复记录组！");
 //					break;
 //				}
-				Thread.sleep(100);
+				System.out.println("记录当前页码"+ipagecount);
+				System.out.println("记录当前记录"+icount);
+				Thread.sleep(50);
 			} while (str1.length() > 0);
-			
 			System.out.println("记录当前页码"+ipagecount);
 			System.out.println("记录当前记录"+icount);
-			
 			httpclient.getConnectionManager().shutdown();
 		} catch (Exception e) {
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			System.out.println(" "+new Date(System.currentTimeMillis()));
 			System.out.println("记录当前页码"+ipagecount);
 			System.out.println("记录当前记录"+icount);
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			e.printStackTrace();
 			httpclient.getConnectionManager().shutdown();
 		}
