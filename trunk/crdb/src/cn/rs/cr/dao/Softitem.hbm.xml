@@ -14,16 +14,16 @@
             <column name="typecode" length="12" />
         </property>
         <property name="softname" type="java.lang.String">
-            <column name="softname" length="150" />
+            <column name="softname" length="250" />
         </property>
         <property name="softbrief" type="java.lang.String">
-            <column name="softbrief" length="50" />
+            <column name="softbrief" length="150" />
         </property>
         <property name="version" type="java.lang.String">
             <column name="version" length="20" />
         </property>
         <property name="author" type="java.lang.String">
-            <column name="author" length="100" />
+            <column name="author" length="200" />
         </property>
         <property name="publishdate" type="java.lang.String">
             <column name="publishdate" length="12" />
