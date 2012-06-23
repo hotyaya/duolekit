@@ -9,6 +9,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
@@ -22,7 +23,7 @@ import cn.rs.cr.dao.Softitem;
 import cn.rs.cr.dao.SoftitemDAO;
 
 public class WebCrawler {
-	
+	private static Logger log = Logger.getRootLogger();
 	public WebCrawler(SoftitemDAO dao) {
 		super();
 		this.dao = dao;
@@ -58,6 +59,7 @@ public class WebCrawler {
 //				}
 				System.out.println("记录当前页码"+ipagecount);
 				System.out.println("记录当前记录"+icount);
+				log.info(""+"记录当前页码"+ipagecount +" || "+"记录当前记录"+icount);
 				Thread.sleep(50);
 			} while (str1.length() > 0);
 			System.out.println("记录当前页码"+ipagecount);
@@ -68,6 +70,7 @@ public class WebCrawler {
 			System.out.println(" "+new Date(System.currentTimeMillis()));
 			System.out.println("记录当前页码"+ipagecount);
 			System.out.println("记录当前记录"+icount);
+			log.info(""+"记录当前页码"+ipagecount +" || "+"记录当前记录"+icount);
 			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			e.printStackTrace();
 			httpclient.getConnectionManager().shutdown();
@@ -183,6 +186,7 @@ public class WebCrawler {
 						if ((dao!=null) && (dao.findById(registerid)==null)){
 							dao.save(item);
 						}else{
+							log.info("重复："+registerid);
 							System.out.println("重复："+registerid);
 						}
 						return true;
