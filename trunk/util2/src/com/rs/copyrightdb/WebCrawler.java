@@ -16,8 +16,6 @@ import org.htmlparser.tags.TableRow;
 import org.htmlparser.tags.TableTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.rs.cr.dao.Softitem;
 import cn.rs.cr.dao.SoftitemDAO;
@@ -147,39 +145,37 @@ public class WebCrawler {
 							&& ((TableRow) node).getColumns().length == 8) {
 						
 						icount ++;//统计记录数
-						System.out.print("");
-						System.out.print(((TableRow) node).getColumns()[0]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[1]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[2]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[3]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[4]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[5]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[6]
-								.getStringText() + ";");
-						System.out.print(((TableRow) node).getColumns()[7]
-								.getStringText() + ";");
-						System.out.print("\n");
-						
-						/**
-						 * 		Softitem item = new Softitem();
-								item.setRegisterid("1");
-								item.setTypecode("xxx-xxx");
-								item.setSoftname("软件1");
-								item.setSoftbrief("1");
-								item.setVersion("v1.0");
-								item.setAuthor("lh");
-								item.setPublishdate("2011-10-01");
-								item.setRegisterdate("2012-06-12");
-						 */
 						Softitem item = new Softitem();
-						if ((dao!=null) && (dao.findById("xxxx")!=null)){
+						System.out.print("");
+						String registerid=((TableRow) node).getColumns()[0].getStringText().trim();
+						item.setRegisterid(registerid);
+						System.out.print(" Registerid:"+((TableRow) node).getColumns()[0].getStringText() + ";");
+						String typecode=((TableRow) node).getColumns()[1].getStringText().trim();
+						item.setTypecode(typecode);
+						System.out.print(" Typecode:"+((TableRow) node).getColumns()[1].getStringText() + ";");
+						String softname=((TableRow) node).getColumns()[2].getStringText().trim();
+						item.setSoftname(softname);
+						System.out.print(" Softname:"+((TableRow) node).getColumns()[2].getStringText() + ";");
+						String softbrief=((TableRow) node).getColumns()[3].getStringText().trim();
+						item.setSoftbrief(softbrief);
+						System.out.print(" Softbrief:"+((TableRow) node).getColumns()[3].getStringText() + ";");
+						String version=((TableRow) node).getColumns()[4].getStringText().trim();
+						item.setVersion(version);
+						System.out.print(" Version:"+((TableRow) node).getColumns()[4].getStringText() + ";");
+						String author=((TableRow) node).getColumns()[5].getStringText().trim();
+						item.setAuthor(author);
+						System.out.print(" Author:"+((TableRow) node).getColumns()[5].getStringText() + ";");
+						String publishdate=((TableRow) node).getColumns()[6].getStringText().trim();
+						item.setPublishdate(publishdate);
+						System.out.print(" Publishdate:"+((TableRow) node).getColumns()[6].getStringText() + ";");
+						String registerdate=((TableRow) node).getColumns()[7].getStringText().trim();
+						item.setRegisterdate(registerdate);
+						System.out.print(" Registerdate:"+((TableRow) node).getColumns()[7].getStringText() + ";");
+						System.out.print("\n");
+						if ((dao!=null) && (dao.findById(registerid)==null)){
 							dao.save(item);
+						}else{
+							System.out.println("重复："+registerid);
 						}
 						return true;
 					}
