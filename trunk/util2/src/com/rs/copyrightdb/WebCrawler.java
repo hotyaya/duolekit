@@ -49,11 +49,11 @@ public class WebCrawler {
 				/**
 				 * 初始化时不应该启动此项
 				 */
-				if (ifindRepeatRecord>=5){	
-					System.out.println("发现重复记录组！");
-					break;
-				}
-				Thread.sleep(5000);
+//				if (ifindRepeatRecord>=5){	
+//					System.out.println("发现重复记录组！");
+//					break;
+//				}
+				Thread.sleep(100);
 			} while (str1.length() > 0);
 			
 			System.out.println("记录当前页码"+ipagecount);
@@ -61,6 +61,8 @@ public class WebCrawler {
 			
 			httpclient.getConnectionManager().shutdown();
 		} catch (Exception e) {
+			System.out.println("记录当前页码"+ipagecount);
+			System.out.println("记录当前记录"+icount);
 			e.printStackTrace();
 			httpclient.getConnectionManager().shutdown();
 		}
