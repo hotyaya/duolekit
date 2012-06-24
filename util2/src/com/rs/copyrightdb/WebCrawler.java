@@ -43,7 +43,8 @@ public class WebCrawler {
 			String sitename = "http://124.193.201.195";//
 			String str1 = "/cpcc/RRegisterAction.do?method=list&no=fck";
 			//中断的页面2012/06/23
-			str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&count=10&curPage=4025";
+			str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&count=10&curPage=12825";
+			//str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&curPage=6752&count=10";
 			String url = sitename + str1;
 			do {
 				ifindRepeatRecord = 0;	//已发现的重复的记录
@@ -59,7 +60,8 @@ public class WebCrawler {
 //				}
 				System.out.println("记录当前页码"+ipagecount);
 				System.out.println("记录当前记录"+icount);
-				log.info(""+"记录当前页码"+ipagecount +" || "+"记录当前记录"+icount);
+				log.info(""+"current page:"+ipagecount +" || "+"current record:"+icount);
+
 				Thread.sleep(50);
 			} while (str1.length() > 0);
 			System.out.println("记录当前页码"+ipagecount);
@@ -70,7 +72,7 @@ public class WebCrawler {
 			System.out.println(" "+new Date(System.currentTimeMillis()));
 			System.out.println("记录当前页码"+ipagecount);
 			System.out.println("记录当前记录"+icount);
-			log.info(""+"记录当前页码"+ipagecount +" || "+"记录当前记录"+icount);
+			log.info(""+"current page:"+ipagecount +" || "+"current record:"+icount);
 			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			e.printStackTrace();
 			httpclient.getConnectionManager().shutdown();
@@ -186,7 +188,7 @@ public class WebCrawler {
 						if ((dao!=null) && (dao.findById(registerid)==null)){
 							dao.save(item);
 						}else{
-							log.info("重复："+registerid);
+							log.info("repeat："+registerid);
 							System.out.println("重复："+registerid);
 						}
 						return true;
