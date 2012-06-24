@@ -26,7 +26,7 @@ CREATE TABLE `softitem` (
   `softname` varchar(250) DEFAULT NULL,
   `softbrief` varchar(150) DEFAULT NULL,
   `version` varchar(80) DEFAULT NULL,
-  `author` varchar(200) DEFAULT NULL,
+  `author` varchar(400) DEFAULT NULL,
   `publishdate` varchar(12) DEFAULT NULL,
   `registerdate` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`registerid`)
