@@ -20,7 +20,7 @@
             <column name="softbrief" length="150" />
         </property>
         <property name="version" type="java.lang.String">
-            <column name="version" length="20" />
+            <column name="version" length="80" />
         </property>
         <property name="author" type="java.lang.String">
             <column name="author" length="200" />
