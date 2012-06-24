@@ -43,7 +43,7 @@ public class WebCrawler {
 			String sitename = "http://124.193.201.195";//
 			String str1 = "/cpcc/RRegisterAction.do?method=list&no=fck";
 			//ÖÐ¶ÏµÄÒ³Ãæ2012/06/23
-			str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&count=10&curPage=12825";
+			str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&count=10&curPage=15004";
 			//str1 = "/cpcc/RRegisterAction.do?method=list&no=fck&sql_name=&sql_regnum=&sql_author=&sortLabel=registerDate&sortOrder=&curPage=6752&count=10";
 			String url = sitename + str1;
 			do {
