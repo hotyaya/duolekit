@@ -23,7 +23,7 @@
             <column name="version" length="80" />
         </property>
         <property name="author" type="java.lang.String">
-            <column name="author" length="200" />
+            <column name="author" length="400" />
         </property>
         <property name="publishdate" type="java.lang.String">
             <column name="publishdate" length="12" />
