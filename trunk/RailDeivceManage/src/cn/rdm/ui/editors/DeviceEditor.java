@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
+import com.tiff.common.ui.datepicker.DatePickerCombo;
 
 public class DeviceEditor extends EditorPart {
 	private Text text;
@@ -67,6 +68,12 @@ public class DeviceEditor extends EditorPart {
 		
 		text_1 = new Text(parent, SWT.BORDER);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(parent, SWT.NONE);
+		
+		@SuppressWarnings("unused")
+		DatePickerCombo datePickerCombo = new DatePickerCombo(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
+		new Label(parent, SWT.NONE);
 		// TODO Auto-generated method stub
 		
 	}

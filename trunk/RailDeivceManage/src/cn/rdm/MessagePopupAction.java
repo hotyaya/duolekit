@@ -6,6 +6,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 
 import cn.rdm.ui.editors.DeivceListEditorInput;
+import cn.rdm.ui.editors.DeviceEditorInput;
 
 
 public class MessagePopupAction extends Action {
@@ -26,6 +27,12 @@ public class MessagePopupAction extends Action {
         MessageDialog.openInformation(window.getShell(), "Open", "Open Message Dialog!");
         
         
+        try {
+			window.getActivePage().openEditor(new DeviceEditorInput(), "rdm.editor.Device");
+		} catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         try {
 			window.getActivePage().openEditor(new DeivceListEditorInput(), "rdm.editor.DeviceList");
 		} catch (PartInitException e) {
