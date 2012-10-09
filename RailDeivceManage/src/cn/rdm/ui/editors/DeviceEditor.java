@@ -111,7 +111,6 @@ public class DeviceEditor extends EditorPart {
 		lblNewLabel_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewLabel_4.setText("制造日期");
 		
-		@SuppressWarnings("unused")
 		DatePickerCombo datePickerCombo = new DatePickerCombo(parent, SWT.BORDER);
 		datePickerCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		new Label(parent, SWT.NONE);
