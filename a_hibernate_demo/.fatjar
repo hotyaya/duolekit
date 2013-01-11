@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Jan 11 10:43:57 CST 2013
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=r.jar
+manifest.mergeall=true
+manifest.mainclass=cn.railsoft.wtk.dao.demo.Test
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
