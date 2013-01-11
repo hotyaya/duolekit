@@ -1,0 +1,3 @@
+# Module dbdemo
+# RPC service class, partial path of RPC policy file
+cn.railsoft.wtk.dbdemo.client.GreetingService, 38BC801A34BF333D7664AB1558FBB4F8.gwt.rpc
