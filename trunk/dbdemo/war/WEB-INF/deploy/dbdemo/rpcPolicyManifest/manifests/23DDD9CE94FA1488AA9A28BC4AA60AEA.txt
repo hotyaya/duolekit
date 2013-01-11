@@ -1,0 +1,2 @@
+serviceClass: cn.railsoft.wtk.dbdemo.client.GreetingService
+path: 38BC801A34BF333D7664AB1558FBB4F8.gwt.rpc
