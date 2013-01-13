@@ -1,2 +1,0 @@
-serviceClass: cn.railsoft.wtk.main.client.GreetingService
-path: 6582BA937FAAD83EEAB02BF1127609C6.gwt.rpc
