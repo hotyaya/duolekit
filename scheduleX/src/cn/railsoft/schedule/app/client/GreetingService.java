@@ -1,5 +1,9 @@
 package cn.railsoft.schedule.app.client;
 
+import java.util.ArrayList;
+
+import cn.railsoft.schedule.dao.entity.Jobitem;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -9,4 +13,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 	String greetServer(String name) throws IllegalArgumentException;
+	ArrayList<Jobitem> getJobItemList()  throws IllegalArgumentException;
 }

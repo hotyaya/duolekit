@@ -1,5 +1,9 @@
 package cn.railsoft.schedule.app.client;
 
+import java.util.ArrayList;
+
+import cn.railsoft.schedule.dao.entity.Jobitem;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -8,4 +12,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<String> callback)
 			throws IllegalArgumentException;
+
+	void getJobItemList(AsyncCallback<ArrayList<Jobitem>> callback);
 }

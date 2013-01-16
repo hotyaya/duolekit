@@ -1,6 +1,9 @@
 package cn.railsoft.schedule.app.client;
 
+import java.util.ArrayList;
+
 import cn.railsoft.schedule.app.shared.FieldVerifier;
+import cn.railsoft.schedule.dao.entity.Jobitem;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -13,17 +16,17 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockPanel;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -154,6 +157,24 @@ public class ScheduleX implements EntryPoint {
 		/**
 		 * 刘辉的代码2013/01/16
 		 */
+		greetingService.getJobItemList(new AsyncCallback<ArrayList<Jobitem>>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess(ArrayList<Jobitem> result) {
+				// TODO Auto-generated method stub
+				if (result!=null){
+					nameField.setText("getJobItemList_"+result.get(0).getId());
+				}else{
+					nameField.setText("getJobItemList_null");
+				}
+			}});
+		
 		DockPanel dp = new DockPanel();
 		dp.setSize("800px", "600px");
 		
@@ -186,6 +207,7 @@ public class ScheduleX implements EntryPoint {
 		
 		Grid grid = new Grid(10, 10);
 		scrollPanel.setWidget(grid);
+		scrollPanel.setSize("800px", "600px");
 		grid.setSize("100%", "100%");
 		
 		RootPanel.get("gwtwindow").add(dp);

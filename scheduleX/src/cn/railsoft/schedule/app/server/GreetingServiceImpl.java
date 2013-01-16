@@ -1,7 +1,16 @@
 package cn.railsoft.schedule.app.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.Session;
+
 import cn.railsoft.schedule.app.client.GreetingService;
 import cn.railsoft.schedule.app.shared.FieldVerifier;
+import cn.railsoft.schedule.dao.HibernateSessionFactory;
+import cn.railsoft.schedule.dao.entity.Jobitem;
+import cn.railsoft.schedule.dao.entity.JobitemDAO;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -11,6 +20,24 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Jobitem> getJobItemList() throws IllegalArgumentException {
+		// TODO Auto-generated method stub
+		List<Jobitem> list = null;
+		try{
+			Session session = HibernateSessionFactory.getSession();
+			session.beginTransaction();
+			JobitemDAO jd =new JobitemDAO();
+			list = jd.findAll();
+			
+			//jd.save(item);
+			session.getTransaction().commit();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return new ArrayList<Jobitem>(list);
+	}
 	public String greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid. 
 		if (!FieldVerifier.isValidName(input)) {
@@ -45,4 +72,5 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
 				.replaceAll(">", "&gt;");
 	}
+
 }
