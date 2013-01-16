@@ -1,0 +1,2 @@
+serviceClass: cn.railsoft.schedule.app.client.GreetingService
+path: 8871D4C9DD4EC801CACFFA154E77CC62.gwt.rpc
