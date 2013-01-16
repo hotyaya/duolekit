@@ -21,6 +21,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -169,6 +172,21 @@ public class ScheduleX implements EntryPoint {
 		SimplePanel simplePanel = new SimplePanel();
 		simplePanel.setSize("800px", "600px");
 		tabPanel.add(simplePanel, "Calendar1", false);
+		
+		FlexTable flexTable = new FlexTable();
+		tabPanel.add(flexTable, "Calendar2", false);
+		flexTable.setSize("800px", "600px");
+		
+		Label lblNewLabel = new Label("New label");
+		flexTable.setWidget(0, 0, lblNewLabel);
+		
+		ScrollPanel scrollPanel = new ScrollPanel();
+		tabPanel.add(scrollPanel, "New tab", false);
+		scrollPanel.setSize("5cm", "3cm");
+		
+		Grid grid = new Grid(10, 10);
+		scrollPanel.setWidget(grid);
+		grid.setSize("100%", "100%");
 		
 		RootPanel.get("gwtwindow").add(dp);
 	}
