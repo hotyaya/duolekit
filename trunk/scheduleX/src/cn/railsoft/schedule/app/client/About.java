@@ -30,9 +30,11 @@ public class About extends Composite {
 		initWidget(absolutePanel);
 		absolutePanel.setSize("80px", "28px");
 		absolutePanel.add(sendButton,0,0);
-		absolutePanel.add(nameField,60,0);
+		absolutePanel.add(nameField,30,0);
 		absolutePanel.add(errorLabel,80,0);
 		errorLabel.setSize("40px", "30px");
+		nameField.setVisible(false);
+		errorLabel.setVisible(false);
 		init();
 	}
 	
