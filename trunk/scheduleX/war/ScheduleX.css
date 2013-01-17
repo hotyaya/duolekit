@@ -1,5 +1,4 @@
 /** Add css rules here for your application. */
-
 .container {
 	width: 100%;
 	max-width: 800px;/* 可能需要最大宽度，以防止此布局在大型显示器上过宽。这将使行长度更便于阅读。IE6 不遵循此声明。 */
@@ -15,7 +14,18 @@
 	height:560px;
 }
 
+.jobScheduleTable {
+	background-color: #f0e68c;/*#277777;ffe4c4  ffe465  ffdead  f0e68c*/
+}
+
+
 /** Example rules used by the template application (remove for your app) */
+statustip {
+  font-size: 0.7em;
+  color: #277777;	/**#777777**/
+  text-align: right;
+}
+
 h1 {
   font-size: 2em;
   font-weight: bold;
