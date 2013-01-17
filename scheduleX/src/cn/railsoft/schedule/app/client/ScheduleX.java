@@ -35,6 +35,9 @@ public class ScheduleX implements EntryPoint {
 				}
 			}
 		});
+
+		JobScheduleTable jobScheduleTable = new JobScheduleTable();
+		jobScheduleTable.setSize("800px", "500px");
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		absolutePanel.setSize("800px", "30px");
@@ -42,6 +45,7 @@ public class ScheduleX implements EntryPoint {
 
 		TabPanel tabPanel = new TabPanel();
 		tabPanel.setSize("800px", "600px");
+		tabPanel.add(jobScheduleTable, "我的工作日程表", false);
 
 		DockPanel dp = new DockPanel();
 		dp.setSize("800px", "600px");
