@@ -3,7 +3,7 @@ package cn.railsoft.schedule.app.client;
 import java.util.ArrayList;
 
 import cn.railsoft.schedule.app.shared.FieldVerifier;
-import cn.railsoft.schedule.dao.entity.Jobitem;
+import cn.railsoft.schedule.app.shared.Jobitem;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -173,7 +173,8 @@ public class ScheduleX implements EntryPoint {
 				}else{
 					nameField.setText("getJobItemList_null");
 				}
-			}});
+			}
+		});
 		
 		DockPanel dp = new DockPanel();
 		dp.setSize("800px", "600px");

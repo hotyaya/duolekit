@@ -7,8 +7,8 @@ import org.hibernate.Session;
 
 import cn.railsoft.schedule.app.client.GreetingService;
 import cn.railsoft.schedule.app.shared.FieldVerifier;
+import cn.railsoft.schedule.app.shared.Jobitem;	//用于传输的对象 
 import cn.railsoft.schedule.dao.HibernateSessionFactory;
-import cn.railsoft.schedule.dao.entity.Jobitem;
 import cn.railsoft.schedule.dao.entity.JobitemDAO;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -24,19 +24,41 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	@Override
 	public ArrayList<Jobitem> getJobItemList() throws IllegalArgumentException {
 		// TODO Auto-generated method stub
-		List<Jobitem> list = null;
+		ArrayList<Jobitem> jobitemlist = new ArrayList<Jobitem>();
 		try{
 			Session session = HibernateSessionFactory.getSession();
 			session.beginTransaction();
 			JobitemDAO jd =new JobitemDAO();
-			list = jd.findAll();
-			
+			List<cn.railsoft.schedule.dao.entity.Jobitem> list = jd.findAll();
+			for(cn.railsoft.schedule.dao.entity.Jobitem ji:list){
+				Jobitem item = new Jobitem();
+				item.setCreateTime(ji.getCreateTime());
+				item.setUserid(ji.getUserid());
+				item.setSeq(ji.getSeq());
+				item.setActionDate(ji.getActionDate());
+				item.setType(ji.getType());
+				item.setNumPrefix(ji.getNumPrefix());
+				item.setNumNo(ji.getNumNo());
+				item.setNumSuffix(ji.getNumSuffix());
+				item.setContent1(ji.getContent1());
+				item.setContent2(ji.getContent2());
+				item.setContent3(ji.getContent3());
+				item.setContent4(ji.getContent4());
+				item.setContent5(ji.getContent5());
+				item.setSource(ji.getSource());
+				item.setSourceId(ji.getSourceId());
+				item.setStatus(ji.getStatus());
+				item.setStatusCreatetime(ji.getCreateTime());
+				item.setMemo(ji.getMemo());
+				jobitemlist.add(item);//2013/1/17
+			}
+			//jobitemlist.add(e);
 			//jd.save(item);
 			session.getTransaction().commit();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-		return new ArrayList<Jobitem>(list);
+		return new ArrayList<Jobitem>(jobitemlist);
 	}
 	public String greetServer(String input) throws IllegalArgumentException {
 		// Verify that the input is valid. 

@@ -2,7 +2,7 @@ package cn.railsoft.schedule.app.client;
 
 import java.util.ArrayList;
 
-import cn.railsoft.schedule.dao.entity.Jobitem;
+import cn.railsoft.schedule.app.shared.Jobitem;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
