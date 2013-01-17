@@ -32,6 +32,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			List<cn.railsoft.schedule.dao.entity.Jobitem> list = jd.findAll();
 			for(cn.railsoft.schedule.dao.entity.Jobitem ji:list){
 				Jobitem item = new Jobitem();
+				item.setId(ji.getId());
 				item.setCreateTime(ji.getCreateTime());
 				item.setUserid(ji.getUserid());
 				item.setSeq(ji.getSeq());

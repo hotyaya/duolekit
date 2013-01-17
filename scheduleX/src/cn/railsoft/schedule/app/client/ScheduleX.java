@@ -169,7 +169,7 @@ public class ScheduleX implements EntryPoint {
 			public void onSuccess(ArrayList<Jobitem> result) {
 				// TODO Auto-generated method stub
 				if (result!=null){
-					nameField.setText("getJobItemList_"+result.get(0).getId());
+					nameField.setText("+"+result.get(0).getId());
 				}else{
 					nameField.setText("getJobItemList_null");
 				}
