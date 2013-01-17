@@ -44,20 +44,20 @@ public class Test {
 		item.setUserid(1);
 		item.setSeq(new Long(1));
 		item.setActionDate(20130115);
-		item.setType("±±¾©ÌúÂ·¾Ö¾ÖÎÄ");
-		item.setNumPrefix("¾©ĞÅÏ¢");
+		item.setType("åŒ—äº¬é“è·¯å±€å±€æ–‡");
+		item.setNumPrefix("äº¬ä¿¡æ¯");
 		item.setNumNo("[2013]");
-		item.setNumSuffix("2"+"ºÅ");
+		item.setNumSuffix("2"+"å·");
 		item.setContent1("1");
 		item.setContent2("2");
 		item.setContent3("3");
 		item.setContent4("4");
 		item.setContent5("5");
-		item.setSource("Àî¿Æ");
+		item.setSource("æç§‘");
 		item.setSource("82391231234123");
-		item.setStatus("°ìÍê");
+		item.setStatus("åŠå®Œ");
 		item.setStatusCreatetime(new Timestamp(System.currentTimeMillis()));
-		item.setMemo("²âÊÔÊı¾İ");
+		item.setMemo("æµ‹è¯•æ•°æ®");
 		
 		Session session = HibernateSessionFactory.getSession();
 		try{
@@ -67,6 +67,5 @@ public class Test {
 			session.getTransaction().commit();
 		}catch(Exception ex){
 			ex.printStackTrace();
-		}
-	}
+		}	}
 }
