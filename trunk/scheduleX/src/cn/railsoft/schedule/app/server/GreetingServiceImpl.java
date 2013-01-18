@@ -30,7 +30,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	public String saveJobItem(Jobitem ji) throws Exception {
 		// TODO Auto-generated method stub
 		try{
-			JobitemDAO jd =new JobitemDAO();
 			cn.railsoft.schedule.dao.entity.Jobitem item = new cn.railsoft.schedule.dao.entity.Jobitem();
 			//item.setId(ji.getId());
 			item.setCreateTime(ji.getCreateTime());
@@ -52,10 +51,12 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			item.setStatusCreatetime(ji.getCreateTime());
 			item.setMemo(ji.getMemo());
 			session.beginTransaction();
+			JobitemDAO jd =new JobitemDAO();
 			jd.save(item);
 			session.getTransaction().commit();
 		}catch(Exception ex){
 			ex.printStackTrace();
+			session.getTransaction().rollback();
 			return "FAILED";
 		}
 		return "SUCCESS";
