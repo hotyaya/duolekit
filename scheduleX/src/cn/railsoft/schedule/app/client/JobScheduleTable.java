@@ -34,47 +34,47 @@ public class JobScheduleTable extends Composite {
 		dockPanel.add(grid, DockPanel.CENTER);
 		// grid.resize(10, 10);
 		// grid.setText(5, 5, "我的测试数据");
-		//loadJobScheduleData();
+		// loadJobScheduleData();
 	}
 
 	public void loadJobSchedule() {
-		greetingService.getJobItemList(new AsyncCallback<ArrayList<Jobitem>>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				
-			}
+		greetingService.getJobItemList("ALL",new AsyncCallback<ArrayList<Jobitem>>() {
+					@Override
+					public void onFailure(Throwable caught) {
 
-			@Override
-			public void onSuccess(ArrayList<Jobitem> result) {
-				if (result != null) {
-					jobitemlist = result;
-					// nameField.setText("+"+result.get(0).getId());
-				} else {
-					// nameField.setText("getJobItemList_null");
-				}
-				loadJobScheduleData();
-			}
-		});
+					}
+
+					@Override
+					public void onSuccess(ArrayList<Jobitem> result) {
+						if (result != null) {
+							jobitemlist = result;
+							// nameField.setText("+"+result.get(0).getId());
+						} else {
+							// nameField.setText("getJobItemList_null");
+						}
+						loadJobScheduleData();
+					}
+				});
 
 	}
 
-	private void loadJobScheduleData(){
-		if (jobitemlist!=null){
+	private void loadJobScheduleData() {
+		if (jobitemlist != null) {
 			irows = jobitemlist.size();
 			grid.resize(irows + 1, icolumns);
 			for (int i = 0; i < irows; i++) {
-				grid.getCellFormatter().setStyleName(i+1, 1, "tablecell");
+				grid.getCellFormatter().setStyleName(i + 1, 1, "tablecell");
 				grid.setText(i + 1, 0, jobitemlist.get(i).getId());
 				grid.setText(i + 1, 1, jobitemlist.get(i).getContent1());
 				grid.setText(i + 1, 2, jobitemlist.get(i).getContent2());
 			}
-		}else{
+		} else {
 			grid.resize(1, icolumns);
 		}
 		grid.setText(0, 0, "序号");
 		grid.setText(0, 1, "2");
 	}
-	
+
 	private class NavBar extends Composite implements ClickHandler {
 		public final DockPanel bar = new DockPanel();
 		public final Button gotoFirst = new Button("&lt;&lt;", this);

@@ -3,13 +3,13 @@ package cn.railsoft.schedule.app.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 
 import cn.railsoft.schedule.app.client.GreetingService;
 import cn.railsoft.schedule.app.shared.FieldVerifier;
 import cn.railsoft.schedule.app.shared.Jobitem;	//用于传输的对象 
-import cn.railsoft.schedule.dao.HibernateSessionFactory;
 import cn.railsoft.schedule.dao.entity.JobitemDAO;
+//import cn.railsoft.schedule.dao.HibernateSessionFactory;
+//import org.hibernate.Session;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -22,14 +22,22 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ArrayList<Jobitem> getJobItemList() throws IllegalArgumentException {
+	public ArrayList<Jobitem> getJobItemList(String filter) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		ArrayList<Jobitem> jobitemlist = new ArrayList<Jobitem>();
+		List<cn.railsoft.schedule.dao.entity.Jobitem> list = null;
 		try{
-			Session session = HibernateSessionFactory.getSession();
-			session.beginTransaction();
+//			Session session = HibernateSessionFactory.getSession();
+//			session.beginTransaction();
+//			session.getTransaction().commit();
 			JobitemDAO jd =new JobitemDAO();
-			List<cn.railsoft.schedule.dao.entity.Jobitem> list = jd.findAll();
+			if (filter.equals("ALL")){
+				list = jd.findAll();	//暂为全部
+			}else if (filter.equals("CONDITION")){
+				list = jd.findAll();    //暂为全部
+			}else{
+				list = jd.findAll();	//暂为全部
+			}
 			for(cn.railsoft.schedule.dao.entity.Jobitem ji:list){
 				Jobitem item = new Jobitem();
 				item.setId(ji.getId());
@@ -55,7 +63,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			}
 			//jobitemlist.add(e);
 			//jd.save(item);
-			session.getTransaction().commit();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

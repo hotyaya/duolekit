@@ -13,5 +13,5 @@ public interface GreetingServiceAsync {
 	void greetServer(String input, AsyncCallback<String> callback)
 			throws IllegalArgumentException;
 
-	void getJobItemList(AsyncCallback<ArrayList<Jobitem>> callback);
+	void getJobItemList(String filter,AsyncCallback<ArrayList<Jobitem>> callback);
 }
