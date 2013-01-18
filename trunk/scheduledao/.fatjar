@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Jan 18 08:33:53 CST 2013
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=scheduledao.jar
+manifest.mergeall=true
+manifest.mainclass=cn.railsoft.schedule.dao.demo.Test
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

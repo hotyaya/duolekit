@@ -1,5 +1,5 @@
 #MyEclipse Hibernate Properties
-#Tue Jan 15 17:22:27 CST 2013
+#Fri Jan 18 16:12:05 CST 2013
 sessionFactoryName=cn.railsoft.schedule.dao.HibernateSessionFactory
 genBasicCompId=false
 profile=
@@ -11,7 +11,7 @@ reStrategyClass=
 detectO2O=false
 springDaoFile=
 useJavaTypes=true
-keyGenerator=uuid
+keyGenerator=assigned
 libInstallFolder=lib
 addLibs2Project=true
 genVersionTag=false
@@ -22,4 +22,4 @@ reSettingsFile=/scheduledao/hibernate.reveng.xml
 configFile=/scheduledao/src/hibernate.cfg.xml
 createConfigFile=true
 addLibs2Classpath=true
-baseDaoClass=BaseHibernateDAO
+baseDaoClass=cn.railsoft.schedule.dao.entity.BaseHibernateDAO

@@ -22,6 +22,8 @@
 		</property>
 		<mapping
 			resource="cn/railsoft/schedule/dao/entity/Jobitem.hbm.xml" />
+		<mapping
+			resource="cn/railsoft/schedule/dao/entity/Vjobitemmaxseq.hbm.xml" />
 
 	</session-factory>
 
