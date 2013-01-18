@@ -13,5 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 	String greetServer(String name) throws IllegalArgumentException;
-	ArrayList<Jobitem> getJobItemList(String filter)  throws IllegalArgumentException;
+	ArrayList<Jobitem> getJobItemList(String filter)  throws Exception;
+	Long getSeq(String seqname) throws Exception;
+	String saveJobItem(Jobitem jobitem)throws Exception;
 }
