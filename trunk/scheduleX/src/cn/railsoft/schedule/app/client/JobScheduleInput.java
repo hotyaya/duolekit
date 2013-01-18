@@ -4,26 +4,34 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.i18n.client.HasDirection.Direction;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 
 public class JobScheduleInput extends Composite {
 	public JobScheduleInput() {
 		
 		FlexTable flexTable = new FlexTable();
 		initWidget(flexTable);
+		flexTable.setWidth("756px");
 		
-		Label lblNewLabel = new Label("New label");
+		Label lblNewLabel = new Label("序号");
+		lblNewLabel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		lblNewLabel.setDirection(Direction.LTR);
 		flexTable.setWidget(0, 0, lblNewLabel);
 		
 		TextBox textBox = new TextBox();
 		flexTable.setWidget(0, 1, textBox);
 		
-		Label lblNewLabel_10 = new Label("New label");
+		Label lblNewLabel_10 = new Label("收文日期");
+		lblNewLabel_10.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
+		lblNewLabel_10.setDirection(Direction.LTR);
 		flexTable.setWidget(0, 2, lblNewLabel_10);
 		
 		TextBox textBox_10 = new TextBox();
 		flexTable.setWidget(0, 3, textBox_10);
 		
-		Label lblNewLabel_1 = new Label("New label");
+		Label lblNewLabel_1 = new Label("事项分类");
+		lblNewLabel_1.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_RIGHT);
 		flexTable.setWidget(1, 0, lblNewLabel_1);
 		
 		TextBox textBox_1 = new TextBox();
