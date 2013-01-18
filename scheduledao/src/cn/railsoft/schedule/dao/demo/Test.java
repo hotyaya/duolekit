@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import cn.railsoft.schedule.dao.HibernateSessionFactory;
 import cn.railsoft.schedule.dao.entity.Jobitem;
 import cn.railsoft.schedule.dao.entity.JobitemDAO;
+import cn.railsoft.schedule.dao.entity.VjobitemmaxseqDAO;
 
 
 
@@ -65,7 +66,11 @@ public class Test {
 			JobitemDAO jd =new JobitemDAO();
 			jd.save(item);
 			session.getTransaction().commit();
+			System.out.println(new VjobitemmaxseqDAO().findAll().get(0).getMaxseq());
 		}catch(Exception ex){
 			ex.printStackTrace();
-		}	}
+		}	
+		
+	
+	}
 }
