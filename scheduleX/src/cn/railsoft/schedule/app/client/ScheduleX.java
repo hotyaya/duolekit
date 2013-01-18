@@ -27,7 +27,7 @@ public class ScheduleX implements EntryPoint {
 
 		DockPanel dp = new DockPanel();
 		dp.setSize("800px", "600px");
-		dp.add(absolutePanel, DockPanel.NORTH);
+		dp.add(absolutePanel, DockPanel.SOUTH);
 		dp.add(tabPanel, DockPanel.CENTER);
 		
 		RootPanel.get("gwtwindow").add(dp);

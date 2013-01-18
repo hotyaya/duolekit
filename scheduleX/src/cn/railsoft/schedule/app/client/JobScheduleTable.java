@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Grid;
 
-public class JobScheduleTable extends Composite {
+public class JobScheduleTable extends Composite implements INotifyJobScheduleChange{
 
 	GreetingServiceAsync greetingService = null;
 	private final NavBar navbar = new NavBar();
@@ -23,9 +23,11 @@ public class JobScheduleTable extends Composite {
 	private int icolumns = 20;
 	private ArrayList<Jobitem> jobitemlist = null;
 	private Grid grid = null;
-
+	private JobScheduleInput input = null;
+	
 	public JobScheduleTable(GreetingServiceAsync greetingService) {
 		this.greetingService = greetingService;
+		input =  new JobScheduleInput(greetingService,this);
 		DockPanel dockPanel = new DockPanel();
 		dockPanel.setStyleName("jobScheduleTable");
 		initWidget(dockPanel);
@@ -36,6 +38,15 @@ public class JobScheduleTable extends Composite {
 		// grid.setText(5, 5, "我的测试数据");
 		// loadJobScheduleData();
 	}
+
+	
+	@Override
+	public void notifyJobScheduleChange() {
+		// TODO Auto-generated method stub
+		refresh();
+		loadJobSchedule();
+	}
+
 
 	public void loadJobSchedule() {
 		greetingService.getJobItemList("ALL",new AsyncCallback<ArrayList<Jobitem>>() {
@@ -80,6 +91,7 @@ public class JobScheduleTable extends Composite {
 		public final Button gotoFirst = new Button("&lt;&lt;", this);
 		public final Button gotoNext = new Button("&gt;", this);
 		public final Button gotoPrev = new Button("&lt;", this);
+		public final Button gotoNew = new Button("+", this);
 		public final HTML status = new HTML();
 
 		public NavBar() {
@@ -88,6 +100,7 @@ public class JobScheduleTable extends Composite {
 			status.setStyleName("status");
 
 			HorizontalPanel buttons = new HorizontalPanel();
+			buttons.add(gotoNew);
 			buttons.add(gotoFirst);
 			buttons.add(gotoPrev);
 			buttons.add(gotoNext);
@@ -100,7 +113,6 @@ public class JobScheduleTable extends Composite {
 			bar.setCellWidth(status, "100%");
 
 			// Initialize prev & first button to disabled.
-			//
 			gotoPrev.setEnabled(false);
 			gotoFirst.setEnabled(false);
 		}
@@ -119,6 +131,8 @@ public class JobScheduleTable extends Composite {
 			} else if (source == gotoFirst) {
 				// startRow = 0;
 				refresh();
+			}else if (source == gotoNew){
+				input.center();
 			}
 		}
 	}
