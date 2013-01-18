@@ -32,7 +32,7 @@
             <column name="numPrefix" length="30" />
         </property>
         <property name="numNo" type="java.lang.String">
-            <column name="numNo" length="10" />
+            <column name="numNo" length="50" />
         </property>
         <property name="numSuffix" type="java.lang.String">
             <column name="numSuffix" length="20" />
