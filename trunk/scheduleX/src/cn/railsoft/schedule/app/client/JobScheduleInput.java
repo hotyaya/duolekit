@@ -1,11 +1,13 @@
 package cn.railsoft.schedule.app.client;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import cn.railsoft.schedule.app.shared.Jobitem;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -16,7 +18,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.i18n.client.DateTimeFormat;   
 
 public class JobScheduleInput extends DialogBox {
 
@@ -36,15 +37,55 @@ public class JobScheduleInput extends DialogBox {
 	final TextArea txtContent5 = new TextArea();
 	final TextBox txtTag = new TextBox();
 	final TextBox textBox_16 = new TextBox();
-	
+
+	/**
+	 * 打开窗体
+	 * 根据是否有对象，没有的视为新建，有的赋值；
+	 * 
+	 */
+	public void showInput() {
+		if (jobitem == null) {
+			txtSeq.setText("");
+			dateAction.setValue(new Date());
+			txtType.setText("");
+			txtNumNo.setText("");
+			txtContent1.setText("");
+			txtContent2.setText("");
+			txtSource.setText("");
+			txtContent3.setText("");
+			txtContent4.setText("");
+			txtStatus.setText("");
+			txtContent5.setText("");
+			txtTag.setText("");
+			textBox_16.setText("");		
+			greetingService.getSeq("JobItem", new AsyncCallback<Long>() {
+				@Override
+				public void onFailure(Throwable caught) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void onSuccess(Long result) {
+					// TODO Auto-generated method stub
+					txtSeq.setText((result + 1) + "");
+				}
+			});
+		} else {
+			
+			
+		}
+		this.center();
+	}
+
 	public void saveJobItem() {
 		Jobitem item = new Jobitem();
-		//item.setId(ji.getId());
+		// item.setId(ji.getId());
 		item.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		item.setUserid(0);
 		item.setSeq(Long.parseLong(txtSeq.getText()));
 		java.util.Date d = dateAction.getValue();
-		DateTimeFormat format = DateTimeFormat.getFormat("yyyyMMdd");  
+		DateTimeFormat format = DateTimeFormat.getFormat("yyyyMMdd");
 		String s = format.format(d);
 		item.setActionDate(Integer.parseInt(s));
 		item.setType(txtType.getText());
@@ -62,49 +103,30 @@ public class JobScheduleInput extends DialogBox {
 		item.setStatusCreatetime(new Timestamp(System.currentTimeMillis()));
 		item.setMemo("");
 		greetingService.saveJobItem(item, new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-							}
+			public void onFailure(Throwable caught) {
+			}
 
-							public void onSuccess(String result) {
-								if (result.equals("SUCCESS")){
-									if (notify!=null){
-										notify.notifyJobScheduleChange();
-									} 
-									Window.alert("成功！");
-								}else{
-									Window.alert("失败！");
-								}
-							}
-						});
+			public void onSuccess(String result) {
+				if (result.equals("SUCCESS")) {
+					if (notify != null) {
+						notify.notifyJobScheduleChange();
+					}
+					Window.alert("成功！");
+				} else {
+					Window.alert("失败！");
+				}
+			}
+		});
 
 	}
-	
+
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public JobScheduleInput(GreetingServiceAsync greetingService,INotifyJobScheduleChange notify) {
-		this.greetingService = greetingService;
-		this.notify =notify; 
-		init();
-		greetingService.getSeq("JobItem", new AsyncCallback<Long>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				
-			}
-			@Override
-			public void onSuccess(Long result) {
-				// TODO Auto-generated method stub
-				txtSeq.setText((result+1)+""); 
-			}
-		});
-	}
-
 	public JobScheduleInput(GreetingServiceAsync greetingService,
-			Jobitem jobitem,INotifyJobScheduleChange notify) {
+			INotifyJobScheduleChange notify) {
 		this.greetingService = greetingService;
-		this.notify =notify; 
-		this.jobitem = jobitem;
+		this.notify = notify;
 		init();
 	}
 

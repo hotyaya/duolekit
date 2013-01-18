@@ -132,7 +132,8 @@ public class JobScheduleTable extends Composite implements INotifyJobScheduleCha
 				// startRow = 0;
 				refresh();
 			}else if (source == gotoNew){
-				input.center();
+				input.jobitem = null;	//赋值
+				input.showInput();
 			}
 		}
 	}
