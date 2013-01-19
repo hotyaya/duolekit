@@ -24,12 +24,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
-	Session session = HibernateSessionFactory.getSession();
 	
 	@Override
 	public String saveJobItem(Jobitem ji) throws Exception {
 		// TODO Auto-generated method stub
+		Session session = null;
 		try{
+			session = HibernateSessionFactory.getSession();
 			cn.railsoft.schedule.dao.entity.Jobitem item = new cn.railsoft.schedule.dao.entity.Jobitem();
 			//item.setId(ji.getId());
 			item.setCreateTime(ji.getCreateTime());
@@ -54,6 +55,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 			JobitemDAO jd =new JobitemDAO();
 			jd.save(item);
 			session.getTransaction().commit();
+			session.close();
 		}catch(Exception ex){
 			ex.printStackTrace();
 			session.getTransaction().rollback();
