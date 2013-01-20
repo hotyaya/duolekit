@@ -19,5 +19,5 @@ public interface GreetingServiceAsync {
 
 	void saveJobItem(Jobitem jobitem, AsyncCallback<String> callback);
 
-	void delJobItem(Jobitem jobitem, AsyncCallback<String> callback);
+	void delJobItem(String uuid, AsyncCallback<String> callback);
 }

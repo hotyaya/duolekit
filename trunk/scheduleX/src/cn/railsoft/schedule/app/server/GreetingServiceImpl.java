@@ -25,7 +25,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
 	@Override
-	public String delJobItem(Jobitem ji) throws Exception {
+	public String delJobItem(String uuid) throws Exception {
 		// TODO Auto-generated method stub
 		Session session = null;
 		try{
@@ -33,7 +33,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 //			cn.railsoft.schedule.dao.entity.Jobitem item = new cn.railsoft.schedule.dao.entity.Jobitem();
 			session.beginTransaction();
 			JobitemDAO jd =new JobitemDAO();
-			jd.delete(jd.findById(ji.getId()));
+			jd.delete(jd.findById(uuid));
 			session.getTransaction().commit();
 			session.close();
 		}catch(Exception ex){
