@@ -30,6 +30,11 @@
 	width: 20%;
 }
 
+.tablecell2 {
+	background-color: #ccfece !important;
+	/*width: 20px;*/
+}
+
 h1 {
   font-size: 2em;
   font-weight: bold;
