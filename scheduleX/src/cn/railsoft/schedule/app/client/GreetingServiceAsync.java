@@ -18,4 +18,6 @@ public interface GreetingServiceAsync {
 	void getSeq(String seqname, AsyncCallback<Long> callback);
 
 	void saveJobItem(Jobitem jobitem, AsyncCallback<String> callback);
+
+	void delJobItem(Jobitem jobitem, AsyncCallback<String> callback);
 }

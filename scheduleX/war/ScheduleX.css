@@ -15,9 +15,8 @@
 }
 
 .jobScheduleTable {
-	background-color: #f0e68c;/*#277777;ffe4c4  ffe465  ffdead  f0e68c*/
+	background-color: #FFF;/*#277777;ffe4c4  ffe465  ffdead  f0e68c*/
 }
-
 
 /** Example rules used by the template application (remove for your app) */
 .statustip {
@@ -26,13 +25,25 @@
   text-align: right;
 }
 
-.tablecell {
-	width: 20%;
+.tablecolumn0 {
+	width: 1px;
+}
+
+.tablecolumn30 {
+	width: 30px;
+}
+
+.tablecolumn50 {
+	width: 50px;
+}
+
+.tablecolumn160 {
+	width: 120px;
 }
 
 .tablecell2 {
 	background-color: #ccfece !important;
-	/*width: 20px;*/
+	width: 20px;
 }
 
 h1 {
