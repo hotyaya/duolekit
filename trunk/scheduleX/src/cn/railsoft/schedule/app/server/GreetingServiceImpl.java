@@ -24,6 +24,25 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
 		GreetingService {
 
+	@Override
+	public String delJobItem(Jobitem ji) throws Exception {
+		// TODO Auto-generated method stub
+		Session session = null;
+		try{
+			session = HibernateSessionFactory.getSession();
+//			cn.railsoft.schedule.dao.entity.Jobitem item = new cn.railsoft.schedule.dao.entity.Jobitem();
+			session.beginTransaction();
+			JobitemDAO jd =new JobitemDAO();
+			jd.delete(jd.findById(ji.getId()));
+			session.getTransaction().commit();
+			session.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			session.getTransaction().rollback();
+			return "FAILED";
+		}
+		return "SUCCESS";
+	}
 	
 	@Override
 	public String saveJobItem(Jobitem ji) throws Exception {
@@ -150,5 +169,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 	public Long getSeq(String seqname) throws IllegalArgumentException {
 		return (new VjobitemmaxseqDAO().findAll().get(0).getMaxseq());
 	}
+
 
 }
