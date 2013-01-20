@@ -8,19 +8,20 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Grid;
 
 public class JobScheduleTable extends Composite implements INotifyJobScheduleChange{
 
 	GreetingServiceAsync greetingService = null;
 	private final NavBar navbar = new NavBar();
 	private int irows = 1;
-	private int icolumns = 20;
+	private int icolumns = 21;
 	private ArrayList<Jobitem> jobitemlist = null;
 	private Grid grid = null;
 	private JobScheduleInput input = null;
@@ -69,19 +70,25 @@ public class JobScheduleTable extends Composite implements INotifyJobScheduleCha
 
 	}
 
+	/**
+	 * 根据取得对象列表，格式化并显示数组；
+	 * 2013/01/19
+	 */
 	private void loadJobScheduleData() {
 		if (jobitemlist != null) {
 			irows = jobitemlist.size();
 			grid.resize(irows + 1, icolumns);
 			for (int i = 0; i < irows; i++) {
-				grid.getCellFormatter().setStyleName(i + 1, 1, "tablecell");
-				grid.setText(i + 1, 0, jobitemlist.get(i).getId());
-				grid.setText(i + 1, 1, jobitemlist.get(i).getContent1());
-				grid.setText(i + 1, 2, jobitemlist.get(i).getContent2());
+				//grid.getCellFormatter().setStyleName(i + 1, 1, "tablecell");
+				grid.setWidget(i+1, 0, new CheckBox(i+1+""));
+				grid.setText(i + 1, 1, jobitemlist.get(i).getId());
+				grid.setText(i + 1, 2, jobitemlist.get(i).getContent1());
+				grid.setText(i + 1, 3, jobitemlist.get(i).getContent2());
 			}
 		} else {
 			grid.resize(1, icolumns);
 		}
+		grid.getColumnFormatter().setStyleName(0, "tablecell2");
 		grid.setText(0, 0, "序号");
 		grid.setText(0, 1, "2");
 	}
