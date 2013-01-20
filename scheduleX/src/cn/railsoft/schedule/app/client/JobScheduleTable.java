@@ -1,7 +1,6 @@
 package cn.railsoft.schedule.app.client;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import cn.railsoft.schedule.app.shared.Jobitem;
 
@@ -26,7 +25,7 @@ public class JobScheduleTable extends Composite implements
 	private int irows = 1;
 	private int icolumns = 12;
 	private ArrayList<Jobitem> jobitemlist = null;
-	private Hashtable<String, Jobitem> jobitemlisttable = new Hashtable<String, Jobitem>();
+	//private Hashtable<String, Jobitem> jobitemlisttable = new Hashtable<String, Jobitem>();
 	private Grid grid = null;
 	private JobScheduleInput input = null;
 
@@ -52,7 +51,7 @@ public class JobScheduleTable extends Composite implements
 				Window.alert(""
 						+ ((CheckBox) grid.getWidget(i + 1, 0)).getFormValue());
 
-				greetingService.delJobItem(jobitemlisttable.get(((CheckBox) grid.getWidget(i + 1, 0)).getFormValue()), 
+				greetingService.delJobItem(((CheckBox) grid.getWidget(i + 1, 0)).getFormValue(), 
 						new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						
@@ -109,13 +108,10 @@ public class JobScheduleTable extends Composite implements
 	 * 根据取得对象列表，格式化并显示数组； 2013/01/19
 	 */
 	private void loadJobScheduleData() {
-		jobitemlisttable.clear();
 		if (jobitemlist != null) {
 			irows = jobitemlist.size();
 			grid.resize(irows + 1, icolumns);
 			for (int i = 0; i < irows; i++) {
-				jobitemlisttable.put(jobitemlist.get(i).getId(),
-						jobitemlist.get(i));
 				// grid.getCellFormatter().setStyleName(i + 1, 1, "tablecell");
 				CheckBox cb = new CheckBox(jobitemlist.get(i).getSeq() + "");
 				cb.setFormValue(jobitemlist.get(i).getId());// test

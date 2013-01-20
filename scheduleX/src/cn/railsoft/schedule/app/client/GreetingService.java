@@ -16,5 +16,5 @@ public interface GreetingService extends RemoteService {
 	ArrayList<Jobitem> getJobItemList(String filter)  throws Exception;
 	Long getSeq(String seqname) throws Exception;
 	String saveJobItem(Jobitem jobitem)throws Exception;
-	String delJobItem(Jobitem jobitem)throws Exception;
+	String delJobItem(String uuid)throws Exception;
 }
