@@ -27,7 +27,7 @@ import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 
-public class Crawler {
+public class TelegramCrawler {
 
 	/**
 	 * @param args
