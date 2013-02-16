@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Mon May 07 21:08:20 CST 2012
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=bbsadmin_fat.jar
+manifest.mergeall=true
+manifest.mainclass=cn.rs.bbsadmin.test.Starter
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
