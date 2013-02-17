@@ -1,12 +1,23 @@
 package cn.railsoft.simulate.service;
 
+import java.util.Vector;
+
 import cn.railsoft.simulate.pub.Toolkit;
 
+@SuppressWarnings("rawtypes")
 public class ServiceItem implements Runnable {
 	private boolean isrun = true;
 	private String key = "";
 	private String name = "";
+	private Vector vRoute = new Vector();	//一系列的点的组合
 	
+	@Override
+	public void run() {
+		
+		while (isrun) {
+			
+		}
+	}
 	
 	public ServiceItem() {
 		super();
@@ -23,14 +34,6 @@ public class ServiceItem implements Runnable {
 		
 		//3.初始化加入监听
 		
-	}
-
-	@Override
-	public void run() {
-
-		while (isrun) {
-
-		}
 	}
 
 	/**

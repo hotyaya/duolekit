@@ -1,8 +1,22 @@
 package cn.railsoft.simulate.service;
 
-import java.util.Hashtable;
+import java.util.Vector;
 
 public class ClientResourcePool {
-	private Hashtable<String,String> clientpool = new Hashtable<String,String>();
 
+	public ClientResourcePool() {
+		super();
+		initialize();
+	}
+
+	private Vector<Client> vpool = new Vector<Client>();
+
+	private void initialize() {
+		for (int i = 0; i < 3; i++) {
+			vpool.add(new Client("user" + i, false));
+		}
+	}
+	
+	
+	
 }
