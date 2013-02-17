@@ -1,14 +1,15 @@
 package cn.railsoft.simulate.service;
 
 public class Client {
-	public Client(String clientname, boolean isuse) {
+
+	public Client(String clientname, boolean used) {
 		super();
 		this.clientname = clientname;
-		this.isuse = isuse;
+		this.used = used;
 	}
 
 	private String clientname = "";
-	private boolean isuse = false;
+	private boolean used = false;
 
 	public String getClientname() {
 		return clientname;
@@ -18,11 +19,12 @@ public class Client {
 		this.clientname = clientname;
 	}
 
-	public boolean isIsuse() {
-		return isuse;
+	public boolean isUsed() {
+		return used;
 	}
 
-	public void setIsuse(boolean isuse) {
-		this.isuse = isuse;
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
+
 }
