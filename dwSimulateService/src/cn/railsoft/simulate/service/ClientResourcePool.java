@@ -16,7 +16,13 @@ public class ClientResourcePool {
 			vpool.add(new Client("user" + i, false));
 		}
 	}
-	
-	
-	
+
+	public String getUsableClient() {
+		for (int i = 0; i < 3; i++) {
+			if (!vpool.elementAt(i).isUsed())
+				return vpool.elementAt(i).getClientname();
+		}
+		return "NULL";
+	}
+
 }
