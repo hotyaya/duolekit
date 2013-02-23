@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:state_pressed="true" android:drawable="@drawable/back_green" />
+	<item android:state_focused="true" android:drawable="@drawable/back_green" />
+	<item  android:drawable="@drawable/back_blue" />
+	 
+	<!-- <item android:drawable="@drawable/main_location"/> -->
+<shape>
+
+	<gradient 
+	android:startColor="#FFA2A2A2"
+	android:endColor="#FF5F5F5F" 
+		android:angle="90.0"
+		>　 
+	 </gradient>
+
+</shape>
+</selector>
+
+
