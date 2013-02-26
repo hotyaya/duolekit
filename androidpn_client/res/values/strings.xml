@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">安卓推送</string>
+    <string name="hello">钱多多(代码)Demo</string>
+    <string name="settings">设置</string>
+</resources>
