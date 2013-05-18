@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title></title>
+	<script language="javascript" type="text/javascript" src="../../datepicker/WdatePicker.js"></script>
+	<script src="../../artdialog/artDialog.source.js?skin=default"></script>
+	<script src="../../artdialog/plugins/iframeTools.source.js"></script>
+	<style>
+		html, body { border:none 0; }
+		input, button, textarea, select { *font-size: 100%;
+		}
+		input, button, textarea, select, optgroup, option { font-family: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; }
+		body { font-size:75%; color:#666; font-family:'Microsoft Yahei', Tahoma, Arial!important; font-family:'宋体', Tahoma, Arial; text-align:center; }
+		#form { padding-top:0px; }
+		#form p { padding:0px;  }
+		#form input { width:15em; padding:4px; border:1px solid #CCC; }
+		#form select { width:15em; padding:4px;border:1px solid #CCC;  }
+		#form input:focus { border-color:#426DC9; }
+		#form textarea {width:15em;padding:4px; border:1px solid #CCC;}
+		#form select:focus { border-color:#426DC9; }
+		#form textarea:focus { border-color:#426DC9; }
+		#form #form-messagenotice {width:3em;  border:1px solid #CCC;}
+	</style>
+</head>
+<body>
+	<!--<div style="background:#FAFBDD; padding:3px;"><a href="javascript:art.dialog.close();">iframe中关闭</a></div>  -->
+	<form id="form" action="http://localhost:8080/pnote/schedule/addevents" method="post" target="_top">
+		<p><label>标题：<input id="form-title" name="title" type="text"></label></p>
+		<p><label>日志：<textarea rows="5" id="form-description" name="description" ></textarea></label></p>
+		<p><label>开始：<input type="text" id = "form-start"class="Wdate"  name="start" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd HH:mm:ss'})" /></label></p>
+		<p><label>结束：<input type="text" id = "form-end" class="Wdate"name="end" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></label></p>
+		<p><label>短信提醒：<input type="checkbox"  id="form-messagenotice" name="messagenotice" onclick="changetxt()" value ="1" /></label></p>
+		<p><label><div style="display:none;" id="showtxt">&nbsp;&nbsp;提醒时间：<input type="text" id = "form-remindertime" class="Wdate" name="remindertime" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/></div></label></p>
+		<p><label>
+		&nbsp;日历颜色：<select id="form-color" name="color">
+						<option value="red">红色</option>
+						<option value="blue">蓝色</option>
+						<option value="green" selected="selected">绿色</option>
+						<option value="orange">橙色</option>
+						<option value="Indigo">靛青</option>
+						<option value="Black">纯黑</option>
+						<option value="Olive">橄榄色</option>
+						<option value="DarkSlateGray">深灰色</option>
+				 </select>
+		</label></p>
+	</form>
+<script language="javascript" type="text/javascript">
+	 function   changetxt()  
+          {  
+                 var checkbox = document.getElementById("form-messagenotice"); 
+                  if(checkbox.checked) {
+                  		document.getElementById("showtxt").style.display='block';	
+                  }else {
+                  		document.getElementById("showtxt").style.display='none';
+                  }                                                                  
+          }  
+</script>
+</body>
+</html>

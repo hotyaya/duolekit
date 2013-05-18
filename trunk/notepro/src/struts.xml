@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+ <struts>
+	<!-- Struts2 Convention -->	
+	<!--  
+	<constant name="struts.convention.result.path" value="/WEB-INF" />
+	<constant name="struts.convention.package.locators" value="action" />	
+	<constant name="struts.convention.action.name.separator" value="-" />
+    <constant name="struts.convention.classes.reload" value="false" /> 
+    -->	
+    <!-- 用户 -->
+ 	<package name="user" extends="struts-default" namespace="/">
+ 		<action name="islogin" class="useraction" method="islogin">
+ 			<result name="success" >/users/personal.jsp</result>
+			<result name="login" >/users/login.jsp</result>
+ 		</action>		
+		<action name="login" class="useraction" method="login">
+		</action>
+		<action name="reg" class="useraction" method="reg">
+		</action>
+		<action name="logout" class="useraction" method="logout">
+		</action>
+	</package>
+	
+	<!-- Treepanel的系列操作 -->
+	<package name="treepanel" extends="struts-default" namespace="/users">		
+		<action name="treepanelload" class="treepanelaction" method="ajax">
+		</action>
+		<action name="treehandle" class="treepanelaction">
+			<result name="edit" >/users/edit.jsp</result>
+			<result name="view" >/users/viewfile.jsp</result>
+		</action>
+		<action name="updatenote" class="treepanelaction" method="update">
+		</action>
+	</package>
+	<!-- 群组的系列操作 -->
+	<package name="group" extends="struts-default" namespace="/group">		
+		<action name="list" class="usergroupaction" method="listgroup">			
+		</action>
+		<action name="ingroup" class="usergroupaction" method="ingroup">
+			<result name="success">/webs/group.jsp</result>
+		</action>
+		<action name="checknote" class="usergroupaction" method="checknote">
+			<result name="success">/webs/viewgroupfile.jsp</result>			
+		</action>
+		<action name="quitgroup" class="usergroupaction" method="quitgroup">		
+		</action>				
+	</package>
+	
+	<!--FullCalendar的系列操作 -->
+	<package name="calendar" extends="struts-default" namespace="/schedule">		
+		<action name="*events" class="calendaraction" method="{1}Events">
+		</action>		
+	</package>
+	
+	<!-- 日常工具的系列操作 -->
+	<package name="dailylife" extends="struts-default" namespace="/dailylife">		
+		<action name="weather" class="dailylifeaction" method="weatherreport">
+			<result name="success" >/users/toolbar/weather.jsp</result>
+		</action>				
+	</package>
+	
+ </struts>
+ 
+ 
+ 
+ 
