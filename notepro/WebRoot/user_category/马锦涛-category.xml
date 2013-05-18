@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Categories count="5"> 
+  <Category id="p1"> 
+    <parentid>p0</parentid>  
+    <name>JAVAWEB编程宝典</name> 
+  </Category>  
+  <Category id="p2"> 
+    <parentid>p0</parentid>  
+    <name>C++</name> 
+  </Category>  
+  <Category id="p3"> 
+    <parentid>p0</parentid>  
+    <name>C#</name> 
+  </Category>  
+  <Category id="p4"> 
+    <parentid>p0</parentid>  
+    <name>VB</name> 
+  </Category> 
+</Categories>

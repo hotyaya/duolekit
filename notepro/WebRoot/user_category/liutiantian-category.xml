@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Categories count="7"> 
+  <Category id="p1"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p2"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p3"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p4"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p5"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p6"> 
+    <parentid>p0</parentid>  
+    <name>新建文件夹</name> 
+  </Category>  
+  <Category id="p7">
+    <parentid>p0</parentid>
+    <name>新建文件夹</name>
+  </Category>
+</Categories>

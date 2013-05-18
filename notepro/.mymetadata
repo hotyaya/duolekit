@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="notepro"
+  id="myeclipse.1354107218116"
+  context-root="/notepro"
+  j2ee-spec="5.0"
+  archive="notepro.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
