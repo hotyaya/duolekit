@@ -37,7 +37,7 @@ public class ChangeLocation extends Thread {
 			// add a listener to receive all messages
 			// addListener();
 			chatmanager = con.getChatManager();
-			newChat = chatmanager.createChat("all@broadcast.hotyaya-ge2w3vb",
+			newChat = chatmanager.createChat("all@broadcast.railsoft.cn",
 					new MessageListener() {// all@broadcast.hotyaya-ge2w3vb;
 											// user2@hotyaya-ge2w3vb
 						public void processMessage(Chat chat, Message message) {
