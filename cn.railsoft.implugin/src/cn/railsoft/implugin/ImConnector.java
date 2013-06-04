@@ -18,22 +18,24 @@ public class ImConnector {
 	public static XMPPConnection con;
 	public static Chat newChat;
 	public static ChatManager chatmanager;
-	
+
 	@SuppressWarnings("unchecked")
-	public void addConnectLisenter(Object o){
+	public void addConnectLisenter(Object o) {
 		statusLisenters.add(o);
 	}
-	
+
 	public void test() {
 		try {
 			// Create a connection to server
-			ConnectionConfiguration config = new ConnectionConfiguration("railsoft.cn", 5222);
+			ConnectionConfiguration config = new ConnectionConfiguration(
+					"railsoft.cn", 5222);
 			con = new XMPPConnection(config);
 			// connect and login with the username and pwd on server
 			con.connect();
 			con.login(username, password);
 			System.out.println(con.getUser());
-			System.out.print(con.getRoster().getEntries().toArray()[0].toString());
+			System.out.print(con.getRoster().getEntries().toArray()[0]
+					.toString());
 			System.out.println("\n Authenticated = " + con.isAuthenticated());
 			// add a listener to receive all messages
 			// addListener();
@@ -54,5 +56,22 @@ public class ImConnector {
 			// 让线程休眠 然后再关闭连接
 			// con.disconnect();
 		}
+	}
+
+	public void test2(){
+//		UIJob refreshJob = new UIJob(“更新界面”){
+//			public IStatus runInUIThread(IProgressMonitor monitor) {
+//							
+//					text.setText(“新文本”);
+//					return Status.OK_STATUS;
+//				}
+//				public boolean shouldSchedule(){
+//					return !text.isDisposed();
+//				}
+//				public boolean shouldRun(){
+//					return !text.isDisposed();
+//				}
+//			};
+//			refreshJob.schedule(10000);
 	}
 }
