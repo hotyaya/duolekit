@@ -14,6 +14,5 @@
 	<classpathentry kind="lib" path="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/org.eclipse.ui.workbench_3.8.2.v20121128-133708.jar" sourcepath="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/org.eclipse.ui.workbench_3.8.2.v20121128-133708.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/com.ibm.icu_4.4.2.v20110823.jar" sourcepath="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/com.ibm.icu_4.4.2.v20110823.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2332.jar" sourcepath="C:/Users/Hui/AppData/Local/MyEclipse_Professional/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2332.jar"/>
-	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
