@@ -24,11 +24,19 @@ public class Test {
 		item.setIntimestamp(new Timestamp(System.currentTimeMillis()));
 		item.setIshidden(true);
 		
+		Docrecv recv = new Docrecv();
+		recv.setDocid(3921341231241L);
+		recv.setTransmitter("范处");
+		recv.setRecvdate(20140107);
+		recv.setOpertimestamp(new Timestamp(System.currentTimeMillis()));
+		recv.setRecvTag("IM");
+		recv.setMemo("测试一下");
+		
 		try{
 			Session session = HibernateSessionFactory.getSession();
 			session.beginTransaction();
-			DoccatalogDAO dao =new DoccatalogDAO();
-			dao.save(item);
+			DocrecvDAO dao =new DocrecvDAO();
+			dao.save(recv);
 			session.getTransaction().commit();
 		}catch(Exception ex){
 			ex.printStackTrace();

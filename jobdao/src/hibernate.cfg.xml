@@ -22,6 +22,8 @@
 		</property>
 		<mapping
 			resource="railway/bj/admin/my/job/dao/entity/Doccatalog.hbm.xml" />
+		<mapping
+			resource="railway/bj/admin/my/job/dao/entity/Docrecv.hbm.xml" />
 
 	</session-factory>
 
