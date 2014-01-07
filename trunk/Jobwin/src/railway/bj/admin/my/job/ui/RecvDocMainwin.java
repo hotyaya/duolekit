@@ -136,7 +136,7 @@ public class RecvDocMainwin {
 				.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		Composite composite = new Composite(sashForm, SWT.NONE);
-		sashForm.setWeights(new int[] {10, 20, 10});
+		sashForm.setWeights(new int[] {10, 30, 10});
 
 		text = new Text(shell, SWT.BORDER);
 		text.setEnabled(false);
