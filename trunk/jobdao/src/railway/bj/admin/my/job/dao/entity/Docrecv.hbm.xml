@@ -17,10 +17,10 @@
             <column name="Recvdate" precision="8" scale="0" />
         </property>
         <property name="opertimestamp" type="java.sql.Timestamp">
-            <column name="Opertimestamp" length="19" not-null="true" />
+            <column name="Opertimestamp" length="19" />
         </property>
         <property name="recvTag" type="java.lang.String">
-            <column name="RecvTag" length="2" />
+            <column name="RecvTag" length="50" />
         </property>
         <property name="memo" type="java.lang.String">
             <column name="Memo" length="200" />
