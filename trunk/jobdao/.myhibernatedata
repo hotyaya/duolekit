@@ -1,19 +1,16 @@
 #MyEclipse Hibernate Properties
-#Tue Jan 07 15:06:17 CST 2014
-sessionFactoryName=railway.bj.admin.my.job.dao.HibernateSessionFactory
+#Wed Jan 08 12:30:11 CST 2014
 genBasicCompId=false
+sessionFactoryName=railway.bj.admin.my.job.dao.HibernateSessionFactory
 profile=
 daoSFId=
-version=3.3
 jndiPath=
 detectM2M=false
 reStrategyClass=
 detectO2O=false
 springDaoFile=
 useJavaTypes=true
-keyGenerator=assigned
-libInstallFolder=lib
-addLibs2Project=true
+keyGenerator=identity
 genVersionTag=false
 sessionFactoryId=
 basePersistenceClass=
@@ -21,5 +18,4 @@ genAnnotations=false
 reSettingsFile=
 configFile=/jobdao/src/hibernate.cfg.xml
 createConfigFile=true
-addLibs2Classpath=true
 baseDaoClass=railway.bj.admin.my.job.dao.entity.BaseHibernateDAO

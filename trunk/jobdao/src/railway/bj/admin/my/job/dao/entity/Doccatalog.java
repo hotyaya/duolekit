@@ -10,13 +10,10 @@ public class Doccatalog implements java.io.Serializable {
 
 	// Fields
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private Long docid;
 	private String type;
 	private Integer docsenddate;
+	private String docsendtime;
 	private String docsender;
 	private String doccaption;
 	private String doccode;
@@ -40,12 +37,13 @@ public class Doccatalog implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Doccatalog(String type, Integer docsenddate, String docsender,
-			String doccaption, String doccode, String contact, String phone,
-			String baseurl, String url, Integer indate, Timestamp intimestamp,
-			Boolean ishidden) {
+	public Doccatalog(String type, Integer docsenddate, String docsendtime,
+			String docsender, String doccaption, String doccode,
+			String contact, String phone, String baseurl, String url,
+			Integer indate, Timestamp intimestamp, Boolean ishidden) {
 		this.type = type;
 		this.docsenddate = docsenddate;
+		this.docsendtime = docsendtime;
 		this.docsender = docsender;
 		this.doccaption = doccaption;
 		this.doccode = doccode;
@@ -82,6 +80,14 @@ public class Doccatalog implements java.io.Serializable {
 
 	public void setDocsenddate(Integer docsenddate) {
 		this.docsenddate = docsenddate;
+	}
+
+	public String getDocsendtime() {
+		return this.docsendtime;
+	}
+
+	public void setDocsendtime(String docsendtime) {
+		this.docsendtime = docsendtime;
 	}
 
 	public String getDocsender() {
