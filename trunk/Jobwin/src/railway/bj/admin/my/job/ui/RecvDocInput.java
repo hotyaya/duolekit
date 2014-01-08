@@ -250,7 +250,7 @@ public class RecvDocInput extends Composite {
 		lblNewLabel_5.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		lblNewLabel_5.setText("备  注");
 		
-		text_5 = new Text(this, SWT.BORDER);
+		text_5 = new Text(this, SWT.BORDER | SWT.WRAP);
 		text_5.setFont(SWTResourceManager.getFont("微软雅黑", 11, SWT.NORMAL));
 		GridData gd_text_5 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd_text_5.heightHint = 78;
