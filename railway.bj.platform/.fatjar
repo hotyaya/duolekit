@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Mon Jan 06 16:46:41 CST 2014
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=railway.bj.platform_fat.jar
+manifest.mergeall=true
+manifest.mainclass=railway.bj.admin.my.job.Auto
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
