@@ -26,6 +26,7 @@ import railway.bj.admin.my.job.dao.entity.Docrecv;
 import railway.bj.admin.my.job.dao.entity.DocrecvDAO;
 
 public class RecvDocInput extends Composite {
+	private Button btnCheckButton;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -47,6 +48,7 @@ public class RecvDocInput extends Composite {
 		text_4.setText("");
 		text_5.setText("");
 		lblNewLabel_6.setText("");
+		btnCheckButton.setSelection(false);
 	}
 
 	/**
@@ -63,6 +65,7 @@ public class RecvDocInput extends Composite {
 			recv.setOpertimestamp(new Timestamp(System.currentTimeMillis()));
 			recv.setRecvTag(text_4.getText());
 			recv.setMemo(text_5.getText());
+			recv.setIsok(btnCheckButton.getSelection());
 			recvdao.save(recv);
 			
 			DoccatalogDAO catadao = new DoccatalogDAO();
@@ -246,7 +249,7 @@ public class RecvDocInput extends Composite {
 				selectTag();
 			}
 		});
-		list_1.setItems(new String[] {"[无]", "高铁"});
+		list_1.setItems(new String[] {"[无]", "高铁", "专用线"});
 		GridData gd_list_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_list_1.widthHint = 56;
 		list_1.setLayoutData(gd_list_1);
@@ -268,6 +271,12 @@ public class RecvDocInput extends Composite {
 		gd_text_5.heightHint = 78;
 		text_5.setLayoutData(gd_text_5);
 		new Label(this, SWT.NONE);
+		
+		btnCheckButton = new Button(this, SWT.CHECK);
+		btnCheckButton.setText("办完");
+		new Label(this, SWT.NONE);
+		new Label(this, SWT.NONE);
+		//new Label(this, SWT.NONE);
 		
 		Button btnNewButton_2 = new Button(this, SWT.NONE);
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
