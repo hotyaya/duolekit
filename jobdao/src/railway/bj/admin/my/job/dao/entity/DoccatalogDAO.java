@@ -1,5 +1,6 @@
 package railway.bj.admin.my.job.dao.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
@@ -18,14 +19,13 @@ import org.slf4j.LoggerFactory;
  * @see railway.bj.admin.my.job.dao.entity.Doccatalog
  * @author MyEclipse Persistence Tools
  */
-
-@SuppressWarnings("rawtypes")
 public class DoccatalogDAO extends BaseHibernateDAO {
 	private static final Logger log = LoggerFactory
 			.getLogger(DoccatalogDAO.class);
 	// property constants
 	public static final String TYPE = "type";
 	public static final String DOCSENDDATE = "docsenddate";
+	public static final String DOCSENDTIME = "docsendtime";
 	public static final String DOCSENDER = "docsender";
 	public static final String DOCCAPTION = "doccaption";
 	public static final String DOCCODE = "doccode";
@@ -107,6 +107,10 @@ public class DoccatalogDAO extends BaseHibernateDAO {
 
 	public List findByDocsenddate(Object docsenddate) {
 		return findByProperty(DOCSENDDATE, docsenddate);
+	}
+
+	public List findByDocsendtime(Object docsendtime) {
+		return findByProperty(DOCSENDTIME, docsendtime);
 	}
 
 	public List findByDocsender(Object docsender) {

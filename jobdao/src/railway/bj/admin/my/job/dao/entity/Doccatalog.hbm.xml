@@ -16,6 +16,9 @@
         <property name="docsenddate" type="java.lang.Integer">
             <column name="docsenddate" precision="8" scale="0" />
         </property>
+        <property name="docsendtime" type="java.lang.String">
+            <column name="docsendtime" length="25" />
+        </property>
         <property name="docsender" type="java.lang.String">
             <column name="docsender" length="40" />
         </property>
