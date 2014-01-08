@@ -79,12 +79,13 @@ CREATE TABLE `docrecv` (
   `Opertimestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `RecvTag` varchar(50) DEFAULT NULL,
   `Memo` varchar(200) DEFAULT NULL,
+  `isok` decimal(1,0) DEFAULT NULL,
   PRIMARY KEY (`Docid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 /*Data for the table `docrecv` */
 
-insert  into `docrecv`(`Docid`,`Transmitter`,`Recvdate`,`Opertimestamp`,`RecvTag`,`Memo`) values (81,'李伟，刘秉旺','20140108','2014-01-08 16:12:09','','刘处要求技术科组织落实，1月25日前发总工室技术邮箱。'),(29,'李伟','20140103','2014-01-08 16:13:39','高铁','范处：技术科阅处。1月10日前上报。'),(88,'李伟','20140107','2014-01-08 16:15:02','高铁','范处：技术科阅怍。'),(30,'李伟','20140103','2014-01-08 16:17:23','','范处：技术 科阅处。\r\n已向企管处汇报。'),(90,'李伟','20140107','2014-01-08 16:20:20','专用线','范处：技术 科阅处，天津电子所参会；李科已通知天津电子所。'),(89,'李伟','20140107','2014-01-08 16:20:37','专用线','范处：技术 科阅处，天津电子所参会；李科已通知天津电子所。');
+insert  into `docrecv`(`Docid`,`Transmitter`,`Recvdate`,`Opertimestamp`,`RecvTag`,`Memo`,`isok`) values (81,'李伟，刘秉旺','20140108','2014-01-08 16:12:09','','刘处要求技术科组织落实，1月25日前发总工室技术邮箱。',NULL),(29,'李伟','20140103','2014-01-08 16:13:39','高铁','范处：技术科阅处。1月10日前上报。',NULL),(88,'李伟','20140107','2014-01-08 16:15:02','高铁','范处：技术科阅怍。',NULL),(30,'李伟','20140103','2014-01-08 16:17:23','','范处：技术 科阅处。\r\n已向企管处汇报。',NULL),(90,'李伟','20140107','2014-01-08 16:20:20','专用线','范处：技术 科阅处，天津电子所参会；李科已通知天津电子所。',NULL),(89,'李伟','20140107','2014-01-08 16:20:37','专用线','范处：技术 科阅处，天津电子所参会；李科已通知天津电子所。',NULL);
 
 /*Table structure for table `vdocrecv` */
 
@@ -112,7 +113,8 @@ DROP TABLE IF EXISTS `vdocrecv`;
  `recvdate` decimal(8,0) ,
  `Opertimestamp` timestamp ,
  `RecvTag` varchar(50) ,
- `Memo` varchar(200) 
+ `Memo` varchar(200) ,
+ `isok` decimal(1,0) 
 )*/;
 
 /*View structure for view vdocrecv */
@@ -120,7 +122,7 @@ DROP TABLE IF EXISTS `vdocrecv`;
 /*!50001 DROP TABLE IF EXISTS `vdocrecv` */;
 /*!50001 DROP VIEW IF EXISTS `vdocrecv` */;
 
-/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vdocrecv` AS (select `c`.`docid` AS `docid`,`c`.`type` AS `type`,`c`.`docsenddate` AS `docsenddate`,`c`.`docsendtime` AS `docsendtime`,`c`.`docsender` AS `docsender`,`c`.`doccaption` AS `doccaption`,`c`.`doccode` AS `doccode`,`c`.`contact` AS `contact`,`c`.`phone` AS `phone`,`c`.`baseurl` AS `baseurl`,`c`.`url` AS `url`,`c`.`indate` AS `indate`,`c`.`intimestamp` AS `intimestamp`,`c`.`ishidden` AS `ishidden`,`r`.`Transmitter` AS `transmitter`,`r`.`Recvdate` AS `recvdate`,`r`.`Opertimestamp` AS `Opertimestamp`,`r`.`RecvTag` AS `RecvTag`,`r`.`Memo` AS `Memo` from (`doccatalog` `c` join `docrecv` `r`) where (`c`.`docid` = `r`.`Docid`)) */;
+/*!50001 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vdocrecv` AS (select `c`.`docid` AS `docid`,`c`.`type` AS `type`,`c`.`docsenddate` AS `docsenddate`,`c`.`docsendtime` AS `docsendtime`,`c`.`docsender` AS `docsender`,`c`.`doccaption` AS `doccaption`,`c`.`doccode` AS `doccode`,`c`.`contact` AS `contact`,`c`.`phone` AS `phone`,`c`.`baseurl` AS `baseurl`,`c`.`url` AS `url`,`c`.`indate` AS `indate`,`c`.`intimestamp` AS `intimestamp`,`c`.`ishidden` AS `ishidden`,`r`.`Transmitter` AS `transmitter`,`r`.`Recvdate` AS `recvdate`,`r`.`Opertimestamp` AS `Opertimestamp`,`r`.`RecvTag` AS `RecvTag`,`r`.`Memo` AS `Memo`,`r`.`isok` AS `isok` from (`doccatalog` `c` join `docrecv` `r`) where (`c`.`docid` = `r`.`Docid`)) */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
