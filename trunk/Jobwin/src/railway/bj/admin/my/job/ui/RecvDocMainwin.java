@@ -37,14 +37,29 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 public class RecvDocMainwin {
-	Session session;
 	protected Shell shell;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
 	private Table table;
+	Session session;
+	RecvDocInput recvDocInput;
+	
+	/**
+	 * 选择一个文件，传入一个保存项；
+	 */
+	void selectcatalog(){
+		if (table.getSelection()!=null){
+			if (table.getSelection()[0].getData() instanceof Doccatalog){
+				recvDocInput.setDoccatalog((Doccatalog)table.getSelection()[0].getData(),session);
+			}
+		}
+	}
 	
 	//初始值
 	void init(){
@@ -90,9 +105,9 @@ public class RecvDocMainwin {
 		text_2.setText(jdt.toString("YYYYMMDD"));
 	}
 	
-	
 	void settabledata(Doccatalog cata,int i){
 		TableItem item = new TableItem(table, SWT.NULL);
+		item.setData(cata);
 		item.setText("Item " + i);//??
 		item.setText(0, ""+ cata.getDocid());
 		String temp ="";
@@ -115,7 +130,7 @@ public class RecvDocMainwin {
 			session.beginTransaction();
 			DoccatalogDAO catadao = new DoccatalogDAO();
 			@SuppressWarnings("unchecked")
-			List<Doccatalog> list= catadao.findByDocsenddate(new Integer(text_2.getText().trim()));
+			List<Doccatalog> list = catadao.findByDocsenddate(new Integer(text_2.getText().trim()));
 			for (int i = 0; i < list.size(); i++) {
 				Doccatalog cata = (Doccatalog)list.get(i);
 				if (!cata.getIshidden()){
@@ -166,7 +181,8 @@ public class RecvDocMainwin {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(980, 601);
+		shell.setSize(new Point(1100, 578));
+		shell.setSize(1091, 601);
 		shell.setText("工作平台");
 		shell.setLayout(new GridLayout(1, false));
 
@@ -194,7 +210,7 @@ public class RecvDocMainwin {
 		tabFolder.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 										
 										TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
-										tbtmNewItem.setText("文件签收");
+										tbtmNewItem.setText("待收文件");
 										
 										SashForm sashForm = new SashForm(tabFolder, SWT.NONE);
 										tbtmNewItem.setControl(sashForm);
@@ -236,23 +252,24 @@ public class RecvDocMainwin {
 																			}
 																		});
 																		btnNewButton_2.setText("向后");
-																		
-																		Button btnNewButton = new Button(group, SWT.NONE);
-																		GridData gd_btnNewButton = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 3);
-																		gd_btnNewButton.widthHint = 86;
-																		btnNewButton.setLayoutData(gd_btnNewButton);
-																		btnNewButton.setText("查询");
+																		new Label(group, SWT.NONE);
 																		
 																		Button btnRadioButton_2 = new Button(group, SWT.RADIO);
 																		btnRadioButton_2.setText("关键字");
 																		
 																		text_1 = new Text(group, SWT.BORDER);
 																		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-																		new Label(group, SWT.NONE);
+																		
+																		Button btnNewButton = new Button(group, SWT.NONE);
+																		GridData gd_btnNewButton = new GridData(SWT.FILL, SWT.FILL, false, false, 2, 1);
+																		gd_btnNewButton.widthHint = 86;
+																		btnNewButton.setLayoutData(gd_btnNewButton);
+																		btnNewButton.setText("查询");
 																		new Label(group, SWT.NONE);
 																		
 																		Button btnRadioButton = new Button(group, SWT.RADIO);
 																		btnRadioButton.setText("三日内未签收");
+																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
@@ -265,6 +282,12 @@ public class RecvDocMainwin {
 																				scrolledComposite.setExpandVertical(true);
 																				
 																						table = new Table(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+																						table.addMouseListener(new MouseAdapter() {
+																							@Override
+																							public void mouseDoubleClick(MouseEvent e) {
+																								selectcatalog();
+																							}
+																						});
 																						table.setHeaderVisible(true);
 																						table.setLinesVisible(true);
 																						
@@ -282,6 +305,62 @@ public class RecvDocMainwin {
 																										Composite composite_2 = new Composite(sashForm, SWT.NONE);
 																										composite_2.setBounds(0, 0, 64, 64);
 																										composite_2.setLayout(new RowLayout(SWT.HORIZONTAL));
+																										
+																										recvDocInput = new RecvDocInput(composite_2, SWT.NONE);
+																										GridLayout gridLayout = (GridLayout) recvDocInput.getLayout();
+																										gridLayout.marginTop = 120;
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
 										sashForm.setWeights(new int[] {6, 4});
 										
 										TabItem tbtmNewItem_1 = new TabItem(tabFolder, SWT.NONE);
