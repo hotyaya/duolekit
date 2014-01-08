@@ -43,6 +43,9 @@ public class RecvDocInput extends Composite {
 		text.setText(cata.getDocid()+"");
 		text_1.setText(cata.getDoccaption()+""+cata.getDoccode()+"");
 		text_2.setText(list.getItem(0).toString().replaceAll(" ", "").trim());
+		if (text_3!=null) text_3.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
+		text_4.setText("");
+		text_5.setText("");
 		lblNewLabel_6.setText("");
 	}
 
@@ -111,6 +114,9 @@ public class RecvDocInput extends Composite {
 	}
 	private void clear2(){
 		text_2.setText("");
+	}
+	private void clear3(){
+		text_5.setText("");
 	}
 	
 	/**
@@ -251,6 +257,12 @@ public class RecvDocInput extends Composite {
 		lblNewLabel_5.setText("备  注");
 		
 		text_5 = new Text(this, SWT.BORDER | SWT.WRAP);
+		text_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				clear3();
+			}
+		});
 		text_5.setFont(SWTResourceManager.getFont("微软雅黑", 11, SWT.NORMAL));
 		GridData gd_text_5 = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		gd_text_5.heightHint = 78;
