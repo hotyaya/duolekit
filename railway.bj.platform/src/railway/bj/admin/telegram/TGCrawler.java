@@ -120,11 +120,14 @@ public class TGCrawler {
 			//System.out.print(sb.toString());
 			parse(sb.toString());
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.print("UnsupportedEncodingException ");
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.print("ClientProtocolException ");
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.print("IOException ");
 		}
 	}
 	/**
