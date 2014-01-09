@@ -1,6 +1,5 @@
 package railway.bj.admin.my.job.dao.entity;
 
-import java.sql.Timestamp;
 import java.util.List;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
@@ -10,27 +9,23 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A data access object (DAO) providing persistence and search support for
- * Docrecv entities. Transaction control of the save(), update() and delete()
+ * Vdocrecv entities. Transaction control of the save(), update() and delete()
  * operations can directly support Spring container-managed transactions or they
  * can be augmented to handle user-managed Spring transactions. Each of these
  * methods provides additional information for how to configure it for the
  * desired type of transaction control.
  * 
- * @see railway.bj.admin.my.job.dao.entity.Docrecv
+ * @see railway.bj.admin.my.job.dao.entity.Vdocrecv
  * @author MyEclipse Persistence Tools
  */
-public class DocrecvDAO extends BaseHibernateDAO {
-	private static final Logger log = LoggerFactory.getLogger(DocrecvDAO.class);
-	// property constants
-	public static final String TRANSMITTER = "transmitter";
-	public static final String RECVDATE = "recvdate";
-	public static final String RECV_TAG = "recvTag";
-	public static final String MEMO = "memo";
-	public static final String TRIGGERTIME = "triggertime";
-	public static final String ISOK = "isok";
+public class VdocrecvDAO extends BaseHibernateDAO {
+	private static final Logger log = LoggerFactory
+			.getLogger(VdocrecvDAO.class);
 
-	public void save(Docrecv transientInstance) {
-		log.debug("saving Docrecv instance");
+	// property constants
+
+	public void save(Vdocrecv transientInstance) {
+		log.debug("saving Vdocrecv instance");
 		try {
 			getSession().save(transientInstance);
 			log.debug("save successful");
@@ -40,8 +35,8 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public void delete(Docrecv persistentInstance) {
-		log.debug("deleting Docrecv instance");
+	public void delete(Vdocrecv persistentInstance) {
+		log.debug("deleting Vdocrecv instance");
 		try {
 			getSession().delete(persistentInstance);
 			log.debug("delete successful");
@@ -51,11 +46,11 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public Docrecv findById(java.lang.Long id) {
-		log.debug("getting Docrecv instance with id: " + id);
+	public Vdocrecv findById(railway.bj.admin.my.job.dao.entity.VdocrecvId id) {
+		log.debug("getting Vdocrecv instance with id: " + id);
 		try {
-			Docrecv instance = (Docrecv) getSession().get(
-					"railway.bj.admin.my.job.dao.entity.Docrecv", id);
+			Vdocrecv instance = (Vdocrecv) getSession().get(
+					"railway.bj.admin.my.job.dao.entity.Vdocrecv", id);
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
@@ -63,12 +58,12 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findByExample(Docrecv instance) {
-		log.debug("finding Docrecv instance by example");
+	public List findByExample(Vdocrecv instance) {
+		log.debug("finding Vdocrecv instance by example");
 		try {
 			List results = getSession()
 					.createCriteria(
-							"railway.bj.admin.my.job.dao.entity.Docrecv")
+							"railway.bj.admin.my.job.dao.entity.Vdocrecv")
 					.add(Example.create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());
@@ -80,10 +75,10 @@ public class DocrecvDAO extends BaseHibernateDAO {
 	}
 
 	public List findByProperty(String propertyName, Object value) {
-		log.debug("finding Docrecv instance with property: " + propertyName
+		log.debug("finding Vdocrecv instance with property: " + propertyName
 				+ ", value: " + value);
 		try {
-			String queryString = "from Docrecv as model where model."
+			String queryString = "from Vdocrecv as model where model."
 					+ propertyName + "= ?";
 			Query queryObject = getSession().createQuery(queryString);
 			queryObject.setParameter(0, value);
@@ -94,34 +89,10 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public List findByTransmitter(Object transmitter) {
-		return findByProperty(TRANSMITTER, transmitter);
-	}
-
-	public List findByRecvdate(Object recvdate) {
-		return findByProperty(RECVDATE, recvdate);
-	}
-
-	public List findByRecvTag(Object recvTag) {
-		return findByProperty(RECV_TAG, recvTag);
-	}
-
-	public List findByMemo(Object memo) {
-		return findByProperty(MEMO, memo);
-	}
-
-	public List findByTriggertime(Object triggertime) {
-		return findByProperty(TRIGGERTIME, triggertime);
-	}
-
-	public List findByIsok(Object isok) {
-		return findByProperty(ISOK, isok);
-	}
-
 	public List findAll() {
-		log.debug("finding all Docrecv instances");
+		log.debug("finding all Vdocrecv instances");
 		try {
-			String queryString = "from Docrecv";
+			String queryString = "from Vdocrecv";
 			Query queryObject = getSession().createQuery(queryString);
 			return queryObject.list();
 		} catch (RuntimeException re) {
@@ -130,10 +101,10 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public Docrecv merge(Docrecv detachedInstance) {
-		log.debug("merging Docrecv instance");
+	public Vdocrecv merge(Vdocrecv detachedInstance) {
+		log.debug("merging Vdocrecv instance");
 		try {
-			Docrecv result = (Docrecv) getSession().merge(detachedInstance);
+			Vdocrecv result = (Vdocrecv) getSession().merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -142,8 +113,8 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public void attachDirty(Docrecv instance) {
-		log.debug("attaching dirty Docrecv instance");
+	public void attachDirty(Vdocrecv instance) {
+		log.debug("attaching dirty Vdocrecv instance");
 		try {
 			getSession().saveOrUpdate(instance);
 			log.debug("attach successful");
@@ -153,8 +124,8 @@ public class DocrecvDAO extends BaseHibernateDAO {
 		}
 	}
 
-	public void attachClean(Docrecv instance) {
-		log.debug("attaching clean Docrecv instance");
+	public void attachClean(Vdocrecv instance) {
+		log.debug("attaching clean Vdocrecv instance");
 		try {
 			getSession().lock(instance, LockMode.NONE);
 			log.debug("attach successful");

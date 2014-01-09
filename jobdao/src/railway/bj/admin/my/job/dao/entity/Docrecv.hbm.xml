@@ -25,6 +25,11 @@
         <property name="memo" type="java.lang.String">
             <column name="Memo" length="200" />
         </property>
+        <property name="triggertime" type="java.lang.String">
+            <column name="triggertime" length="8">
+                <comment>触发日，或者尽早</comment>
+            </column>
+        </property>
         <property name="isok" type="java.lang.Boolean">
             <column name="isok" precision="1" scale="0" />
         </property>
