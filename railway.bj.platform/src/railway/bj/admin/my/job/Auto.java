@@ -1,7 +1,14 @@
 package railway.bj.admin.my.job;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Vector;
+
+import jodd.mail.Email;
+import jodd.mail.EmailMessage;
+import jodd.mail.SendMailSession;
+import jodd.mail.SmtpSslServer;
+import jodd.util.MimeTypes;
 
 import org.hibernate.Session;
 
@@ -46,11 +53,13 @@ public class Auto implements Runnable {
 			session.beginTransaction();
 			DoccatalogDAO dao = new DoccatalogDAO();
 			String code = "";
+			String info = "";
 			for (int i = v.size(); i > 1; i--) {
 				code = v.elementAt(i - 1).getDoccode();
 				if (dao.findByDoccode(code.trim()).size() <= 0) {
 					dao.save(v.elementAt(i - 1));
 					newcount++;
+					info = info + ";" + v.elementAt(i - 1).getDoccaption() ;
 				} else {
 					//System.out.print(code+"已经入库！");
 				}
@@ -58,11 +67,31 @@ public class Auto implements Runnable {
 			session.getTransaction().commit();
 			if (newcount!=0) {
 				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
+				mail(info);
 			}else{
 				System.out.print("+");
+				mail("-");
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+	}
+	
+	public void mail(String message) {
+		Email email = Email.create();
+		EmailMessage textMessage = new EmailMessage(message, MimeTypes.MIME_TEXT_PLAIN);
+		email.addMessage(textMessage);
+		email.addText("LH");
+		email.from("hotyaya@qq.com").to("hotyaya@126.com");
+		email.subject("");
+		SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
+		mailSession.open();
+		mailSession.sendMail(email);
+		mailSession.close();
+		if (message.equals("-")){
+			System.out.print("-");
+		}else{
+			System.out.print("*发送mail成功!*");
 		}
 	}
 }
