@@ -91,7 +91,7 @@ public class Auto implements Runnable {
 			mailSession.sendMail(email);
 			mailSession.close();
 			if (text.equals("-")){
-				//System.out.print("-");
+				System.out.print("-");
 			}else{
 				System.out.print("*发送mail成功!*");
 			}
