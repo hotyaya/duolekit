@@ -57,7 +57,7 @@ public class Auto implements Runnable {
 			}
 			session.getTransaction().commit();
 			if (newcount!=0) {
-				System.out.println("insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
+				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
 			}else{
 				System.out.print("+");
 			}
