@@ -77,21 +77,25 @@ public class Auto implements Runnable {
 		}
 	}
 	
-	public void mail(String message) {
-		Email email = Email.create();
-		EmailMessage textMessage = new EmailMessage(message, MimeTypes.MIME_TEXT_PLAIN);
-		email.addMessage(textMessage);
-		email.addText("LH");
-		email.from("hotyaya@qq.com").to("hotyaya@126.com");
-		email.subject("");
-		SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
-		mailSession.open();
-		mailSession.sendMail(email);
-		mailSession.close();
-		if (message.equals("-")){
-			System.out.print("-");
-		}else{
-			System.out.print("*发送mail成功!*");
+	public void mail(String text) {
+		try{
+			Email email = Email.create();
+			EmailMessage textMessage = new EmailMessage(text, MimeTypes.MIME_TEXT_PLAIN);
+			email.addMessage(textMessage);
+			email.addText("收到电报如下：\n"+text);
+			email.from("hotyaya@qq.com").to("hotyaya@126.com");
+			email.subject("");
+			SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
+			mailSession.open();
+			mailSession.sendMail(email);
+			mailSession.close();
+			if (text.equals("-")){
+				//System.out.print("-");
+			}else{
+				System.out.print("*发送mail成功!*");
+			}
+		}catch(Exception ex){
+			System.out.print("x");
 		}
 	}
 }
