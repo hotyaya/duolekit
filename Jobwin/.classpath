@@ -14,8 +14,7 @@
 	<classpathentry kind="lib" path="D:/sdk/MyEclipse_Professional/plugins/org.eclipse.text_3.5.200.v20120523-1310.jar"/>
 	<classpathentry kind="lib" path="D:/sdk/MyEclipse_Professional/plugins/org.eclipse.ui.forms_3.5.200.v20120521-2332.jar"/>
 	<classpathentry kind="lib" path="D:/sdk/MyEclipse_Professional/plugins/org.eclipse.ui.workbench_3.8.2.v20121128-133708.jar"/>
-	<classpathentry kind="lib" path="lib/dao.jar" sourcepath="/jobdao"/>
-	<classpathentry kind="lib" path="lib/env.jar"/>
 	<classpathentry kind="lib" path="lib/jodd-3.4.10.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jobdao"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
