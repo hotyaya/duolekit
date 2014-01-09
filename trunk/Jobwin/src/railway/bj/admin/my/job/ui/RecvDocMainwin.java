@@ -7,6 +7,13 @@ import jodd.datetime.JDateTime;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -28,18 +35,17 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
 
 import railway.bj.admin.my.job.dao.HibernateSessionFactory;
 import railway.bj.admin.my.job.dao.entity.Doccatalog;
 import railway.bj.admin.my.job.dao.entity.DoccatalogDAO;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
+import railway.bj.admin.my.job.dao.entity.Docrecv;
+import railway.bj.admin.my.job.dao.entity.DocrecvDAO;
+import railway.bj.admin.my.job.dao.entity.Vdocrecv;
+import railway.bj.admin.my.job.dao.entity.VdocrecvDAO;
+import railway.bj.admin.my.job.dao.entity.VdocrecvId;
 
 public class RecvDocMainwin {
 	protected Shell shell;
@@ -47,9 +53,100 @@ public class RecvDocMainwin {
 	private Text text_1;
 	private Text text_2;
 	private Table table;
-	Session session;
-	RecvDocInput recvDocInput;
+	private Session session;
+	private RecvDocInput recvDocInput;
+	private Table table_1;
+	private Button btnCheckButton;
 	
+	/**
+	 * 
+	 */
+	void doisoktag(){
+		try{
+			session.beginTransaction();
+			if (table_1.getSelectionCount()>0){
+				if (table_1.getSelection()[0].getData() instanceof VdocrecvId){
+					VdocrecvId vrecvid =(VdocrecvId)table_1.getSelection()[0].getData();
+					DocrecvDAO docrecvdao = new DocrecvDAO();
+					Docrecv docrecv = docrecvdao.findById(vrecvid.getDocid());
+					docrecv.setIsok(!vrecvid.getIsok());
+					docrecvdao.merge(docrecv);
+					new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, docrecv.getIsok()?"设置为完成":"设置为未完", null , 2000l).open();
+				}
+			}
+			session.getTransaction().commit();
+		}catch(Exception ex){
+			ex.printStackTrace();
+			new AutoCloseDialog(shell, AutoCloseDialog.ERROR,"出现错误!", null , 2000l).open();
+		}
+		queryrecvdoc();
+	}
+	
+	/**
+	 * 
+	 */
+	void queryrecvdoc(){
+		try{
+			for (int i =table_1.getItemCount();i>0;i--) table_1.getItems()[i-1].dispose();
+			session.beginTransaction();
+			VdocrecvDAO vrecvdao = new VdocrecvDAO();
+			List<Vdocrecv> list = vrecvdao.findAll();
+			for (int i = 0; i < list.size(); i++) {
+			Vdocrecv vrecv = (Vdocrecv)list.get(i);
+				//if (!vrecv.getIsok())
+				setvRecvtabledata(vrecv.getId());
+			}
+			session.getTransaction().commit();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	void setvRecvtabledata(VdocrecvId vrecv){
+		if (vrecv.getIsok() && !btnCheckButton.getSelection()) return;
+		TableItem item = new TableItem(table_1, SWT.NULL);
+		item.setData(vrecv);
+		item.setText(0, vrecv.getIsok()?"已完":"未完");
+		String temp ="";
+		if (vrecv.getType().equals("TG"))temp="电报"; 
+		item.setText(1, ""+temp);
+		item.setText(2, ""+ vrecv.getDoccode());
+		item.setText(3, ""+ vrecv.getTriggertime());
+		item.setText(4, ""+ vrecv.getTransmitter());
+		item.setText(5, ""+ vrecv.getDoccaption());
+		item.setText(6, ""+ vrecv.getMemo());
+		item.setText(7, ""+ vrecv.getDocsendtime());
+		item.setText(8, ""+ vrecv.getRecvdate());
+		item.setText(9, ""+ vrecv.getRecvTag());
+		item.setText(10, ""+ vrecv.getDocsender());
+	}
+	
+	/**
+	 * 签收表
+	 */
+	void initrecvtable(){
+		//表格
+		String[] titles = {"办完","类型","电报/文件号","执行时间","传达人","标题","注意事项","发文时间","传达日","标签","发送单位"};
+		for (int i =table_1.getColumnCount();i>0;i--){
+			table_1.getColumn(i-1).dispose();
+		}
+		for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
+			TableColumn column = new TableColumn(table_1, SWT.NULL);
+			column.setText(titles[loopIndex]);
+			if (loopIndex ==0) column.setWidth(50);
+			else if (loopIndex ==1) column.setWidth(50);
+			else if (loopIndex ==2) column.setWidth(180);
+			else if (loopIndex ==3) column.setWidth(120);
+			else if (loopIndex ==4) column.setWidth(120);
+			else if (loopIndex ==5) column.setWidth(400);
+			else if (loopIndex ==6) column.setWidth(100);
+			else if (loopIndex ==7) column.setWidth(100);
+			else if (loopIndex ==8) column.setWidth(100);
+			else if (loopIndex ==9) column.setWidth(100);
+			else if (loopIndex ==100) column.setWidth(100);
+			else column.setWidth(120);
+		}
+	}
 	/**
 	 * 选择一个文件，传入一个保存项；
 	 */
@@ -62,7 +159,7 @@ public class RecvDocMainwin {
 	}
 	
 	//初始值
-	void init(){
+	void initcatalog(){
 		//表格
 		String[] titles = { "编号", "类型", "发文日期", "发送单位","标题","电报/文件号","入库日期" };
 		for (int i =table.getColumnCount();i>0;i--){
@@ -167,7 +264,8 @@ public class RecvDocMainwin {
 		shell.open();
 		shell.layout();
 		inidb();
-		init();
+		initcatalog();
+		initrecvtable();
 		//test();//20140108
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -201,6 +299,10 @@ public class RecvDocMainwin {
 		CoolBar coolBar = new CoolBar(shell, SWT.FLAT);
 
 		CoolItem coolItem = new CoolItem(coolBar, SWT.NONE);
+		
+		Button btnNewButton_4 = new Button(coolBar, SWT.NONE);
+		coolItem.setControl(btnNewButton_4);
+		btnNewButton_4.setText("说明");
 
 //		SashForm sashForm = new SashForm(shell, SWT.NONE);
 //		sashForm.setSashWidth(2);
@@ -219,8 +321,9 @@ public class RecvDocMainwin {
 																		composite.setLayout(new GridLayout(1, false));
 																		
 																		Group group = new Group(composite, SWT.NONE);
+																		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 																		group.setBounds(0, 0, 70, 87);
-																		group.setLayout(new GridLayout(5, false));
+																		group.setLayout(new GridLayout(6, false));
 																		
 																		Button btnRadioButton_1 = new Button(group, SWT.RADIO);
 																		btnRadioButton_1.setText("按日期查询");
@@ -252,7 +355,12 @@ public class RecvDocMainwin {
 																			}
 																		});
 																		btnNewButton_2.setText("向后");
-																		new Label(group, SWT.NONE);
+																		
+																		Composite composite_3 = new Composite(group, SWT.NONE);
+																		composite_3.setLayout(new RowLayout(SWT.HORIZONTAL));
+																		GridData gd_composite_3 = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3);
+																		gd_composite_3.widthHint = 243;
+																		composite_3.setLayoutData(gd_composite_3);
 																		
 																		Button btnRadioButton_2 = new Button(group, SWT.RADIO);
 																		btnRadioButton_2.setText("关键字");
@@ -265,11 +373,9 @@ public class RecvDocMainwin {
 																		gd_btnNewButton.widthHint = 86;
 																		btnNewButton.setLayoutData(gd_btnNewButton);
 																		btnNewButton.setText("查询");
-																		new Label(group, SWT.NONE);
 																		
 																		Button btnRadioButton = new Button(group, SWT.RADIO);
 																		btnRadioButton.setText("三日内未签收");
-																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
 																		new Label(group, SWT.NONE);
@@ -361,10 +467,589 @@ public class RecvDocMainwin {
 																										new Label(recvDocInput, SWT.NONE);
 																										new Label(recvDocInput, SWT.NONE);
 																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
+																										new Label(recvDocInput, SWT.NONE);
 										sashForm.setWeights(new int[] {6, 4});
 										
 										TabItem tbtmNewItem_1 = new TabItem(tabFolder, SWT.NONE);
 										tbtmNewItem_1.setText("已签收");
+										
+										Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+										tbtmNewItem_1.setControl(composite_1);
+										composite_1.setLayout(new GridLayout(2, false));
+										
+										Composite composite_4 = new Composite(composite_1, SWT.NONE);
+										composite_4.setLayout(new GridLayout(4, false));
+										GridData gd_composite_4 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+										gd_composite_4.heightHint = 95;
+										composite_4.setLayoutData(gd_composite_4);
+										new Label(composite_4, SWT.NONE);
+										new Label(composite_4, SWT.NONE);
+										
+										btnCheckButton = new Button(composite_4, SWT.CHECK);
+										btnCheckButton.setText("显示已完成");
+										
+										Button btnNewButton_3 = new Button(composite_4, SWT.NONE);
+										btnNewButton_3.addSelectionListener(new SelectionAdapter() {
+											@Override
+											public void widgetSelected(SelectionEvent e) {
+												queryrecvdoc();
+											}
+										});
+										GridData gd_btnNewButton_3 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+										gd_btnNewButton_3.widthHint = 120;
+										btnNewButton_3.setLayoutData(gd_btnNewButton_3);
+										btnNewButton_3.setText("查询");
+										
+										Composite composite_5 = new Composite(composite_1, SWT.NONE);
+										composite_5.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT));
+										GridData gd_composite_5 = new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1);
+										gd_composite_5.widthHint = 389;
+										composite_5.setLayoutData(gd_composite_5);
+										
+										ScrolledComposite scrolledComposite_1 = new ScrolledComposite(composite_1, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+										GridData gd_scrolledComposite_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+										gd_scrolledComposite_1.widthHint = 732;
+										scrolledComposite_1.setLayoutData(gd_scrolledComposite_1);
+										scrolledComposite_1.setBounds(0, 0, 89, 89);
+										scrolledComposite_1.setExpandHorizontal(true);
+										scrolledComposite_1.setExpandVertical(true);
+										
+										table_1 = new Table(scrolledComposite_1, SWT.BORDER | SWT.FULL_SELECTION);
+										table_1.addMouseListener(new MouseAdapter() {
+											@Override
+											public void mouseDoubleClick(MouseEvent e) {
+												doisoktag();
+											}
+										});
+										table_1.setBounds(0, 0, 89, 51);
+										table_1.setHeaderVisible(true);
+										table_1.setLinesVisible(true);
+										scrolledComposite_1.setContent(table_1);
+										scrolledComposite_1.setMinSize(table_1.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+										new Label(composite_1, SWT.NONE);
 		//sashForm.setWeights(new int[] {100});
 
 		text = new Text(shell, SWT.BORDER);

@@ -33,6 +33,7 @@ public class RecvDocInput extends Composite {
 	private Text text_3;
 	private Text text_4;
 	private Text text_5;
+	private Text text_6;
 	private List list,list_1;
 	private Label lblNewLabel_6;
 	private Session session;
@@ -47,6 +48,7 @@ public class RecvDocInput extends Composite {
 		if (text_3!=null) text_3.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
 		text_4.setText("");
 		text_5.setText("");
+		if (text_6!=null) text_6.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
 		lblNewLabel_6.setText("");
 		btnCheckButton.setSelection(false);
 	}
@@ -65,6 +67,7 @@ public class RecvDocInput extends Composite {
 			recv.setOpertimestamp(new Timestamp(System.currentTimeMillis()));
 			recv.setRecvTag(text_4.getText());
 			recv.setMemo(text_5.getText());
+			recv.setTriggertime(text_6.getText());//可以尽早
 			recv.setIsok(btnCheckButton.getSelection());
 			recvdao.save(recv);
 			
@@ -83,6 +86,7 @@ public class RecvDocInput extends Composite {
 	
 	private void ini(){
 	    if (text_3!=null) text_3.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
+		if (text_6!=null) text_6.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
 	}
 	private void add1day(){
 		JDateTime jdt = new JDateTime(text_3.getText(),"YYYYMMDD");
@@ -195,7 +199,7 @@ public class RecvDocInput extends Composite {
 		lblNewLabel_3.setText("接收日期");
 		
 		text_3 = new Text(this, SWT.BORDER);
-		text_3.setFont(SWTResourceManager.getFont("微软雅黑", 11, SWT.NORMAL));
+		text_3.setFont(SWTResourceManager.getFont("微软雅黑", 12, SWT.NORMAL));
 		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Group group = new Group(this, SWT.NONE);
@@ -227,6 +231,7 @@ public class RecvDocInput extends Composite {
 		lblNewLabel_4.setText("标  签");
 		
 		text_4 = new Text(this, SWT.BORDER | SWT.READ_ONLY | SWT.WRAP | SWT.MULTI);
+		text_4.setEditable(true);
 		text_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
@@ -253,6 +258,27 @@ public class RecvDocInput extends Composite {
 		GridData gd_list_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		gd_list_1.widthHint = 56;
 		list_1.setLayoutData(gd_list_1);
+		
+		Label lblNewLabel_7 = new Label(this, SWT.NONE);
+		lblNewLabel_7.setFont(SWTResourceManager.getFont("宋体", 14, SWT.NORMAL));
+		lblNewLabel_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNewLabel_7.setText("执行日期");
+		
+		text_6 = new Text(this, SWT.BORDER);
+		text_6.setFont(SWTResourceManager.getFont("微软雅黑", 12, SWT.NORMAL));
+		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Group group_2 = new Group(this, SWT.NONE);
+		group_2.setLayout(new GridLayout(2, false));
+		group_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		Button btnNewButton_3 = new Button(group_2, SWT.NONE);
+		btnNewButton_3.setFont(SWTResourceManager.getFont("宋体", 11, SWT.NORMAL));
+		btnNewButton_3.setText("向前");
+		
+		Button btnNewButton_4 = new Button(group_2, SWT.NONE);
+		btnNewButton_4.setFont(SWTResourceManager.getFont("宋体", 11, SWT.NORMAL));
+		btnNewButton_4.setText("向后");
 		
 		Label lblNewLabel_5 = new Label(this, SWT.NONE);
 		lblNewLabel_5.setFont(SWTResourceManager.getFont("宋体", 14, SWT.NORMAL));
