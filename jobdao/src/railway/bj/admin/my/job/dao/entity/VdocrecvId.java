@@ -31,6 +31,8 @@ public class VdocrecvId implements java.io.Serializable {
 	private String memo;
 	private String triggertime;
 	private Boolean isok;
+	private Timestamp oktimestamp;
+	private String okmemo;
 
 	// Constructors
 
@@ -51,7 +53,8 @@ public class VdocrecvId implements java.io.Serializable {
 			String url, Integer indate, Timestamp intimestamp,
 			Boolean ishidden, String transmitter, Integer recvdate,
 			Timestamp opertimestamp, String recvTag, String memo,
-			String triggertime, Boolean isok) {
+			String triggertime, Boolean isok, Timestamp oktimestamp,
+			String okmemo) {
 		this.docid = docid;
 		this.type = type;
 		this.docsenddate = docsenddate;
@@ -73,6 +76,8 @@ public class VdocrecvId implements java.io.Serializable {
 		this.memo = memo;
 		this.triggertime = triggertime;
 		this.isok = isok;
+		this.oktimestamp = oktimestamp;
+		this.okmemo = okmemo;
 	}
 
 	// Property accessors
@@ -245,6 +250,22 @@ public class VdocrecvId implements java.io.Serializable {
 		this.isok = isok;
 	}
 
+	public Timestamp getOktimestamp() {
+		return this.oktimestamp;
+	}
+
+	public void setOktimestamp(Timestamp oktimestamp) {
+		this.oktimestamp = oktimestamp;
+	}
+
+	public String getOkmemo() {
+		return this.okmemo;
+	}
+
+	public void setOkmemo(String okmemo) {
+		this.okmemo = okmemo;
+	}
+
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -327,7 +348,14 @@ public class VdocrecvId implements java.io.Serializable {
 						.getTriggertime().equals(castOther.getTriggertime())))
 				&& ((this.getIsok() == castOther.getIsok()) || (this.getIsok() != null
 						&& castOther.getIsok() != null && this.getIsok()
-						.equals(castOther.getIsok())));
+						.equals(castOther.getIsok())))
+				&& ((this.getOktimestamp() == castOther.getOktimestamp()) || (this
+						.getOktimestamp() != null
+						&& castOther.getOktimestamp() != null && this
+						.getOktimestamp().equals(castOther.getOktimestamp())))
+				&& ((this.getOkmemo() == castOther.getOkmemo()) || (this
+						.getOkmemo() != null && castOther.getOkmemo() != null && this
+						.getOkmemo().equals(castOther.getOkmemo())));
 	}
 
 	public int hashCode() {
@@ -389,6 +417,12 @@ public class VdocrecvId implements java.io.Serializable {
 						.hashCode());
 		result = 37 * result
 				+ (getIsok() == null ? 0 : this.getIsok().hashCode());
+		result = 37
+				* result
+				+ (getOktimestamp() == null ? 0 : this.getOktimestamp()
+						.hashCode());
+		result = 37 * result
+				+ (getOkmemo() == null ? 0 : this.getOkmemo().hashCode());
 		return result;
 	}
 

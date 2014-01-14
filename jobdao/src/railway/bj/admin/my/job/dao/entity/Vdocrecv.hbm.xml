@@ -70,6 +70,12 @@
             <key-property name="isok" type="java.lang.Boolean">
                 <column name="isok" precision="1" scale="0" />
             </key-property>
+            <key-property name="oktimestamp" type="java.sql.Timestamp">
+                <column name="oktimestamp" length="19" />
+            </key-property>
+            <key-property name="okmemo" type="java.lang.String">
+                <column name="okmemo" length="100" />
+            </key-property>
         </composite-id>
     </class>
 </hibernate-mapping>

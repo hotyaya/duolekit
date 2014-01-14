@@ -16,8 +16,10 @@ public class Docrecv implements java.io.Serializable {
 	private Timestamp opertimestamp;
 	private String recvTag;
 	private String memo;
-	private String triggertime;//日期和尽早；
+	private String triggertime;
 	private Boolean isok;
+	private Timestamp oktimestamp;
+	private String okmemo;
 
 	// Constructors
 
@@ -33,7 +35,8 @@ public class Docrecv implements java.io.Serializable {
 	/** full constructor */
 	public Docrecv(Long docid, String transmitter, Integer recvdate,
 			Timestamp opertimestamp, String recvTag, String memo,
-			String triggertime, Boolean isok) {
+			String triggertime, Boolean isok, Timestamp oktimestamp,
+			String okmemo) {
 		this.docid = docid;
 		this.transmitter = transmitter;
 		this.recvdate = recvdate;
@@ -42,6 +45,8 @@ public class Docrecv implements java.io.Serializable {
 		this.memo = memo;
 		this.triggertime = triggertime;
 		this.isok = isok;
+		this.oktimestamp = oktimestamp;
+		this.okmemo = okmemo;
 	}
 
 	// Property accessors
@@ -108,6 +113,22 @@ public class Docrecv implements java.io.Serializable {
 
 	public void setIsok(Boolean isok) {
 		this.isok = isok;
+	}
+
+	public Timestamp getOktimestamp() {
+		return this.oktimestamp;
+	}
+
+	public void setOktimestamp(Timestamp oktimestamp) {
+		this.oktimestamp = oktimestamp;
+	}
+
+	public String getOkmemo() {
+		return this.okmemo;
+	}
+
+	public void setOkmemo(String okmemo) {
+		this.okmemo = okmemo;
 	}
 
 }
