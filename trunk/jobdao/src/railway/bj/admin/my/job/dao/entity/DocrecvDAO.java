@@ -28,6 +28,7 @@ public class DocrecvDAO extends BaseHibernateDAO {
 	public static final String MEMO = "memo";
 	public static final String TRIGGERTIME = "triggertime";
 	public static final String ISOK = "isok";
+	public static final String OKMEMO = "okmemo";
 
 	public void save(Docrecv transientInstance) {
 		log.debug("saving Docrecv instance");
@@ -116,6 +117,10 @@ public class DocrecvDAO extends BaseHibernateDAO {
 
 	public List findByIsok(Object isok) {
 		return findByProperty(ISOK, isok);
+	}
+
+	public List findByOkmemo(Object okmemo) {
+		return findByProperty(OKMEMO, okmemo);
 	}
 
 	public List findAll() {
