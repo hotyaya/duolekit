@@ -81,7 +81,8 @@ public class Auto implements Runnable {
 		try{
 			Email email = Email.create();
 			EmailMessage textMessage = new EmailMessage(text, MimeTypes.MIME_TEXT_PLAIN);
-			email.subject("单位新文件提醒");
+			//email.subject("单位新文件提醒");
+			email.setSubject("单位新文件提醒");
 			email.addMessage(textMessage);
 			email.addText("收到电报如下：\n"+text);
 			email.from("hotyaya@qq.com").to("hotyaya@126.com");

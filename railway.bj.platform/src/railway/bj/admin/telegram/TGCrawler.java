@@ -121,13 +121,16 @@ public class TGCrawler {
 			parse(sb.toString());
 		} catch (UnsupportedEncodingException e) {
 			//e.printStackTrace();
-			System.out.print("UnsupportedEncodingException ");
+			System.out.print("x1");
+			//System.out.print("UnsupportedEncodingException ");
 		} catch (ClientProtocolException e) {
 			//e.printStackTrace();
-			System.out.print("ClientProtocolException ");
+			System.out.print("x2");
+			//System.out.print("ClientProtocolException ");
 		} catch (IOException e) {
 			//e.printStackTrace();
-			System.out.print("IOException ");
+			System.out.print("x3");
+			//System.out.print("IOException ");
 		}
 	}
 	/**
