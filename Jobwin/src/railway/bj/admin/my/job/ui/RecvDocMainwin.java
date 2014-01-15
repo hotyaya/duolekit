@@ -1,9 +1,12 @@
 package railway.bj.admin.my.job.ui;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
 
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -70,6 +73,17 @@ public class RecvDocMainwin {
 					DocrecvDAO docrecvdao = new DocrecvDAO();
 					Docrecv docrecv = docrecvdao.findById(vrecvid.getDocid());
 					docrecv.setIsok(!vrecvid.getIsok());
+					docrecv.setOktimestamp(new Timestamp(System.currentTimeMillis()));
+					String memo = " ";//完成情况
+					InputDialog input = new InputDialog(shell,"输入框", "请输入完成情况:"," ",null);
+					if(input.open()== Window.OK){
+						memo = input.getValue().toString();
+					}else if(input.open()==Window.CANCEL){
+						return;
+					}else{
+						return;
+					}
+					docrecv.setOkmemo(memo);
 					docrecvdao.merge(docrecv);
 					new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, docrecv.getIsok()?"设置为完成":"设置为未完", null , 2000l).open();
 				}
@@ -119,6 +133,8 @@ public class RecvDocMainwin {
 		item.setText(8, ""+ vrecv.getRecvdate());
 		item.setText(9, ""+ vrecv.getRecvTag());
 		item.setText(10, ""+ vrecv.getDocsender());
+		item.setText(11, ""+ vrecv.getOktimestamp());
+		item.setText(12, ""+ vrecv.getOkmemo());
 	}
 	
 	/**
@@ -126,7 +142,7 @@ public class RecvDocMainwin {
 	 */
 	void initrecvtable(){
 		//表格
-		String[] titles = {"办完","类型","电报/文件号","执行时间","传达人","标题","注意事项","发文时间","传达日","标签","发送单位"};
+		String[] titles = {"办完","类型","电报/文件号","执行时间","传达人","标题","注意事项","发文时间","传达日","标签","发送单位","完成时间","完成情况"};
 		for (int i =table_1.getColumnCount();i>0;i--){
 			table_1.getColumn(i-1).dispose();
 		}
@@ -143,7 +159,9 @@ public class RecvDocMainwin {
 			else if (loopIndex ==7) column.setWidth(100);
 			else if (loopIndex ==8) column.setWidth(100);
 			else if (loopIndex ==9) column.setWidth(100);
-			else if (loopIndex ==100) column.setWidth(100);
+			else if (loopIndex ==10) column.setWidth(100);
+			else if (loopIndex ==11) column.setWidth(100);
+			else if (loopIndex ==12) column.setWidth(100);
 			else column.setWidth(120);
 		}
 	}
