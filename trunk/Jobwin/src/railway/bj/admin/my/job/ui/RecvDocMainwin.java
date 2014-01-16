@@ -6,10 +6,11 @@ import java.util.List;
 import jodd.datetime.JDateTime;
 
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -64,6 +65,10 @@ public class RecvDocMainwin {
 	private Table table_1;
 	private TableViewer tableViewer_1;// = new TableViewer(shell, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER|SWT.V_SCROLL|SWT.H_SCROLL);
 	private Composite composite_6;
+	
+//	public class TableViewerLabelProvider extends LabelProvider implements ITableLabelProvider{
+//
+//	}
 	/**
 	 * 
 	 */
@@ -144,9 +149,44 @@ public class RecvDocMainwin {
 	 * 签收表
 	 */
 	void initrecvtable(){
-		
-		
-		
+		TableLayout layout_1 = new TableLayout();
+
+		/*
+		 * NOTE: MeasureItem, PaintItem and EraseItem are called repeatedly.
+		 * Therefore, it is critical for performance that these methods be
+		 * as efficient as possible.
+		 */
+		final int TEXT_MARGIN = 5;
+		table_1.addListener(SWT.MeasureItem, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				TableItem item = (TableItem)event.item;
+				String text = item.getText(event.index);
+				Point size = event.gc.textExtent(text);
+				event.width = size.x + 2 * TEXT_MARGIN;
+				event.height = Math.max(event.height, size.y + TEXT_MARGIN);
+			}
+		});
+		table_1.addListener(SWT.EraseItem, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				event.detail &= ~SWT.FOREGROUND;
+			}
+		});
+		table_1.addListener(SWT.PaintItem, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				TableItem item = (TableItem)event.item;
+				String text = item.getText(event.index);
+				/* center column 1 vertically */
+				int yOffset = 0;
+				if (event.index == 1) {
+					Point size = event.gc.textExtent(text);
+					yOffset = Math.max(0, (event.height - size.y) / 2);
+				}
+				event.gc.drawText(text, event.x + TEXT_MARGIN, event.y + yOffset, true);
+			}
+		});
 		
 		//表格
 		String[] titles = {"办完","类型","电报/文件号","执行时间","传达人","标题","注意事项","发文时间","传达日","标签","发送单位","完成时间","完成情况"};
@@ -171,6 +211,7 @@ public class RecvDocMainwin {
 			else if (loopIndex ==12) column.setWidth(100);
 			else column.setWidth(120);
 		}
+		//table_1.setLayout(layout_1);
 	}
 	/**
 	 * 选择一个文件，传入一个保存项；
