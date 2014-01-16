@@ -126,7 +126,7 @@ public class RecvDocMainwin {
 	}
 	
 	void print(){
-		new PrintSWTTableExample(0).print(table_1);
+		new PrintSWTTableExample(0).print(shell,table_1);
 		
 	}
 	

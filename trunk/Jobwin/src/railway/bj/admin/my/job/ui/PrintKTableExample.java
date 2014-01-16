@@ -1359,7 +1359,7 @@ public PrintSWTTableExample() {
     final Button butPrint = new Button(shell, SWT.NONE);
     butPrint.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent e) {
-    	  print(table_swt);
+    	  print(shell,table_swt);
       }
     });
 
@@ -1392,7 +1392,7 @@ public PrintSWTTableExample(int i) {
 }
 
 
-public void print(Table table_swt2){
+public void print(Shell parent,Table table_swt2){
     // create a document with default settings from PageSetup
     final PDocument doc = new PDocument("表格打印");
 
@@ -1410,7 +1410,7 @@ public void print(Table table_swt2){
     SWTPTable table = new SWTPTable(doc);
     table.setTable(table_swt2); //将数据和打印关联的地方；
     table.setBoxProvider(new PTableBoxProvider());
-    PrintPreview pr = new PrintPreview(null, "表格打印2014", IconSource.getImage("print"), doc);
+    PrintPreview pr = new PrintPreview(parent, "表格打印2014", IconSource.getImage("print"), doc);
     pr.open();
 }
 
@@ -1681,7 +1681,7 @@ class PrintPreview extends KDialog {
   }
 
   protected void onButton(Button button, String buttonText) {
-    if (buttonText.startsWith("&Schlie"))
+    if (buttonText.startsWith("&Close"))
       onClose();
     else if (buttonText.startsWith("Seite"))
       onPageSetup();
@@ -4501,18 +4501,18 @@ class KDialog {
     doLayout();
     doPositioning();
     guiShell.open();
-    while (!guiShell.isDisposed()) {
-      if (!guiDisplay.readAndDispatch())
-        guiDisplay.sleep();
-    }
-    guiShell.dispose();
+    //TODO 20140116
+	//    while (!guiShell.isDisposed()) {
+	//      if (!guiDisplay.readAndDispatch())
+	//        guiDisplay.sleep();
+	//    }
+	//    guiShell.dispose();
   }
 
   public void close() {
-	this.close();
 	//TODO 20140116
-	//guiShell.close();
-	//guiShell.dispose();
+	guiShell.close();
+	guiShell.dispose();
   }
 
   /**
