@@ -125,6 +125,11 @@ public class RecvDocMainwin {
 		}
 	}
 	
+	void print(){
+		new PrintSWTTableExample(0).print(table_1);
+		
+	}
+	
 	void setvRecvtabledata(VdocrecvId vrecv){
 		if (vrecv.getIsok() && !btnCheckButton.getSelection()) return;
 		TableItem item = new TableItem(table_1, SWT.NULL);
@@ -1303,6 +1308,48 @@ public class RecvDocMainwin {
 																						new Label(recvDocInput, SWT.NONE);
 																						new Label(recvDocInput, SWT.NONE);
 																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
+																						new Label(recvDocInput, SWT.NONE);
 																				
 																						ScrolledComposite scrolledComposite = new ScrolledComposite(composite_6,
 																								SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -1341,7 +1388,7 @@ public class RecvDocMainwin {
 										composite_1.setLayout(new GridLayout(2, false));
 										
 										Composite composite_4 = new Composite(composite_1, SWT.NONE);
-										composite_4.setLayout(new GridLayout(4, false));
+										composite_4.setLayout(new GridLayout(5, false));
 										GridData gd_composite_4 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 										gd_composite_4.heightHint = 95;
 										composite_4.setLayoutData(gd_composite_4);
@@ -1362,6 +1409,18 @@ public class RecvDocMainwin {
 										gd_btnNewButton_3.widthHint = 120;
 										btnNewButton_3.setLayoutData(gd_btnNewButton_3);
 										btnNewButton_3.setText("查询");
+										
+										Button btnNewButton_5 = new Button(composite_4, SWT.NONE);
+										btnNewButton_5.addSelectionListener(new SelectionAdapter() {
+											@Override
+											public void widgetSelected(SelectionEvent e) {
+												print();
+											}
+										});
+										GridData gd_btnNewButton_5 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+										gd_btnNewButton_5.widthHint = 115;
+										btnNewButton_5.setLayoutData(gd_btnNewButton_5);
+										btnNewButton_5.setText("打印");
 										
 										Composite composite_5 = new Composite(composite_1, SWT.NONE);
 										composite_5.setBackground(SWTResourceManager.getColor(SWT.COLOR_TITLE_BACKGROUND_GRADIENT));

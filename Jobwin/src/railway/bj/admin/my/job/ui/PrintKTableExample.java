@@ -1320,18 +1320,20 @@ class PSimpleTextStyle extends PTextStyle {
  */
 class PrintSWTTableExample {
   private Display display;
-
-  public PrintSWTTableExample() {
-
+  private Table table_swt = null;
+  
+public PrintSWTTableExample() {
     // create some gui with a SWT table
-    display = new Display();
+    //display = new Display();//20140116
+    display = Display.getCurrent();
+    
     final Shell shell = new Shell(display);
     final org.eclipse.swt.layout.GridLayout gridLayout = new org.eclipse.swt.layout.GridLayout();
     gridLayout.numColumns = 2;
     shell.setLayout(gridLayout);
     final Color red = display.getSystemColor(SWT.COLOR_RED);
 
-    final Table table_swt = new Table(shell, SWT.BORDER
+    table_swt = new Table(shell, SWT.BORDER
         | SWT.FULL_SELECTION);
     final GridData gridData = new GridData(GridData.FILL_BOTH);
     gridData.horizontalSpan = 2;
@@ -1345,7 +1347,7 @@ class PrintSWTTableExample {
     column3.setText("Column3");
 
     //TODO 插入数据；
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
       TableItem item = new TableItem(table_swt, SWT.NONE);
       item.setText(new String[] { "cell " + i + " 0", "cell " + i + " 1",
           "cell " + i + "2" });
@@ -1357,29 +1359,10 @@ class PrintSWTTableExample {
     final Button butPrint = new Button(shell, SWT.NONE);
     butPrint.addSelectionListener(new SelectionAdapter() {
       public void widgetSelected(SelectionEvent e) {
-        // create a document with default settings from PageSetup
-        final PDocument doc = new PDocument(
-            "SWT Table Printing Example");
-
-        // put some header text on it
-        PTextBox t;
-
-        t = new PTextBox(doc);
-        t.setText("SWT Table Printing Example");
-
-        new PVSpace(doc, 0.1);
-        new PHLine(doc, 0.02, SWT.COLOR_BLACK);
-        new PVSpace(doc, 0.5);
-
-        // create the table
-        SWTPTable table = new SWTPTable(doc);
-        table.setTable(table_swt);
-        table.setBoxProvider(new PTableBoxProvider());
-        PrintPreview pr = new PrintPreview(null, "Test", IconSource
-            .getImage("print"), doc);
-        pr.open();
+    	  print(table_swt);
       }
     });
+
     butPrint.setText("Print Preview");
 
     final Button butClose = new Button(shell, SWT.NONE);
@@ -1403,6 +1386,34 @@ class PrintSWTTableExample {
 
     display.dispose();
   }
+
+public PrintSWTTableExample(int i) {
+	
+}
+
+
+public void print(Table table_swt2){
+    // create a document with default settings from PageSetup
+    final PDocument doc = new PDocument("表格打印");
+
+    // put some header text on it
+    PTextBox t;
+
+    t = new PTextBox(doc);
+    t.setText("表格打印20140116");
+
+    new PVSpace(doc, 0.1);
+    new PHLine(doc, 0.02, SWT.COLOR_BLACK);
+    new PVSpace(doc, 0.5);
+
+    // create the table
+    SWTPTable table = new SWTPTable(doc);
+    table.setTable(table_swt2); //将数据和打印关联的地方；
+    table.setBoxProvider(new PTableBoxProvider());
+    PrintPreview pr = new PrintPreview(null, "表格打印2014", IconSource.getImage("print"), doc);
+    pr.open();
+}
+
 
   /**
    * This function would print the document witout the print preview.
@@ -1494,12 +1505,12 @@ class PrintPreview extends KDialog {
     percent = 100;
     layoutNeccessary = true;
 
-    addToolItem("print", "Drucken ...", IconSource.getImage("print"));
-    addToolItem("first", "erste Seite", IconSource.getImage("i2"));
-    addToolItem("prev", "vorherige Seite", IconSource.getImage("i3"));
-    addToolItem("next", "nachste Seite", IconSource.getImage("i4"));
-    addToolItem("last", "letzte Seite", IconSource.getImage("i5"));
-    Button close = addButtonRight("&SchlieBen", "");
+    addToolItem("print", "打印", IconSource.getImage("print"));
+    addToolItem("first", "第一页", IconSource.getImage("i2"));
+    addToolItem("prev", "上一页", IconSource.getImage("i3"));
+    addToolItem("next", "下一页", IconSource.getImage("i4"));
+    addToolItem("last", "最后页", IconSource.getImage("i5"));
+    Button close = addButtonRight("&Close", "");
     // addButtonRight("Seite &einrichten","");
     close.setFocus();
 
@@ -3902,7 +3913,7 @@ class MsgBox {
    * @return String
    */
   public static String show(Display d, String message) {
-    return show(d, "Meldung", message, "OK");
+    return show(d, "消息提示", message, "OK");
   }
 
   public static String show(String title, String message, String buttons) {
@@ -3914,7 +3925,7 @@ class MsgBox {
   }
 
   public static String show(String message) {
-    return show("Meldung", message, "OK");
+    return show("消息提示", message, "OK");
   }
 
 }
@@ -4498,8 +4509,10 @@ class KDialog {
   }
 
   public void close() {
-    guiShell.close();
-    guiShell.dispose();
+	this.close();
+	//TODO 20140116
+	//guiShell.close();
+	//guiShell.dispose();
   }
 
   /**
@@ -4510,7 +4523,7 @@ class KDialog {
     guiShell
         .setLocation(
             (guiDisplay.getBounds().width - guiShell.getBounds().width) / 2,
-            (guiDisplay.getBounds().height - guiShell.getBounds().width) / 2);
+            (guiDisplay.getBounds().height - guiShell.getBounds().height) / 2);//2014-01-16 TODO 修正BUG
   }
 
   /**
