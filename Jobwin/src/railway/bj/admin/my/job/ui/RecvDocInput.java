@@ -69,7 +69,11 @@ public class RecvDocInput extends Composite {
 			recv.setMemo(text_5.getText());
 			recv.setTriggertime(text_6.getText());//可以尽早
 			recv.setIsok(btnCheckButton.getSelection());
-			recv.setOktimestamp(new JDateTime("19700101","YYYYMMDD").convertToSqlTimestamp());//bug20140115
+			if (btnCheckButton.getSelection()){
+				recv.setOktimestamp(new Timestamp(System.currentTimeMillis()));//bug20140115
+			}else{
+				recv.setOktimestamp(new JDateTime("20000101","YYYYMMDD").convertToSqlTimestamp());//bug20140115
+			}
 			recv.setOkmemo("");
 			recvdao.save(recv);
 			
