@@ -2,11 +2,11 @@ package railway.bj.admin.my.job.ui;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Vector;
 
 import jodd.datetime.JDateTime;
 
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
@@ -107,6 +107,7 @@ public class RecvDocMainwin {
 	/**
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	void queryrecvdoc(){
 		try{
 			for (int i =table_1.getItemCount();i>0;i--) table_1.getItems()[i-1].dispose();
@@ -135,8 +136,11 @@ public class RecvDocMainwin {
 		item.setText(2, ""+ vrecv.getDoccode());
 		item.setText(3, ""+ vrecv.getTriggertime());
 		item.setText(4, ""+ vrecv.getTransmitter());
-		item.setText(5, ""+ vrecv.getDoccaption());
-		item.setText(6, ""+ vrecv.getMemo());
+		String caption = vrecv.getDoccaption();
+		//caption = caption.substring(0, caption.length()/2) +"\n"+ caption.substring(caption.length()/2);
+		item.setText(5, ""+ caption);
+		String memo = vrecv.getMemo();
+		item.setText(6, ""+ memo);
 		item.setText(7, ""+ vrecv.getDocsendtime());
 		item.setText(8, ""+ vrecv.getRecvdate());
 		item.setText(9, ""+ vrecv.getRecvTag());
@@ -149,14 +153,16 @@ public class RecvDocMainwin {
 	 * 签收表
 	 */
 	void initrecvtable(){
-		TableLayout layout_1 = new TableLayout();
+		final int icellweight5 = 280;
+		final int icellweight6 = 220;
+		final int TEXT_MARGIN = 10;
+		//TableLayout layout_1 = new TableLayout();
 
 		/*
 		 * NOTE: MeasureItem, PaintItem and EraseItem are called repeatedly.
 		 * Therefore, it is critical for performance that these methods be
 		 * as efficient as possible.
 		 */
-		final int TEXT_MARGIN = 5;
 		table_1.addListener(SWT.MeasureItem, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -164,6 +170,14 @@ public class RecvDocMainwin {
 				String text = item.getText(event.index);
 				Point size = event.gc.textExtent(text);
 				event.width = size.x + 2 * TEXT_MARGIN;
+				if (event.index==5){
+					 int h = (event.gc.textExtent(text).x/icellweight5 +1) * event.gc.textExtent(text).y;
+					if (h>event.height) event.height = h;
+				}
+				if (event.index==6){
+					int h =  (event.gc.textExtent(text).x/icellweight6 +1) * event.gc.textExtent(text).y;
+					if (h>event.height) event.height = h;
+				} 
 				event.height = Math.max(event.height, size.y + TEXT_MARGIN);
 			}
 		});
@@ -178,9 +192,56 @@ public class RecvDocMainwin {
 			public void handleEvent(Event event) {
 				TableItem item = (TableItem)event.item;
 				String text = item.getText(event.index);
+				/* 2014-01-16 */
+				String text2 = text;
+				Vector<String>	v = new Vector<String>();
+				//replace"/\n"
+				if (event.index==5){
+					while (text2.length()>0){
+						String temp ="";
+						for (int i=0;i<text2.length();i++){
+							temp = temp + text2.substring(i, i+1);
+							if (event.gc.textExtent(temp).x>=icellweight5){
+								v.add(temp);
+								text2 = text2.substring(i+1);
+								break;
+							}
+						}
+						if (text2.length()>0 && text2.length()<icellweight5){
+							v.add(text2);
+							text2 ="";
+						}
+					}
+					text2 = "";
+					for (int i=0;i<v.size();i++){
+						text2 = text2 + v.elementAt(i).toString().trim() +"\n";
+					}
+					text = text2;
+				}else if (event.index==6){
+					while (text2.length()>0){
+						String temp ="";
+						for (int i=0;i<text2.length();i++){
+							temp = temp + text2.substring(i, i+1);
+							if (event.gc.textExtent(temp).x>=icellweight6){
+								v.add(temp);
+								text2 = text2.substring(i+1);
+								break;
+							}
+						}
+						if (text2.length()>0 && text2.length()<icellweight6){
+							v.add(text2);
+							text2 ="";
+						}
+					}
+					text2 = "";
+					for (int i=0;i<v.size();i++){
+						text2 = text2 + v.elementAt(i).toString().trim() +"\n";
+					}
+					text = text2;
+				}
 				/* center column 1 vertically */
 				int yOffset = 0;
-				if (event.index == 1) {
+				if (event.index != 5 && event.index != 6 ) {
 					Point size = event.gc.textExtent(text);
 					yOffset = Math.max(0, (event.height - size.y) / 2);
 				}
@@ -198,11 +259,11 @@ public class RecvDocMainwin {
 			column.setText(titles[loopIndex]);
 			if (loopIndex ==0) column.setWidth(50);
 			else if (loopIndex ==1) column.setWidth(50);
-			else if (loopIndex ==2) column.setWidth(180);
-			else if (loopIndex ==3) column.setWidth(120);
-			else if (loopIndex ==4) column.setWidth(120);
-			else if (loopIndex ==5) column.setWidth(400);
-			else if (loopIndex ==6) column.setWidth(100);
+			else if (loopIndex ==2) column.setWidth(150);
+			else if (loopIndex ==3) column.setWidth(60);
+			else if (loopIndex ==4) column.setWidth(60);
+			else if (loopIndex ==5) column.setWidth(300);
+			else if (loopIndex ==6) column.setWidth(240);
 			else if (loopIndex ==7) column.setWidth(100);
 			else if (loopIndex ==8) column.setWidth(100);
 			else if (loopIndex ==9) column.setWidth(100);
