@@ -4506,10 +4506,9 @@ class KDialog {
    * you whish another position.
    */
   protected void doPositioning() {
-    guiShell
-        .setLocation(
+    guiShell.setLocation(
             (guiDisplay.getBounds().width - guiShell.getBounds().width) / 2,
-            (guiDisplay.getBounds().height - guiShell.getBounds().width) / 2);
+            (guiDisplay.getBounds().height - guiShell.getBounds().height) / 2);//20140117 bug 
   }
 
   /**
