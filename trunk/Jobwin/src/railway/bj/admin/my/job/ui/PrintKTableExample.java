@@ -68,6 +68,7 @@ The author welcomes any feedback:  fkmk@kupzog.de
  */
 
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1410,6 +1411,7 @@ public void print(Shell parent,Table table_swt2){
     SWTPTable table = new SWTPTable(doc);
     table.setTable(table_swt2); //将数据和打印关联的地方；
     table.setBoxProvider(new PTableBoxProvider());
+    parent.setText("myjob");
     PrintPreview pr = new PrintPreview(parent, "表格打印2014", IconSource.getImage("print"), doc);
     pr.open();
 }
@@ -1564,8 +1566,8 @@ class PrintPreview extends KDialog {
   }
 
   protected void doLayout() {
-    int x = Display.getCurrent().getBounds().width - 100;
-    int y = Display.getCurrent().getBounds().height - 10;
+    int x = Display.getCurrent().getBounds().width - 150;
+    int y = Display.getCurrent().getBounds().height - 120;
     guiShell.setSize(x, y);
     guiShell.setMaximized(true);
   }
@@ -1688,8 +1690,7 @@ class PrintPreview extends KDialog {
   }
 
   protected void onClose() {
-    if (guiImageLabel.getImage() != null)
-      guiImageLabel.getImage().dispose();
+    if (guiImageLabel.getImage() != null) guiImageLabel.getImage().dispose();
     PTextStyle.disposeFonts();
     close();
   }
@@ -4302,7 +4303,7 @@ class KDialog {
    */
   public KDialog(Shell parent, String title, Image icon) {
     this(parent);
-    setTitle(title);
+    //setTitle(title);
     setShellImage(icon);
   }
 
@@ -4317,7 +4318,7 @@ class KDialog {
       guiShell = new Shell(parent, getShellStyle());
     else
       guiShell = new Shell(Display.getCurrent(), getShellStyle());
-
+    guiShell.setText(""+new Timestamp(System.currentTimeMillis()).toString());
     createShellLayout();
     createShellComposits();
 
@@ -4500,6 +4501,7 @@ class KDialog {
   public void open() {
     doLayout();
     doPositioning();
+    System.out.println(""+ guiShell.getParent().toString());
     guiShell.open();
     //TODO 20140116
 	//    while (!guiShell.isDisposed()) {
@@ -4511,8 +4513,12 @@ class KDialog {
 
   public void close() {
 	//TODO 20140116
-	guiShell.close();
-	guiShell.dispose();
+	  //Shell shell1[] =guiShell.getParent().getShell().getShells();for (int i=0;i<shell1.length;i++)  System.out.println(i+"-"+shell1[i].toString());
+	  //guiShell.setVisible(false);
+	  //System.out.println(":"+guiShell.getText());
+	  guiShell.dispose();
+	//guiShell.close();//是否形成死循环；
+	//guiShell.dispose();
   }
 
   /**
@@ -4520,8 +4526,7 @@ class KDialog {
    * you whish another position.
    */
   protected void doPositioning() {
-    guiShell
-        .setLocation(
+    guiShell.setLocation(
             (guiDisplay.getBounds().width - guiShell.getBounds().width) / 2,
             (guiDisplay.getBounds().height - guiShell.getBounds().height) / 2);//2014-01-16 TODO 修正BUG
   }

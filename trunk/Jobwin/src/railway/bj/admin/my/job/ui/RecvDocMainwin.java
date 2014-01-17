@@ -127,7 +127,6 @@ public class RecvDocMainwin {
 	
 	void print(){
 		new PrintSWTTableExample(0).print(shell,table_1);
-		
 	}
 	
 	void setvRecvtabledata(VdocrecvId vrecv){
