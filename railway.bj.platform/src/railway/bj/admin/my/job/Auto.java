@@ -32,14 +32,14 @@ public class Auto implements Runnable {
 		while(true){
 			try{
 				//读入配置文件!
-				
 				//电报爬虫!
+				v.removeAllElements();//20140123
 				new TGCrawler(v).docrawler();
 				if (v.size() > 0) indb();
 				
 				Thread.sleep(1000 * 2);
 				System.gc();
-				Thread.sleep(1000 * 60 * 5); //5分钟
+				Thread.sleep(1000 * 60 * 5); //5分钟 60 *
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
@@ -54,17 +54,24 @@ public class Auto implements Runnable {
 			DoccatalogDAO dao = new DoccatalogDAO();
 			String code = "";
 			String info = "";
-			for (int i = v.size(); i > 1; i--) {
-				code = v.elementAt(i - 1).getDoccode();
+			int repeatcount =0;//如果已经入库数达到3，退出循环。 (20140122)
+			for (int i = 0; i < v.size(); i++) { //20140123 int i = v.size(); i > 1; i--
+				code = v.elementAt(i).getDoccode(); //20140123 i-1=> i
 				if (dao.findByDoccode(code.trim()).size() <= 0) {
-					dao.save(v.elementAt(i - 1));
+					dao.save(v.elementAt(i)); //20140123 i-1=> i
 					newcount++;
-					info = info + ";" + v.elementAt(i - 1).getDoccaption() ;
+					info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
 				} else {
 					//System.out.print(code+"已经入库！");
+					repeatcount++; 
+					//System.out.print("_"+repeatcount+"_");
 				}
+				if (repeatcount>3) break; //便于提高效率(20140122)
 			}
+			if (repeatcount>3)System.out.print("3");//便于提高效率(20140122)
 			session.getTransaction().commit();
+			session.disconnect();//20140122看看占不占资源；
+			session.close();//20140122看看占不占资源；
 			if (newcount!=0) {
 				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
 				mail(info);
@@ -85,7 +92,7 @@ public class Auto implements Runnable {
 			email.addMessage(textMessage);
 			//email.addText("收到电报如下：\n"+text);
 			email.from("hotyaya@qq.com").to("hotyaya@126.com");
-			email.subject("新文件:"+text);
+			email.subject("新文件 "+text);
 			SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
 			mailSession.open();
 			mailSession.sendMail(email);
