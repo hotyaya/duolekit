@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Sun Jan 26 11:38:20 CST 2014
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=feiqjava_fat.jar
+manifest.mergeall=true
+manifest.mainclass=org.wayne.feiq.Main
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
