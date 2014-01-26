@@ -1,0 +1,5 @@
+The method list(String, Object[]) is ambiguous for the type BaseHibernateDao<M,PK> 
+
+after -vmargs in eclipse.ini: 
+
+-DtolerateIllegalAmbiguousVarargsInvocation=truethen restart eclipse and clean the project
