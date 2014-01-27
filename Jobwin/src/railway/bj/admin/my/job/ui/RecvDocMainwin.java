@@ -135,7 +135,13 @@ public class RecvDocMainwin {
 		item.setData(vrecv);
 		item.setText(0, vrecv.getIsok()?"已完":"未完");
 		String temp ="";
-		if (vrecv.getType().equals("TG"))temp="电报"; 
+		if (vrecv.getType().equals("TG")){
+			temp="电报"; 
+		}else if (vrecv.getType().equals("OA")){
+			temp="公文"; 
+		}else{
+			
+		}
 		item.setText(1, ""+temp);
 		item.setText(2, ""+ vrecv.getDoccode());
 		item.setText(3, ""+ vrecv.getTriggertime());
