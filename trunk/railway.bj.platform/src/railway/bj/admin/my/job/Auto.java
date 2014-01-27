@@ -1,6 +1,5 @@
 package railway.bj.admin.my.job;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.Vector;
 
@@ -15,6 +14,7 @@ import org.hibernate.Session;
 import railway.bj.admin.my.job.dao.HibernateSessionFactory;
 import railway.bj.admin.my.job.dao.entity.Doccatalog;
 import railway.bj.admin.my.job.dao.entity.DoccatalogDAO;
+import railway.bj.admin.oa.OACrawler;
 import railway.bj.admin.telegram.TGCrawler;
 
 public class Auto implements Runnable {
@@ -35,6 +35,9 @@ public class Auto implements Runnable {
 				//电报爬虫!
 				v.removeAllElements();//20140123
 				new TGCrawler(v).docrawler();
+				if (v.size() > 0) indb();
+				v.removeAllElements();//20140127
+				new OACrawler(v).docrawler();//加入办公文件的自动收集功能；
 				if (v.size() > 0) indb();
 				
 				Thread.sleep(1000 * 2);
