@@ -135,12 +135,12 @@ public class RecvDocMainwin {
 		item.setData(vrecv);
 		item.setText(0, vrecv.getIsok()?"已完":"未完");
 		String temp ="";
-		if (vrecv.getType().equals("TG")){
+		if (vrecv.getType().trim().equals("TG")){
 			temp="电报"; 
-		}else if (vrecv.getType().equals("OA")){
+		}else if (vrecv.getType().trim().equals("OA")){
 			temp="公文"; 
 		}else{
-			
+			temp="文件"; 
 		}
 		item.setText(1, ""+temp);
 		item.setText(2, ""+ vrecv.getDoccode());
@@ -345,7 +345,13 @@ public class RecvDocMainwin {
 		item.setText("Item " + i);//??
 		item.setText(0, ""+ cata.getDocid());
 		String temp ="";
-		if (cata.getType().equals("TG"))temp="电报"; 
+		if (cata.getType().trim().equals("TG")){
+			temp="电报"; 
+		}else if(cata.getType().trim().equals("OA")){
+			temp="公文"; 
+		}else{
+			temp="文件"; 
+		}
 		item.setText(1, ""+temp);
 		item.setText(2, ""+ cata.getDocsendtime());
 		item.setText(3, ""+ cata.getDocsender());
