@@ -19,11 +19,11 @@ import railway.bj.admin.telegram.TGCrawler;
 
 public class Auto implements Runnable {
 	Vector<Doccatalog> v =  new Vector<Doccatalog>();
-
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		System.out.println(new Timestamp(System.currentTimeMillis()).toString());
 		new Thread(new Auto()).start();
 	}
 
