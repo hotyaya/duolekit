@@ -26,5 +26,19 @@
 	<classpathentry kind="lib" path="lib/swt/org.eclipse.text_3.5.200.v20120523-1310.jar"/>
 	<classpathentry kind="lib" path="lib/swt/org.eclipse.ui.forms_3.5.200.v20120521-2332.jar"/>
 	<classpathentry kind="lib" path="lib/swt/org.eclipse.ui.workbench_3.8.2.v20121128-133708.jar"/>
+	<classpathentry kind="lib" path="lib/jcifs-1.3.17.jar"/>
+	<classpathentry kind="lib" path="lib/jodd-3.4.10.jar"/>
+	<classpathentry kind="lib" path="lib/HTMLParser2/filterbuilder.jar"/>
+	<classpathentry kind="lib" path="lib/HTMLParser2/htmllexer.jar"/>
+	<classpathentry kind="lib" path="lib/HTMLParser2/htmlparser.jar"/>
+	<classpathentry kind="lib" path="lib/HTMLParser2/sitecapturer.jar"/>
+	<classpathentry kind="lib" path="lib/HTMLParser2/thumbelina.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/fluent-hc-4.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/httpclient-4.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/httpclient-cache-4.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/httpcore-4.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/HttpClient432/httpmime-4.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
