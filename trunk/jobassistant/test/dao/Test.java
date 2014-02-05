@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.job.dao.HibernateSessionFactory;
@@ -39,7 +40,9 @@ public class Test {
 //		recv.setMemo("测试一下");
 		
 		try{
+			System.out.println(""+new Timestamp(System.currentTimeMillis()));
 			Session session = HibernateSessionFactory.getSession();
+			//session = HibernateUtil.currentSession();
 			session.beginTransaction();
 			DoccatalogDAO dao = new DoccatalogDAO();
 			dao.save(item);
@@ -47,6 +50,7 @@ public class Test {
 //			dao.save(recv);
 			session.getTransaction().commit();
 			System.out.println("s。");
+			System.out.println(":"+new Timestamp(System.currentTimeMillis()));
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

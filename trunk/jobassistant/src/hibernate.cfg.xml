@@ -11,11 +11,12 @@
 			org.sqlite.JDBC
 		</property>
 		<property name="myeclipse.connection.profile">
-			jobsqlitetest
+			jobsqlite
 		</property>
 		<property name="dialect">
 			org.hibernate.dialect.SQLiteDialect
 		</property>
+		<!-- <property name="hibernate.connection.autocommit">true</property>  -->
 		<mapping resource="org/job/dao/entity/Doccatalog.hbm.xml" />
 		<mapping resource="org/job/dao/entity/Docrecv.hbm.xml" />
 		<mapping resource="org/job/dao/entity/Vdocrecv.hbm.xml" />
