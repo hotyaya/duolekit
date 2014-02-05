@@ -23,7 +23,7 @@ public class WriteData implements java.lang.Runnable{
 				DoccatalogDAO dao =new DoccatalogDAO();
 				Doccatalog item = new Doccatalog();
 				//item.setDocid(i);
-				item.setType("OA");
+				item.setType("TG");
 				item.setDocsenddate(20140106);
 				item.setDocsender("货运处");
 				item.setDoccaption(""+i);

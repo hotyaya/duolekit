@@ -11,7 +11,7 @@ public class TestThread {
 		
 		try{
 			new Thread(new WriteData()).start();
-			for (int i=98000;i<1000000;i++){
+			for (int i=99000;i<100000;i++){
 				Session session = HibernateUtil.currentSession();
 				session.beginTransaction();
 				DoccatalogDAO dao =new DoccatalogDAO();
