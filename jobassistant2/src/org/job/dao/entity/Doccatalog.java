@@ -31,17 +31,11 @@ public class Doccatalog implements java.io.Serializable {
 	public Doccatalog() {
 	}
 
-	/** minimal constructor */
-	public Doccatalog(Integer docid) {
-		this.docid = docid;
-	}
-
 	/** full constructor */
-	public Doccatalog(Integer docid, String type, Integer docsenddate,
-			String docsendtime, String docsender, String doccaption,
-			String doccode, String contact, String phone, String baseurl,
-			String url, Integer indate, Timestamp intimestamp, Boolean ishidden) {
-		this.docid = docid;
+	public Doccatalog(String type, Integer docsenddate, String docsendtime,
+			String docsender, String doccaption, String doccode,
+			String contact, String phone, String baseurl, String url,
+			Integer indate, Timestamp intimestamp, Boolean ishidden) {
 		this.type = type;
 		this.docsenddate = docsenddate;
 		this.docsendtime = docsendtime;
