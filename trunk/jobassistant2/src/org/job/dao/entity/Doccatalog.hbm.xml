@@ -8,7 +8,7 @@
     <class name="org.job.dao.entity.Doccatalog" table="DOCCATALOG">
         <id name="docid" type="java.lang.Integer">
             <column name="DOCID" />
-            <generator class="assigned" />
+            <generator class="increment" />
         </id>
         <property name="type" type="java.lang.String">
             <column name="TYPE" length="2" />
