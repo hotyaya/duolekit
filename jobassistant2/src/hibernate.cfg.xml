@@ -10,7 +10,7 @@
 			org.hibernate.dialect.FirebirdDialect
 		</property>
 		<property name="connection.url">
-			jdbc:firebirdsql:embedded:job.fdb
+			jdbc:firebirdsql:embedded:job.fdb?lc_ctype=utf8
 		</property>
 		<property name="connection.username">sysdba</property>
 		<property name="connection.password">masterkey</property>
