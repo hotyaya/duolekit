@@ -16,7 +16,7 @@ public class Boot {
 		crawlerProcess.addNotifyListener(window);
 		new Thread(crawlerProcess).start(); 
 		//3.启动轮训进程从网页上面取得数据；
-
+		new FServer(1233,"c:/").startfs();
 		//4.通知界面要进行轮训；禁用
 		window.open();
 	}
