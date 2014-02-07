@@ -10,7 +10,7 @@
 			org.hibernate.dialect.FirebirdDialect
 		</property>
 		<property name="connection.url">
-			jdbc:firebirdsql:embedded:D:/work/jobassistant2/job.fdb
+			jdbc:firebirdsql:embedded:job.fdb
 		</property>
 		<property name="connection.username">sysdba</property>
 		<property name="connection.password">masterkey</property>
