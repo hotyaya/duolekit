@@ -87,7 +87,9 @@ public class TGCrawler {
 		HttpResponse response;
 		String username = "ljxxczhk";
 		String password = "a";
-
+		username = "liuhui";
+		password = "890";
+		
 		/* 创建post连接 */
 		HttpPost httpPost = new HttpPost(url);
 

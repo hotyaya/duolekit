@@ -10,11 +10,13 @@ import jodd.mail.SmtpSslServer;
 import jodd.util.MimeTypes;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.job.crawler.OACrawler;
 import org.job.crawler.TGCrawler;
-import org.job.dao.HibernateSessionFactory;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
+
+import com.job.HibernateUtil;
 
 public class CrawlerProcess implements Runnable {
 	Vector<Doccatalog> v =  new Vector<Doccatalog>();
@@ -51,8 +53,8 @@ public class CrawlerProcess implements Runnable {
 	private void indb() {
 		try {
 			int newcount = 0;//记录下本次的新入库数量
-			Session session = HibernateSessionFactory.getSession();
-			session.beginTransaction();
+			Session session = HibernateUtil.currentSession();//HibernateSessionFactory.getSession();
+			Transaction tran = session.beginTransaction();
 			DoccatalogDAO dao = new DoccatalogDAO();
 			String code = "";
 			String info = "";
@@ -60,7 +62,7 @@ public class CrawlerProcess implements Runnable {
 			for (int i = 0; i < v.size(); i++) { //20140123 int i = v.size(); i > 1; i--
 				code = v.elementAt(i).getDoccode(); //20140123 i-1=> i
 				if (dao.findByDoccode(code.trim()).size() <= 0) {
-					dao.save(v.elementAt(i)); //20140123 i-1=> i
+					session.save(v.elementAt(i)); //20140123 i-1=> i //20140207 dao=> session
 					newcount++;
 					info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
 				} else {
@@ -71,9 +73,9 @@ public class CrawlerProcess implements Runnable {
 				if (repeatcount>3) break; //便于提高效率(20140122)
 			}
 			if (repeatcount>3)System.out.print("3");//便于提高效率(20140122)
-			session.getTransaction().commit();
-			session.disconnect();//20140122看看占不占资源；
-			session.close();//20140122看看占不占资源；
+			tran.commit(); //session.getTransaction().commit();
+//			session.disconnect();//20140122看看占不占资源；
+//			session.close();//20140122看看占不占资源；
 			if (newcount!=0) {
 				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
 				mail(info);
