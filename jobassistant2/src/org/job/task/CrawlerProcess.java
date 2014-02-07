@@ -76,6 +76,7 @@ public class CrawlerProcess implements Runnable {
 			tran.commit(); //session.getTransaction().commit();
 //			session.disconnect();//20140122看看占不占资源；
 //			session.close();//20140122看看占不占资源；
+			Thread.sleep(50);//20140207
 			if (newcount!=0) {
 				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
 				mail(info);

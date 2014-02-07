@@ -1,28 +1,129 @@
 package org.job.ui;
 
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Menu;
+import java.util.List;
+
+import jodd.datetime.JDateTime;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.hibernate.Session;
+import org.job.dao.entity.Doccatalog;
+import org.job.dao.entity.DoccatalogDAO;
+
+import com.job.HibernateUtil;
 
 public class Mainwin {
-
 	protected Shell shell;
 	private Text text;
 	private Table table;
 	private Text text_1;
+	private Session session;
 
+	void init(){
+		init_catalog();
+		init_datetextbox();
+	}
+	
+	//初始值
+	private void init_datetextbox(){
+		if (text_1!=null) text_1.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
+	}
+	private void init_catalog(){
+		//表格
+		//String[] titles = { "编号", "类型", "发文日期", "发送单位","标题","电报/文件号","入库日期" };
+		String[] titles = { "类型", "标题","电报/文件号"};
+		for (int i =table.getColumnCount();i>0;i--){
+			table.getColumn(i-1).dispose();
+		}
+		for (int loopIndex = 0; loopIndex < titles.length; loopIndex++) {
+			TableColumn column = new TableColumn(table, SWT.NULL);
+			column.setText(titles[loopIndex]);
+			//if (loopIndex ==0) column.setWidth(50);
+			//else 
+			if (loopIndex ==0) column.setWidth(50);
+			//else if (loopIndex ==2) column.setWidth(180);
+			//else if (loopIndex ==3) column.setWidth(120);
+			else if (loopIndex ==1) column.setWidth(400);
+			else if (loopIndex ==2) column.setWidth(180);
+			//else if (loopIndex ==6) column.setWidth(100);
+			else column.setWidth(120);
+		}
+	}
+	void settabledata(Doccatalog cata,int i){
+		TableItem item = new TableItem(table, SWT.NULL);
+		item.setData(cata);
+		//item.setText("Item " + i);//??
+		//item.setText(0, ""+ cata.getDocid());
+		String temp ="";
+		if (cata.getType().trim().equals("TG")){
+			temp="电报"; 
+		}else if(cata.getType().trim().equals("OA")){
+			temp="公文"; 
+		}else{
+			temp="文件"; 
+		}
+		item.setText(0, ""+temp);
+//		item.setText(2, ""+ cata.getDocsendtime());
+//		item.setText(3, ""+ cata.getDocsender());
+		item.setText(1, ""+ cata.getDoccaption());
+		item.setText(2, ""+ cata.getDoccode());
+//		item.setText(6, ""+ cata.getIndate());
+	}
+	
+	void query(){
+		try{
+			for (int i =table.getItemCount();i>0;i--) table.getItems()[i-1].dispose();
+			session = HibernateUtil.currentSession();//HibernateSessionFactory.getSession();
+			session.beginTransaction();
+			DoccatalogDAO catadao = new DoccatalogDAO();
+			@SuppressWarnings("unchecked")
+			List<Doccatalog> list = catadao.findByDocsenddate(new Integer(text_1.getText().trim()));
+			for (int i = 0; i < list.size(); i++) {
+				Doccatalog cata = (Doccatalog)list.get(i);
+				//if (!cata.getIshidden()){
+					settabledata(cata,i);
+				//}
+			}
+			list.clear();
+			session.getTransaction().commit();
+			Thread.sleep(50);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	private void add1day(){
+		JDateTime jdt = new JDateTime(text_1.getText(),"YYYYMMDD");
+		jdt.addDay(1);
+		text_1.setText(jdt.toString("YYYYMMDD"));
+	}
+	
+	private void subtract1day(){
+		JDateTime jdt = new JDateTime(text_1.getText(),"YYYYMMDD");
+		jdt.subDay(1);
+		text_1.setText(jdt.toString("YYYYMMDD"));
+	}
+	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -56,7 +157,7 @@ public class Mainwin {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(400, 700);
+		shell.setSize(400, 800);
 		shell.setText("电报公文提醒系统");
 		shell.setLayout(new GridLayout(1, false));
 		
@@ -74,23 +175,45 @@ public class Mainwin {
 		
 		Composite composite = new Composite(shell, SWT.BORDER);
 		composite.setFont(SWTResourceManager.getFont("微软雅黑", 11, SWT.NORMAL));
-		composite.setLayout(new GridLayout(5, false));
-		GridData gd_composite = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		composite.setLayout(new GridLayout(6, false));
+		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_composite.widthHint = 369;
 		gd_composite.heightHint = 137;
 		composite.setLayoutData(gd_composite);
+		//composite.setLayoutData(new RowData(80,80)); 
 		
 		Label lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblNewLabel.setText("请选择查看日期");
 		
 		text_1 = new Text(composite, SWT.BORDER);
+		text_1.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				query();
+			}
+		});
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				subtract1day();
+			}
+		});
 		btnNewButton.setText("向前");
 		
 		Button btnNewButton_1 = new Button(composite, SWT.NONE);
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				add1day();
+			}
+		});
 		btnNewButton_1.setText("向后");
+		
+		Button btnNewButton_8 = new Button(composite, SWT.NONE);
+		btnNewButton_8.setText("今日");
 		
 		Label lblNewLabel_1 = new Label(composite, SWT.NONE);
 		lblNewLabel_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
@@ -100,7 +223,7 @@ public class Mainwin {
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new FillLayout(SWT.HORIZONTAL));
-		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1);
+		GridData gd_composite_1 = new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1);
 		gd_composite_1.heightHint = 40;
 		composite_1.setLayoutData(gd_composite_1);
 		
@@ -115,7 +238,7 @@ public class Mainwin {
 		Button btnNewButton_6 = new Button(composite_1, SWT.NONE);
 		
 		Composite composite_2 = new Composite(composite, SWT.NONE);
-		GridData gd_composite_2 = new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1);
+		GridData gd_composite_2 = new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1);
 		gd_composite_2.heightHint = 51;
 		composite_2.setLayoutData(gd_composite_2);
 		
@@ -136,7 +259,9 @@ public class Mainwin {
 		btnNewButton_7.setText("设置过滤");
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		scrolledComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.FILL, false, true, 1, 1);
+		gd_scrolledComposite.widthHint = 353;
+		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
@@ -150,5 +275,7 @@ public class Mainwin {
 		text.setEditable(false);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
+		
+		init();
 	}
 }
