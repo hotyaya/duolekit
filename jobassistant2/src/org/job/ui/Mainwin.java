@@ -53,7 +53,7 @@ public class Mainwin implements INotifyMessage {
 		@Override
 		public void run() {
 			String inf[] = info.split("\\|");
-			System.out.println(info + "--" + inf.length);
+			//System.out.println(info + "--" + inf.length);
 			if (btnNewButton_2!=null){ 
 				btnNewButton_2.setText(inf[2].substring(4,8)+"-"+inf[2].substring(9));
 				btnNewButton_2.setData(inf[2].substring(0,8));
@@ -350,18 +350,22 @@ public class Mainwin implements INotifyMessage {
 		composite_2.setLayoutData(gd_composite_2);
 
 		Button btnCheckButton = new Button(composite_2, SWT.CHECK);
+		btnCheckButton.setEnabled(false);
 		btnCheckButton.setBounds(10, 10, 53, 17);
 		btnCheckButton.setText("电报");
 
 		Button btnCheckButton_1 = new Button(composite_2, SWT.CHECK);
+		btnCheckButton_1.setEnabled(false);
 		btnCheckButton_1.setBounds(69, 10, 53, 17);
 		btnCheckButton_1.setText("公文");
 
 		Button btnCheckButton_2 = new Button(composite_2, SWT.CHECK);
+		btnCheckButton_2.setEnabled(false);
 		btnCheckButton_2.setBounds(156, 10, 53, 17);
 		btnCheckButton_2.setText("过滤");
 
 		Button btnNewButton_7 = new Button(composite_2, SWT.NONE);
+		btnNewButton_7.setEnabled(false);
 		btnNewButton_7.setBounds(215, 5, 80, 27);
 		btnNewButton_7.setText("设置过滤");
 
