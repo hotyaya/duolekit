@@ -41,5 +41,7 @@
 	<classpathentry kind="lib" path="lib/HttpClient432/httpcore-4.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/HttpClient432/httpmime-4.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/smack340/smack-3.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/smack340/smackx-3.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

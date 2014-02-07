@@ -1,6 +1,7 @@
 package org.job.task;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Vector;
 
 import jodd.mail.Email;
@@ -15,11 +16,27 @@ import org.job.crawler.OACrawler;
 import org.job.crawler.TGCrawler;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
+import org.job.dao.entity.Vcatadaynum;
+import org.job.dao.entity.VcatadaynumDAO;
+import org.job.interf.INotifyMessage;
 
 import com.job.HibernateUtil;
 
 public class CrawlerProcess implements Runnable {
 	Vector<Doccatalog> v =  new Vector<Doccatalog>();
+	Vector<INotifyMessage> vnotify = new Vector<INotifyMessage>();
+	
+	public void addNotifyListener(INotifyMessage listener){
+		vnotify.add(listener);
+	}
+	
+	void notifyListener(String info){
+		for (int i=0;i<vnotify.size();i++){
+			((INotifyMessage)vnotify.elementAt(i)).notifyMessage(info);
+		}
+	}
+	
+	
 	/**
 	 * @param args
 	 */
@@ -36,12 +53,16 @@ public class CrawlerProcess implements Runnable {
 				//电报爬虫!
 				v.removeAllElements();//20140123
 				new TGCrawler(v).docrawler();
-				if (v.size() > 0) indb();
+				if (v.size() > 0) indb("TG");
+				Thread.sleep(1000 * 2);
+				
 				v.removeAllElements();//20140127
 				new OACrawler(v).docrawler();//加入办公文件的自动收集功能；
-				if (v.size() > 0) indb();
-				
+				if (v.size() > 0) indb("OA");
 				Thread.sleep(1000 * 2);
+				
+				getCount();
+				
 				System.gc();
 				Thread.sleep(1000 * 60 * 5); //5分钟 60 *
 			}catch(Exception ex){
@@ -50,7 +71,37 @@ public class CrawlerProcess implements Runnable {
 		}
 	}
 	
-	private void indb() {
+	/**
+	 * 从数据库中取得当日最新统计信息
+	 */
+	private void getCount(){
+		try {
+			Session session = HibernateUtil.currentSession();//HibernateSessionFactory.getSession();
+			Transaction tran = session.beginTransaction();
+			VcatadaynumDAO dao = new VcatadaynumDAO();
+			List<Vcatadaynum> list = dao.findAll();
+			String todaycount="";
+			String temp ="";
+			if (list!=null){ //20140207:24|20140205:2
+				for (int i=0;i<5;i++){
+					if (list.get(i)!=null){
+						temp = list.get(i).getId().getDocsenddate() 
+								+":"+list.get(i).getId().getCount0()+"";
+						todaycount = todaycount +"|" + temp;
+					}
+				}
+			}
+			tran.commit();
+			if (todaycount.length()>0){
+				notifyListener("TDOAYCOUNT"+"|"+"AL"+"|"+todaycount.substring(1));//今日全部
+			}
+			Thread.sleep(50);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	private void indb(String ctag) {
 		try {
 			int newcount = 0;//记录下本次的新入库数量
 			Session session = HibernateUtil.currentSession();//HibernateSessionFactory.getSession();
@@ -78,7 +129,16 @@ public class CrawlerProcess implements Runnable {
 //			session.close();//20140122看看占不占资源；
 			Thread.sleep(50);//20140207
 			if (newcount!=0) {
-				System.out.println("\n"+"insert " + newcount + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
+				String temp = "";
+				if (ctag.equals("TG")){
+					temp ="电报";
+				}else if (ctag.equals("OA")){
+					temp ="公文";
+				}else{
+					temp ="其它";
+				}
+				System.out.println("\n"+"insert " + newcount + "项" + temp + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
+				notifyListener("NEWFILE"+"|"+ctag+"|"+newcount);
 				mail(info);
 			}else{
 				System.out.print("+");
