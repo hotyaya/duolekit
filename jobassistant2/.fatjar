@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Feb 07 16:11:10 CST 2014
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=jobassistant2_fat.jar
+manifest.mergeall=true
+manifest.mainclass=org.job.task.Boot
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
