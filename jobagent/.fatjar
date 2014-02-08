@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Feb 01 16:15:12 CST 2013
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=dw3dclient_fat.jar
+manifest.mergeall=true
+manifest.mainclass=cn.railsoft.simulate.client.ui.Demo
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
