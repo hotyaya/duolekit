@@ -1,4 +1,4 @@
-package com.job;
+package org.job;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

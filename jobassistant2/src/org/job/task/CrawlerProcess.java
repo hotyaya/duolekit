@@ -20,7 +20,7 @@ import org.job.dao.entity.Vcatadaynum;
 import org.job.dao.entity.VcatadaynumDAO;
 import org.job.interf.INotifyMessage;
 
-import com.job.HibernateUtil;
+import org.job.dao.HibernateUtil;
 
 public class CrawlerProcess implements Runnable {
 	Vector<Doccatalog> v =  new Vector<Doccatalog>();
