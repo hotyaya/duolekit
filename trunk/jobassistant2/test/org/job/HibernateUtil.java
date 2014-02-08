@@ -1,4 +1,4 @@
-package com.job;
+package org.job;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

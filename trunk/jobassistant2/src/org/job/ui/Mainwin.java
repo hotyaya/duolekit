@@ -30,7 +30,7 @@ import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
 import org.job.util.SWTResourceManager;
 
-import com.job.HibernateUtil;
+import org.job.dao.HibernateUtil;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell= null;
