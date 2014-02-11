@@ -36,6 +36,118 @@ public class DiaConfig extends Dialog {
 	private Button btnCheckButton_1;
 	private Button btnCheckButton_2;
 
+	
+	Sysprop pro1 = null;
+	Sysprop pro2 = null;
+	Sysprop pro3 = null;
+	Sysprop pro4 = null;
+	Sysprop pro5 = null;
+	Sysprop pro6 = null;
+	Sysprop pro7 = null;
+	Sysprop pro8 = null;
+	Sysprop pro9 = null;
+	Sysprop pro10 = null;
+	Sysprop pro11 = null;
+	Sysprop pro12 = null;
+	Sysprop pro13 = null;
+	
+	/**
+	pro1 = dao.findById("USERID");
+	pro2 = dao.findById("USERNAME");
+	pro3 = dao.findById("USERUNIT");
+	pro4 = dao.findById("USERDEPT");
+	pro5 = dao.findById("OADO");
+	pro6 = dao.findById("OAUSER");
+	pro7 = dao.findById("OAPASS");
+	pro8 = dao.findById("TGDO");
+	pro9 = dao.findById("TGUSER");
+	pro10 = dao.findById("TGPASS");
+	pro11 = dao.findById("DBDO");
+	pro12 = dao.findById("DBUSER");
+	pro13 = dao.findById("DBPASS");
+	 */
+	void save(){
+		try{
+			Session session = HibernateUtil.currentSession();
+			Transaction tran = null;
+			tran = session.beginTransaction();
+			//SyspropDAO dao =new SyspropDAO();
+			if (pro1!=null){
+				session.merge(new Sysprop("USERID",text.getText()));
+			}else{
+				session.save(new Sysprop("USERID",text.getText()));
+			}
+			if (pro2!=null){
+				session.merge(new Sysprop("USERNAME",text_1.getText()));
+			}else{
+				session.save(new Sysprop("USERNAME",text_1.getText()));
+			}
+			if (pro3!=null){
+				session.merge(new Sysprop("USERUNIT",text_2.getText()));
+			}else{
+				session.save(new Sysprop("USERUNIT",text_2.getText()));
+			}
+			if (pro4!=null){
+				session.merge(new Sysprop("USERDEPT",text_3.getText()));
+			}else{
+				session.save(new Sysprop("USERDEPT",text_3.getText()));
+			}
+			if (pro5!=null){
+				session.merge(new Sysprop("OADO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
+			}else{
+				session.save(new Sysprop("OADO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
+			}
+			if (pro6!=null){
+				session.merge(new Sysprop("OAUSER",text_4.getText()));
+			}else{
+				session.save(new Sysprop("OAUSER",text_4.getText()));
+			}
+			if (pro7!=null){
+				session.merge(new Sysprop("OAPASS",text_5.getText()));
+			}else{
+				session.save(new Sysprop("OAPASS",text_5.getText()));
+			}
+			if (pro8!=null){
+				session.merge(new Sysprop("TGDO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
+			}else{
+				session.save(new Sysprop("TGDO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
+			}
+			if (pro9!=null){
+				session.merge(new Sysprop("TGUSER",text_6.getText()));
+			}else{
+				session.save(new Sysprop("TGUSER",text_6.getText()));
+			}
+			if (pro10!=null){
+				session.merge(new Sysprop("TGPASS",text_7.getText()));
+			}else{
+				session.save(new Sysprop("TGPASS",text_7.getText()));
+			}
+			if (pro11!=null){
+				session.merge(new Sysprop("DBDO",btnCheckButton_2.getSelection()?"TRUE":"FALSE"));
+			}else{
+				session.save(new Sysprop("DBDO",btnCheckButton_2.getSelection()?"TRUE":"FALSE"));
+			}
+			if (pro12!=null){
+				session.merge(new Sysprop("DBUSER",text_8.getText()));
+			}else{
+				session.save(new Sysprop("DBUSER",text_8.getText()));
+			}
+			if (pro13!=null){
+				session.merge(new Sysprop("DBPASS",text_9.getText()));
+			}else{
+				session.save(new Sysprop("DBPASS",text_9.getText()));
+			}
+			//session.save(item);
+			tran.commit();
+			new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "保存成功！", null , 2000l).open();
+		}catch(Exception ex){
+			new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, ex.toString(), null , 2000l).open();
+			ex.printStackTrace();
+		}finally{
+			HibernateUtil.closeSession();
+		}
+	}
+	
 	/**
 	 * 
 	 * 	1.USERID		UUID
@@ -67,20 +179,6 @@ public class DiaConfig extends Dialog {
 	 */
 	void init(){
 		try{
-			Sysprop pro1 = null;
-			Sysprop pro2 = null;
-			Sysprop pro3 = null;
-			Sysprop pro4 = null;
-			Sysprop pro5 = null;
-			Sysprop pro6 = null;
-			Sysprop pro7 = null;
-			Sysprop pro8 = null;
-			Sysprop pro9 = null;
-			Sysprop pro10 = null;
-			Sysprop pro11 = null;
-			Sysprop pro12 = null;
-			Sysprop pro13 = null;
-
 			Session session = HibernateUtil.currentSession();
 			Transaction tran = null;
 			tran = session.beginTransaction();
@@ -101,20 +199,88 @@ public class DiaConfig extends Dialog {
 			//session.save(item);
 			tran.commit();
 			
-		 	text.setText("");//			ID
-		 	text_1.setText("");//			USER
-		 	text_2.setText("");//			单位
-			text_3.setText("");//			部门
-			btnCheckButton.setSelection(true);// 	启用电报追踪
-			text_4.setText("");//			电报用户
-			text_5.setText("");//			电报密码
-			btnCheckButton_1.setSelection(true);// 公文追踪
-			text_6.setText("");//			公文用户
-			text_7.setText("");//			公文密码
-			btnCheckButton_2.setSelection(true);// 待办
-			text_8.setText("");//			待办用户
-			text_9.setText("");//			待办密码
-			
+		 	if (pro1==null){
+		 		text.setText(""+java.util.UUID.randomUUID());//			ID
+		 	}else{
+		 		text.setText(pro1.getV().toString().trim());
+		 	}
+		 	if (pro2==null){
+		 		text_1.setText(""+java.util.UUID.randomUUID());//			USER
+		 	}else{
+		 		text_1.setText(pro2.getV().toString().trim());
+		 	}
+		 	if (pro3==null){
+		 		text_2.setText("");//			单位
+		 	}else{
+		 		text_2.setText(pro3.getV().toString().trim());
+		 	}
+		 	if (pro4==null){
+		 		text_3.setText("");//			部门
+		 	}else{
+		 		text_3.setText(pro4.getV().toString().trim());
+		 	}
+		 	if (pro5==null){
+		 		btnCheckButton.setSelection(true);// 	启用电报追踪
+		 	}else{
+		 		if (pro5.getV().trim().toUpperCase().equals("TRUE")){
+		 			btnCheckButton.setSelection(true);// 启用电报追踪
+		 		}else if (pro5.getV().trim().toUpperCase().equals("FALSE")){
+		 			btnCheckButton.setSelection(false);// 启用电报追踪
+		 		}else{
+		 			btnCheckButton.setSelection(true);// 启用电报追踪
+		 		}		 	}
+		 	if (pro6==null){
+		 		text_4.setText("");//			电报用户
+		 	}else{
+		 		text_4.setText(pro6.getV().toString().trim());
+		 	}
+		 	if (pro7==null){
+		 		text_5.setText("");//			电报密码
+		 	}else{
+		 		text_5.setText(pro7.getV().toString().trim());
+		 	}
+		 	if (pro8==null){
+		 		btnCheckButton_1.setSelection(true);// 公文追踪
+		 	}else{
+		 		if (pro8.getV().trim().toUpperCase().equals("TRUE")){
+		 			btnCheckButton_1.setSelection(true);// 公文追踪
+		 		}else if (pro8.getV().trim().toUpperCase().equals("FALSE")){
+		 			btnCheckButton_1.setSelection(false);// 公文追踪
+		 		}else{
+		 			btnCheckButton_1.setSelection(true);// 公文追踪
+		 		}
+		 	}
+		 	if (pro9==null){
+		 		text_6.setText("");//			公文用户
+		 	}else{
+		 		text_6.setText(pro9.getV().toString().trim());
+		 	}
+		 	if (pro10==null){
+		 		text_7.setText("");//			公文密码
+		 	}else{
+		 		text_7.setText(pro10.getV().toString().trim());
+		 	}
+		 	if (pro11==null){
+		 		btnCheckButton_2.setSelection(true);// 待办
+		 	}else{
+		 		if (pro11.getV().trim().toUpperCase().equals("TRUE")){
+		 			btnCheckButton_2.setSelection(true);// 待办
+		 		}else if (pro11.getV().trim().toUpperCase().equals("FALSE")){
+		 			btnCheckButton_2.setSelection(false);//待办
+		 		}else{
+		 			btnCheckButton_2.setSelection(true);// 待办
+		 		}
+		 	}
+		 	if (pro12==null){
+		 		text_8.setText("");//			待办用户
+		 	}else{
+		 		text_8.setText(pro12.getV().toString().trim());
+		 	}
+		 	if (pro13==null){
+		 		text_9.setText("");//			待办密码
+		 	}else{
+		 		text_9.setText(pro13.getV().toString().trim());
+		 	}
 			Thread.sleep(100);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -322,6 +488,12 @@ public class DiaConfig extends Dialog {
 		new Label(composite, SWT.NONE);
 
 		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				save();
+			}
+		});
 		GridData gd_btnNewButton = new GridData(SWT.CENTER, SWT.CENTER, false,
 				false, 1, 1);
 		gd_btnNewButton.widthHint = 90;
