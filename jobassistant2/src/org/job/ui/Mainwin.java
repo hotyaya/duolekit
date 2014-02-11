@@ -1,5 +1,6 @@
 package org.job.ui;
 
+//import java.awt.Color;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
@@ -10,6 +11,12 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,70 +32,149 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.Session;
+import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
 import org.job.util.SWTResourceManager;
 
-import org.job.dao.HibernateUtil;
-
 public class Mainwin implements INotifyMessage {
-	protected Shell shell= null;
-	private Text text= null;
-	private Table table= null;
-	private Text text_1= null;
-	private Session session= null;
+	protected Shell shell = null;
+	private Text text = null;
+	private Table table = null;
+	private Text text_1 = null;
+	private Session session = null;
 	private Button btnNewButton_2 = null;
 	private Button btnNewButton_3 = null;
 	private Button btnNewButton_4 = null;
 	private Button btnNewButton_5 = null;
 	private Button btnNewButton_6 = null;
 
-	class Tip implements Runnable{
+	class Tip implements Runnable {
+
 		private String info = null;
+
 		public Tip(String info) {
 			super();
 			this.info = info;
 		}
+
 		@Override
 		public void run() {
 			String inf[] = info.split("\\|");
-			//System.out.println(info + "--" + inf.length);
-			if (btnNewButton_2!=null){ 
-				btnNewButton_2.setText(inf[2].substring(4,8)+"-"+inf[2].substring(9));
-				btnNewButton_2.setData(inf[2].substring(0,8));
+			String str = "";
+			String date = "";
+			if (btnNewButton_2 != null) {
+				date = inf[2].substring(0, 8);
+				str = inf[2].substring(4, 8) + "-" + inf[2].substring(9);
+				if (btnNewButton_2.getData() != null
+						&& date.trim().equals(
+								btnNewButton_2.getData().toString().trim())) {
+					if (!btnNewButton_2.getText().equals(str.trim())) {
+						btnNewButton_2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				btnNewButton_2.setData(date.trim());
+				btnNewButton_2.setText(str.trim());
 			}
-			if (btnNewButton_3!=null){
-				btnNewButton_3.setText(inf[3].substring(4,8)+"-"+inf[3].substring(9));
-				btnNewButton_3.setData(inf[3].substring(0,8));
+			if (btnNewButton_3 != null) {
+				date = inf[3].substring(0, 8);
+				str = inf[3].substring(4, 8) + "-" + inf[3].substring(9);
+				if (btnNewButton_3.getData() != null
+						&& date.trim().equals(
+								btnNewButton_3.getData().toString().trim())) {
+					if (!btnNewButton_3.getText().equals(str.trim())) {
+						btnNewButton_3.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				btnNewButton_3.setData(date.trim());
+				btnNewButton_3.setText(str.trim());
 			}
-			if (btnNewButton_4!=null){
-				btnNewButton_4.setText(inf[4].substring(4,8)+"-"+inf[4].substring(9));
-				btnNewButton_4.setData(inf[4].substring(0,8));
+			if (btnNewButton_4 != null) {
+				date = inf[4].substring(0, 8);
+				str = inf[4].substring(4, 8) + "-" + inf[4].substring(9);
+				if (btnNewButton_4.getData() != null
+						&& date.trim().equals(
+								btnNewButton_4.getData().toString().trim())) {
+					if (!btnNewButton_4.getText().equals(str.trim())) {
+						btnNewButton_4.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				btnNewButton_4.setData(date.trim());
+				btnNewButton_4.setText(str.trim());
 			}
-			if (btnNewButton_5!=null){
-				btnNewButton_5.setText(inf[5].substring(4,8)+"-"+inf[5].substring(9));
-				btnNewButton_5.setData(inf[5].substring(0,8));
+			if (btnNewButton_5 != null) {
+				date = inf[5].substring(0, 8);
+				str = inf[5].substring(4, 8) + "-" + inf[5].substring(9);
+				if (btnNewButton_5.getData() != null
+						&& date.trim().equals(
+								btnNewButton_5.getData().toString().trim())) {
+					if (!btnNewButton_5.getText().equals(str.trim())) {
+						btnNewButton_5.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				btnNewButton_5.setData(date.trim());
+				btnNewButton_5.setText(str.trim());
 			}
-			if (btnNewButton_6!=null){
-				btnNewButton_6.setText(inf[6].substring(4,8)+"-"+inf[6].substring(9));
-				btnNewButton_6.setData(inf[6].substring(0,8));
+			if (btnNewButton_6 != null) {
+				date = inf[6].substring(0, 8);
+				str = inf[6].substring(4, 8) + "-" + inf[6].substring(9);
+				if (btnNewButton_6.getData() != null
+						&& date.trim().equals(
+								btnNewButton_6.getData().toString().trim())) {
+					if (!btnNewButton_6.getText().equals(str.trim())) {
+						btnNewButton_6.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				btnNewButton_6.setData(date.trim());
+				btnNewButton_6.setText(str.trim());
 			}
 		}
-		
+
 	}
-	
+
+	private void fixSetBackground(Button button) {
+		Color foreground = button.getForeground();
+		Color background = button.getBackground();
+		int x = 0;
+		int y = 0;
+		Rectangle rect = button.getBounds();
+		int width = rect.width;
+		int height = rect.height;
+		String text = button.getText();
+		if (width == 0)
+			width = 1;
+		if (height == 0)
+			height = 1;
+		button.setImage(new Image(button.getParent().getDisplay(), width,height));
+		Image original = button.getImage();
+		GC gc = new GC(original);
+		gc.setForeground(foreground);
+		gc.setBackground(background);
+		gc.drawRectangle(x, y, width, height);
+		gc.fillRectangle(x, y, width, height);
+		Font font = button.getFont();
+		FontData fontData = font.getFontData()[0];
+		int fontSize = fontData.getHeight();
+		gc.setFont(button.getFont());
+		int ximg = (x + width) / 2 - fontSize * text.length() / 3;
+		int yimg = (y + height) / 2 - fontSize * 3 / 4;
+		gc.drawText(text, ximg < 4 ? ximg : 4, yimg < 4 ? yimg : 4,
+		SWT.DRAW_TRANSPARENT | SWT.DRAW_MNEMONIC);
+		gc.dispose();
+
+	}
+
 	@Override
 	public void notifyMessage(String info) {
-		if (info.startsWith("NEWFILE")){
-			String inf[] =info.split("\\|");
-			System.out.println(info+"--"+inf.length);
-		}else if (info.startsWith("TDOAYCOUNT")){
-			Display.getDefault().syncExec(new Tip(info)); //SWT 多线程 
-		}else{
-			
+		if (info.startsWith("NEWFILE")) {
+			String inf[] = info.split("\\|");
+			System.out.println(info + "--" + inf.length);
+		} else if (info.startsWith("TDOAYCOUNT")) {
+			Display.getDefault().syncExec(new Tip(info)); // SWT 多线程
+		} else {
+
 		}
-		
 	}
 
 	void init() {
@@ -140,6 +226,10 @@ public class Mainwin implements INotifyMessage {
 			temp = "电报";
 		} else if (cata.getType().trim().equals("OA")) {
 			temp = "公文";
+		} else if (cata.getType().trim().equals("DB")) {
+			item.setBackground(shell.getDisplay().getSystemColor(
+					SWT.COLOR_YELLOW));
+			temp = "待办";
 		} else {
 			temp = "文件";
 		}
@@ -176,7 +266,8 @@ public class Mainwin implements INotifyMessage {
 	}
 
 	private void today() {
-		text_1.setText(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD"));
+		text_1.setText(new JDateTime(System.currentTimeMillis())
+				.toString("YYYYMMDD"));
 	}
 
 	private void add1day() {
@@ -315,34 +406,44 @@ public class Mainwin implements INotifyMessage {
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnNewButton_2.getData()!=null)text_1.setText(btnNewButton_2.getData().toString());
+				if (btnNewButton_2.getData() != null)
+					text_1.setText(btnNewButton_2.getData().toString());
+				btnNewButton_2.setBackground(new Color(null, 240, 240, 240));
 			}
 		});
 		btnNewButton_3.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnNewButton_3.getData()!=null)text_1.setText(btnNewButton_3.getData().toString());
+				if (btnNewButton_3.getData() != null)
+					text_1.setText(btnNewButton_3.getData().toString());
+				btnNewButton_3.setBackground(new Color(null, 240, 240, 240));
 			}
 		});
 		btnNewButton_4.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnNewButton_4.getData()!=null)text_1.setText(btnNewButton_4.getData().toString());
+				if (btnNewButton_4.getData() != null)
+					text_1.setText(btnNewButton_4.getData().toString());
+				btnNewButton_4.setBackground(new Color(null, 240, 240, 240));
 			}
 		});
 		btnNewButton_5.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnNewButton_5.getData()!=null)text_1.setText(btnNewButton_5.getData().toString());
+				if (btnNewButton_5.getData() != null)
+					text_1.setText(btnNewButton_5.getData().toString());
+				btnNewButton_5.setBackground(new Color(null, 240, 240, 240));
 			}
 		});
 		btnNewButton_6.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (btnNewButton_6.getData()!=null)text_1.setText(btnNewButton_6.getData().toString());
+				if (btnNewButton_6.getData() != null)
+					text_1.setText(btnNewButton_6.getData().toString());
+				btnNewButton_6.setBackground(new Color(null, 240, 240, 240));
 			}
 		});
-		
+
 		Composite composite_2 = new Composite(composite, SWT.NONE);
 		GridData gd_composite_2 = new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 6, 1);

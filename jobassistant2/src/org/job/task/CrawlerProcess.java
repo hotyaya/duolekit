@@ -12,15 +12,15 @@ import jodd.util.MimeTypes;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.job.crawler.DBCrawler;
 import org.job.crawler.OACrawler;
 import org.job.crawler.TGCrawler;
+import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.dao.entity.Vcatadaynum;
 import org.job.dao.entity.VcatadaynumDAO;
 import org.job.interf.INotifyMessage;
-
-import org.job.dao.HibernateUtil;
 
 public class CrawlerProcess implements Runnable {
 	Vector<Doccatalog> v =  new Vector<Doccatalog>();
@@ -59,6 +59,11 @@ public class CrawlerProcess implements Runnable {
 				v.removeAllElements();//20140127
 				new OACrawler(v).docrawler();//加入办公文件的自动收集功能；
 				if (v.size() > 0) indb("OA");
+				Thread.sleep(1000 * 2);
+
+				v.removeAllElements();//20140211
+				new DBCrawler(v).docrawler();//加入办公文件的自动收集功能；
+				if (v.size() > 0) indb("DB");//待办公文；
 				Thread.sleep(1000 * 2);
 				
 				getCount();
