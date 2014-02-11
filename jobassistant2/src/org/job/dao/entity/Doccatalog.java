@@ -25,6 +25,12 @@ public class Doccatalog implements java.io.Serializable {
 	private Timestamp intimestamp;
 	private Boolean ishidden;
 	private Boolean islooked;
+	private Boolean istodo;
+	private Timestamp istodotime;
+	private String todomemo;
+	private Boolean isdoned;
+	private Timestamp isdonedtime;
+	private String donememo;
 
 	// Constructors
 
@@ -37,7 +43,9 @@ public class Doccatalog implements java.io.Serializable {
 			String docsender, String doccaption, String doccode,
 			String contact, String phone, String baseurl, String url,
 			Integer indate, Timestamp intimestamp, Boolean ishidden,
-			Boolean islooked) {
+			Boolean islooked, Boolean istodo, Timestamp istodotime,
+			String todomemo, Boolean isdoned, Timestamp isdonedtime,
+			String donememo) {
 		this.type = type;
 		this.docsenddate = docsenddate;
 		this.docsendtime = docsendtime;
@@ -52,6 +60,12 @@ public class Doccatalog implements java.io.Serializable {
 		this.intimestamp = intimestamp;
 		this.ishidden = ishidden;
 		this.islooked = islooked;
+		this.istodo = istodo;
+		this.istodotime = istodotime;
+		this.todomemo = todomemo;
+		this.isdoned = isdoned;
+		this.isdonedtime = isdonedtime;
+		this.donememo = donememo;
 	}
 
 	// Property accessors
@@ -174,6 +188,54 @@ public class Doccatalog implements java.io.Serializable {
 
 	public void setIslooked(Boolean islooked) {
 		this.islooked = islooked;
+	}
+
+	public Boolean getIstodo() {
+		return this.istodo;
+	}
+
+	public void setIstodo(Boolean istodo) {
+		this.istodo = istodo;
+	}
+
+	public Timestamp getIstodotime() {
+		return this.istodotime;
+	}
+
+	public void setIstodotime(Timestamp istodotime) {
+		this.istodotime = istodotime;
+	}
+
+	public String getTodomemo() {
+		return this.todomemo;
+	}
+
+	public void setTodomemo(String todomemo) {
+		this.todomemo = todomemo;
+	}
+
+	public Boolean getIsdoned() {
+		return this.isdoned;
+	}
+
+	public void setIsdoned(Boolean isdoned) {
+		this.isdoned = isdoned;
+	}
+
+	public Timestamp getIsdonedtime() {
+		return this.isdonedtime;
+	}
+
+	public void setIsdonedtime(Timestamp isdonedtime) {
+		this.isdonedtime = isdonedtime;
+	}
+
+	public String getDonememo() {
+		return this.donememo;
+	}
+
+	public void setDonememo(String donememo) {
+		this.donememo = donememo;
 	}
 
 }
