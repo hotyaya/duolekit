@@ -24,6 +24,7 @@ public class Doccatalog implements java.io.Serializable {
 	private Integer indate;
 	private Timestamp intimestamp;
 	private Boolean ishidden;
+	private Boolean islooked;
 
 	// Constructors
 
@@ -35,7 +36,8 @@ public class Doccatalog implements java.io.Serializable {
 	public Doccatalog(String type, Integer docsenddate, String docsendtime,
 			String docsender, String doccaption, String doccode,
 			String contact, String phone, String baseurl, String url,
-			Integer indate, Timestamp intimestamp, Boolean ishidden) {
+			Integer indate, Timestamp intimestamp, Boolean ishidden,
+			Boolean islooked) {
 		this.type = type;
 		this.docsenddate = docsenddate;
 		this.docsendtime = docsendtime;
@@ -49,6 +51,7 @@ public class Doccatalog implements java.io.Serializable {
 		this.indate = indate;
 		this.intimestamp = intimestamp;
 		this.ishidden = ishidden;
+		this.islooked = islooked;
 	}
 
 	// Property accessors
@@ -163,6 +166,14 @@ public class Doccatalog implements java.io.Serializable {
 
 	public void setIshidden(Boolean ishidden) {
 		this.ishidden = ishidden;
+	}
+
+	public Boolean getIslooked() {
+		return this.islooked;
+	}
+
+	public void setIslooked(Boolean islooked) {
+		this.islooked = islooked;
 	}
 
 }

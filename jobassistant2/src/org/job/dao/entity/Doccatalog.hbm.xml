@@ -49,5 +49,8 @@
         <property name="ishidden" type="java.lang.Boolean">
             <column name="ISHIDDEN" precision="1" scale="0" />
         </property>
+        <property name="islooked" type="java.lang.Boolean">
+            <column name="ISLOOKED" precision="1" scale="0" />
+        </property>
     </class>
 </hibernate-mapping>
