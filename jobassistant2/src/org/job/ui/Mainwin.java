@@ -138,38 +138,6 @@ public class Mainwin implements INotifyMessage {
 
 	}
 
-	private void fixSetBackground(Button button) {
-		Color foreground = button.getForeground();
-		Color background = button.getBackground();
-		int x = 0;
-		int y = 0;
-		Rectangle rect = button.getBounds();
-		int width = rect.width;
-		int height = rect.height;
-		String text = button.getText();
-		if (width == 0)
-			width = 1;
-		if (height == 0)
-			height = 1;
-		button.setImage(new Image(button.getParent().getDisplay(), width,height));
-		Image original = button.getImage();
-		GC gc = new GC(original);
-		gc.setForeground(foreground);
-		gc.setBackground(background);
-		gc.drawRectangle(x, y, width, height);
-		gc.fillRectangle(x, y, width, height);
-		Font font = button.getFont();
-		FontData fontData = font.getFontData()[0];
-		int fontSize = fontData.getHeight();
-		gc.setFont(button.getFont());
-		int ximg = (x + width) / 2 - fontSize * text.length() / 3;
-		int yimg = (y + height) / 2 - fontSize * 3 / 4;
-		gc.drawText(text, ximg < 4 ? ximg : 4, yimg < 4 ? yimg : 4,
-		SWT.DRAW_TRANSPARENT | SWT.DRAW_MNEMONIC);
-		gc.dispose();
-
-	}
-
 	@Override
 	public void notifyMessage(String info) {
 		if (info.startsWith("NEWFILE")) {
