@@ -52,5 +52,23 @@
         <property name="islooked" type="java.lang.Boolean">
             <column name="ISLOOKED" precision="1" scale="0" />
         </property>
+        <property name="istodo" type="java.lang.Boolean">
+            <column name="ISTODO" precision="1" scale="0" />
+        </property>
+        <property name="istodotime" type="java.sql.Timestamp">
+            <column name="ISTODOTIME" length="19" />
+        </property>
+        <property name="todomemo" type="java.lang.String">
+            <column name="TODOMEMO" length="200" />
+        </property>
+        <property name="isdoned" type="java.lang.Boolean">
+            <column name="ISDONED" precision="1" scale="0" />
+        </property>
+        <property name="isdonedtime" type="java.sql.Timestamp">
+            <column name="ISDONEDTIME" length="19" />
+        </property>
+        <property name="donememo" type="java.lang.String">
+            <column name="DONEMEMO" length="200" />
+        </property>
     </class>
 </hibernate-mapping>

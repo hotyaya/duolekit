@@ -72,6 +72,7 @@ public class Mainwin implements INotifyMessage {
 								btnNewButton_2.getData().toString().trim())) {
 					if (!btnNewButton_2.getText().equals(str.trim())) {
 						btnNewButton_2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_2.setData(date.trim());
@@ -85,6 +86,7 @@ public class Mainwin implements INotifyMessage {
 								btnNewButton_3.getData().toString().trim())) {
 					if (!btnNewButton_3.getText().equals(str.trim())) {
 						btnNewButton_3.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_3.setData(date.trim());
@@ -98,6 +100,7 @@ public class Mainwin implements INotifyMessage {
 								btnNewButton_4.getData().toString().trim())) {
 					if (!btnNewButton_4.getText().equals(str.trim())) {
 						btnNewButton_4.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_4.setData(date.trim());
@@ -111,6 +114,7 @@ public class Mainwin implements INotifyMessage {
 								btnNewButton_5.getData().toString().trim())) {
 					if (!btnNewButton_5.getText().equals(str.trim())) {
 						btnNewButton_5.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_5.setData(date.trim());
@@ -124,6 +128,7 @@ public class Mainwin implements INotifyMessage {
 								btnNewButton_6.getData().toString().trim())) {
 					if (!btnNewButton_6.getText().equals(str.trim())) {
 						btnNewButton_6.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_6.setData(date.trim());
@@ -227,12 +232,15 @@ public class Mainwin implements INotifyMessage {
 		} else if (cata.getType().trim().equals("OA")) {
 			temp = "公文";
 		} else if (cata.getType().trim().equals("DB")) {
-			item.setBackground(shell.getDisplay().getSystemColor(
-					SWT.COLOR_YELLOW));
 			temp = "待办";
 		} else {
 			temp = "文件";
 		}
+
+		if (cata.getIstodo()!=null && cata.getIstodo()){
+			item.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+		}
+		
 		item.setText(0, "" + temp);
 		// item.setText(2, ""+ cata.getDocsendtime());
 		// item.setText(3, ""+ cata.getDocsender());
@@ -409,6 +417,7 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_2.getData() != null)
 					text_1.setText(btnNewButton_2.getData().toString());
 				btnNewButton_2.setBackground(new Color(null, 240, 240, 240));
+				btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_3.addSelectionListener(new SelectionAdapter() {
@@ -417,6 +426,7 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_3.getData() != null)
 					text_1.setText(btnNewButton_3.getData().toString());
 				btnNewButton_3.setBackground(new Color(null, 240, 240, 240));
+				btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_4.addSelectionListener(new SelectionAdapter() {
@@ -425,6 +435,7 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_4.getData() != null)
 					text_1.setText(btnNewButton_4.getData().toString());
 				btnNewButton_4.setBackground(new Color(null, 240, 240, 240));
+				btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_5.addSelectionListener(new SelectionAdapter() {
@@ -433,6 +444,7 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_5.getData() != null)
 					text_1.setText(btnNewButton_5.getData().toString());
 				btnNewButton_5.setBackground(new Color(null, 240, 240, 240));
+				btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_6.addSelectionListener(new SelectionAdapter() {
@@ -441,6 +453,7 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_6.getData() != null)
 					text_1.setText(btnNewButton_6.getData().toString());
 				btnNewButton_6.setBackground(new Color(null, 240, 240, 240));
+				btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 			}
 		});
 

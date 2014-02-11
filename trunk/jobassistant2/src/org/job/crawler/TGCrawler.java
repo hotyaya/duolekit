@@ -186,6 +186,12 @@ public class TGCrawler {
 		item.setIntimestamp(new Timestamp(System.currentTimeMillis()));
 		item.setIshidden(filter(caption));
 		item.setIslooked(false);
+		item.setIstodo(false);//待办标识
+		item.setIstodotime(new Timestamp(System.currentTimeMillis()));//待办时间
+		item.setTodomemo("");//待办指示
+		item.setIsdoned(false);//办完标识
+		item.setIsdonedtime(new Timestamp(System.currentTimeMillis()));//办完时间
+		item.setDonememo("");//办完记录
 		if (doccatalog!=null){
 			doccatalog.add(item);
 		}
