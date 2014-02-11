@@ -1,0 +1,2 @@
+20140211
+1.为doccatalog数据表增加一个列islooked

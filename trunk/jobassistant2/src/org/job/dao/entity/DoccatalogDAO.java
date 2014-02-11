@@ -35,6 +35,7 @@ public class DoccatalogDAO extends BaseHibernateDAO {
 	public static final String URL = "url";
 	public static final String INDATE = "indate";
 	public static final String ISHIDDEN = "ishidden";
+	public static final String ISLOOKED = "islooked";
 
 	public void save(Doccatalog transientInstance) {
 		log.debug("saving Doccatalog instance");
@@ -146,6 +147,10 @@ public class DoccatalogDAO extends BaseHibernateDAO {
 
 	public List findByIshidden(Object ishidden) {
 		return findByProperty(ISHIDDEN, ishidden);
+	}
+
+	public List findByIslooked(Object islooked) {
+		return findByProperty(ISLOOKED, islooked);
 	}
 
 	public List findAll() {

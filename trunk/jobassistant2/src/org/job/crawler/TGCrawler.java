@@ -185,6 +185,7 @@ public class TGCrawler {
 		item.setIndate(Integer.parseInt(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD")));
 		item.setIntimestamp(new Timestamp(System.currentTimeMillis()));
 		item.setIshidden(filter(caption));
+		item.setIslooked(false);
 		if (doccatalog!=null){
 			doccatalog.add(item);
 		}
