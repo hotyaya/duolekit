@@ -23,6 +23,7 @@
 		<mapping resource="org/job/dao/entity/Docrecv.hbm.xml" />
 		<mapping resource="org/job/dao/entity/Vdocrecv.hbm.xml" />
 		<mapping resource="org/job/dao/entity/Vcatadaynum.hbm.xml" />
+		<mapping resource="org/job/dao/entity/Sysprop.hbm.xml" />
 	</session-factory>
 
 </hibernate-configuration>
