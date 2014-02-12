@@ -1,5 +1,6 @@
 package org.job.task;
 
+import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Vector;
@@ -12,6 +13,7 @@ import jodd.util.MimeTypes;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.job.Application;
 import org.job.crawler.DBCrawler;
 import org.job.crawler.OACrawler;
 import org.job.crawler.TGCrawler;
@@ -47,22 +49,33 @@ public class CrawlerProcess implements Runnable {
 
 	@Override
 	public void run() {
+		
+		String domain = "";
+		try{
+			domain = InetAddress.getLocalHost().getHostName();
+		}catch(Exception ex){
+			System.out.print("i");
+		}
+		
 		while(true){
 			try{
 				//读入配置文件!
 				//电报爬虫!
 				v.removeAllElements();//20140123
-				new TGCrawler(v).docrawler();
+				//new TGCrawler(v).docrawler("liuhui","890");
+				new TGCrawler(v).docrawler(Application.getV("TGUSER"),Application.getV("TGPASS"));
 				if (v.size() > 0) indb("TG");
 				Thread.sleep(1000 * 2);
 				
 				v.removeAllElements();//20140127
-				new OACrawler(v).docrawler();//加入办公文件的自动收集功能；
+				//new OACrawler(v).docrawler("zhanglan", "zl", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+				new OACrawler(v).docrawler(Application.getV("OAUSER"), Application.getV("OAPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
 				if (v.size() > 0) indb("OA");
 				Thread.sleep(1000 * 2);
 
 				v.removeAllElements();//20140211
-				new DBCrawler(v).docrawler();//加入办公文件的自动收集功能；
+				//new DBCrawler(v).docrawler("xxhclh", "a", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+				new DBCrawler(v).docrawler(Application.getV("DBUSER"), Application.getV("DBPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
 				if (v.size() > 0) indb("DB");//待办公文；
 				Thread.sleep(1000 * 2);
 				

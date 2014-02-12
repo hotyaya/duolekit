@@ -46,10 +46,10 @@ public class OACrawler {
 	}
 	
 	public static void main(String[] args) {
-		new OACrawler(new Vector<Doccatalog>()).docrawler();
+		new OACrawler(new Vector<Doccatalog>()).docrawler("zhanglan", "zl", "HUI-PC", "10.64.3.55");
 	}
 
-	public void docrawler() {
+	public void docrawler(String user,String pass,String domain,String serverip) {
 		Registry<AuthSchemeProvider> authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider>create()
 		        .register(AuthSchemes.NTLM, new JCIFSNTLMSchemeFactory())
 		        .register(AuthSchemes.BASIC, new BasicSchemeFactory())
@@ -63,8 +63,8 @@ public class OACrawler {
 		
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
 		credsProvider.setCredentials(AuthScope.ANY,
-		        new NTCredentials("zhanglan", "zl", "HUI-PC", "10.64.3.55"));
-		HttpHost target = new HttpHost("10.64.3.55", 80, "http");
+		        new NTCredentials(user,pass,domain,serverip));
+		HttpHost target = new HttpHost(serverip, 80, "http");
 		// Make sure the same context is used to execute logically related requests
 		HttpClientContext context = HttpClientContext.create();
 		context.setCredentialsProvider(credsProvider);
