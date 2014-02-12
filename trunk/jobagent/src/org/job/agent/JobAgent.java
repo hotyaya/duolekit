@@ -23,10 +23,8 @@ public class JobAgent extends Thread {
 			String pass, String agent) {
 		try {
 			// Create a connection to server
-			ConnectionConfiguration config = new ConnectionConfiguration(
-					serveraddress, 5222);
+			ConnectionConfiguration config = new ConnectionConfiguration(serveraddress, 5222);
 			con = new XMPPConnection(config);
-
 			// connect and login with the username and pwd on server
 			con.connect();
 			con.login(user, pass);// 20140208
@@ -57,7 +55,6 @@ public class JobAgent extends Thread {
 						});
 				}
 			});
-
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} finally {
