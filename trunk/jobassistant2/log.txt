@@ -1,3 +1,7 @@
+***********20140212
+加入
+
+
 ***********20140211
 1.为doccatalog数据表增加一个列islooked
 ALTER TABLE DOCCATALOG

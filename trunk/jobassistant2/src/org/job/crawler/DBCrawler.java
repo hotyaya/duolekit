@@ -3,6 +3,7 @@ package org.job.crawler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.util.Vector;
 
@@ -46,10 +47,10 @@ public class DBCrawler {
 	}
 	
 	public static void main(String[] args) {
-		new DBCrawler(new Vector<Doccatalog>()).docrawler();
+		new DBCrawler(new Vector<Doccatalog>()).docrawler("xxhclh", "a", "HUI-PC", "10.64.3.55");
 	}
 
-	public void docrawler() {
+	public void docrawler(String user,String pass,String domain,String serverip) {
 		Registry<AuthSchemeProvider> authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider>create()
 		        .register(AuthSchemes.NTLM, new JCIFSNTLMSchemeFactory())
 		        .register(AuthSchemes.BASIC, new BasicSchemeFactory())
@@ -60,11 +61,10 @@ public class DBCrawler {
 		CloseableHttpClient httpclient = HttpClients.custom()
 		        .setDefaultAuthSchemeRegistry(authSchemeRegistry)
 		        .build();
-		
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
 		credsProvider.setCredentials(AuthScope.ANY,
-		        new NTCredentials("xxhclh", "a", "HUI-PC", "10.64.3.55"));
-		HttpHost target = new HttpHost("10.64.3.55", 80, "http");
+		        new NTCredentials(user,pass,domain,serverip));
+		HttpHost target = new HttpHost(serverip, 80, "http");
 		// Make sure the same context is used to execute logically related requests
 		HttpClientContext context = HttpClientContext.create();
 		context.setCredentialsProvider(credsProvider);

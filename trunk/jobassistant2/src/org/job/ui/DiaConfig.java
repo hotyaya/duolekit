@@ -35,21 +35,39 @@ public class DiaConfig extends Dialog {
 	private Button btnCheckButton;
 	private Button btnCheckButton_1;
 	private Button btnCheckButton_2;
+	private Button btnCheckButton_3;
 
+	private Sysprop pro1 = null;
+	private Sysprop  pro2 = null;
+	private Sysprop  pro3 = null;
+	private Sysprop  pro4 = null;
+	private Sysprop  pro5 = null;
+	private Sysprop  pro6 = null;
+	private Sysprop  pro7 = null;
+	private Sysprop  pro8 = null;
+	private Sysprop  pro9 = null;
+	private Sysprop  pro10 = null;
+	private Sysprop  pro11 = null;
+	private Sysprop  pro12 = null;
+	private Sysprop  pro13 = null;
+	private Sysprop  pro14 = null;
 	
-	Sysprop pro1 = null;
-	Sysprop pro2 = null;
-	Sysprop pro3 = null;
-	Sysprop pro4 = null;
-	Sysprop pro5 = null;
-	Sysprop pro6 = null;
-	Sysprop pro7 = null;
-	Sysprop pro8 = null;
-	Sysprop pro9 = null;
-	Sysprop pro10 = null;
-	Sysprop pro11 = null;
-	Sysprop pro12 = null;
-	Sysprop pro13 = null;
+	void init0(){
+		pro1 = null;
+		pro2 = null;
+		pro3 = null;
+		pro4 = null;
+		pro5 = null;
+		pro6 = null;
+		pro7 = null;
+		pro8 = null;
+		pro9 = null;
+		pro10 = null;
+		pro11 = null;
+		pro12 = null;
+		pro13 = null;
+		pro14 = null;	
+	}
 	
 	/**
 	pro1 = dao.findById("USERID");
@@ -71,7 +89,6 @@ public class DiaConfig extends Dialog {
 			Session session = HibernateUtil.currentSession();
 			Transaction tran = null;
 			tran = session.beginTransaction();
-			//SyspropDAO dao =new SyspropDAO();
 			if (pro1!=null){
 				session.merge(new Sysprop("USERID",text.getText()));
 			}else{
@@ -93,9 +110,9 @@ public class DiaConfig extends Dialog {
 				session.save(new Sysprop("USERDEPT",text_3.getText()));
 			}
 			if (pro5!=null){
-				session.merge(new Sysprop("OADO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
+				session.merge(new Sysprop("OADO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
 			}else{
-				session.save(new Sysprop("OADO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
+				session.save(new Sysprop("OADO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
 			}
 			if (pro6!=null){
 				session.merge(new Sysprop("OAUSER",text_4.getText()));
@@ -108,9 +125,9 @@ public class DiaConfig extends Dialog {
 				session.save(new Sysprop("OAPASS",text_5.getText()));
 			}
 			if (pro8!=null){
-				session.merge(new Sysprop("TGDO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
+				session.merge(new Sysprop("TGDO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
 			}else{
-				session.save(new Sysprop("TGDO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
+				session.save(new Sysprop("TGDO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
 			}
 			if (pro9!=null){
 				session.merge(new Sysprop("TGUSER",text_6.getText()));
@@ -137,15 +154,22 @@ public class DiaConfig extends Dialog {
 			}else{
 				session.save(new Sysprop("DBPASS",text_9.getText()));
 			}
+			if (pro14!=null){
+				session.merge(new Sysprop("STARTCONFIG",btnCheckButton_3.getSelection()?"TRUE":"FALSE"));
+			}else{
+				session.save(new Sysprop("STARTCONFIG",btnCheckButton_3.getSelection()?"TRUE":"FALSE"));
+			}
 			//session.save(item);
 			tran.commit();
 			new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "保存成功！", null , 2000l).open();
+			Thread.sleep(100);
 		}catch(Exception ex){
 			new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, ex.toString(), null , 2000l).open();
 			ex.printStackTrace();
 		}finally{
 			HibernateUtil.closeSession();
 		}
+		init();//重新初始化下！
 	}
 	
 	/**
@@ -176,26 +200,31 @@ public class DiaConfig extends Dialog {
 		btnCheckButton_2 待办
 		text_8			待办用户
 		text_9			待办密码
+		btnCheckButton_3 启动时显示 
 	 */
 	void init(){
 		try{
+			init0();
 			Session session = HibernateUtil.currentSession();
-			Transaction tran = null;
-			tran = session.beginTransaction();
+			Transaction tran = session.beginTransaction();
 			SyspropDAO dao =new SyspropDAO();
 			pro1 = dao.findById("USERID");
 			pro2 = dao.findById("USERNAME");
 			pro3 = dao.findById("USERUNIT");
 			pro4 = dao.findById("USERDEPT");
+			
 			pro5 = dao.findById("OADO");
 			pro6 = dao.findById("OAUSER");
 			pro7 = dao.findById("OAPASS");
+			
 			pro8 = dao.findById("TGDO");
 			pro9 = dao.findById("TGUSER");
 			pro10 = dao.findById("TGPASS");
+			
 			pro11 = dao.findById("DBDO");
 			pro12 = dao.findById("DBUSER");
 			pro13 = dao.findById("DBPASS");
+			pro14 = dao.findById("STARTCONFIG");
 			//session.save(item);
 			tran.commit();
 			
@@ -219,49 +248,62 @@ public class DiaConfig extends Dialog {
 		 	}else{
 		 		text_3.setText(pro4.getV().toString().trim());
 		 	}
+		 	
+		 	
+		 	/********************************************************
+		 	 * 公文段
+		 	 *********************************************************/
 		 	if (pro5==null){
-		 		btnCheckButton.setSelection(true);// 	启用电报追踪
+		 		btnCheckButton_1.setSelection(false);// 	启用公文追踪
 		 	}else{
 		 		if (pro5.getV().trim().toUpperCase().equals("TRUE")){
-		 			btnCheckButton.setSelection(true);// 启用电报追踪
+		 			btnCheckButton_1.setSelection(true);// 启用公文追踪
 		 		}else if (pro5.getV().trim().toUpperCase().equals("FALSE")){
-		 			btnCheckButton.setSelection(false);// 启用电报追踪
+		 			btnCheckButton_1.setSelection(false);// 启用公文追踪
 		 		}else{
-		 			btnCheckButton.setSelection(true);// 启用电报追踪
+		 			btnCheckButton_1.setSelection(true);// 启用公文追踪
 		 		}		 	}
 		 	if (pro6==null){
-		 		text_4.setText("");//			电报用户
+		 		text_4.setText("");//			公文追踪用户
 		 	}else{
 		 		text_4.setText(pro6.getV().toString().trim());
 		 	}
 		 	if (pro7==null){
-		 		text_5.setText("");//			电报密码
+		 		text_5.setText("");//			公文追踪密码
 		 	}else{
 		 		text_5.setText(pro7.getV().toString().trim());
 		 	}
+		 	
+		 	/********************************************************
+		 	 * 电报段
+		 	 *********************************************************/
 		 	if (pro8==null){
-		 		btnCheckButton_1.setSelection(true);// 公文追踪
+		 		btnCheckButton.setSelection(false);// 电报追踪
 		 	}else{
 		 		if (pro8.getV().trim().toUpperCase().equals("TRUE")){
-		 			btnCheckButton_1.setSelection(true);// 公文追踪
+		 			btnCheckButton.setSelection(true);//电报追踪
 		 		}else if (pro8.getV().trim().toUpperCase().equals("FALSE")){
-		 			btnCheckButton_1.setSelection(false);// 公文追踪
+		 			btnCheckButton.setSelection(false);// 电报追踪
 		 		}else{
-		 			btnCheckButton_1.setSelection(true);// 公文追踪
+		 			btnCheckButton.setSelection(true);//电报追踪
 		 		}
 		 	}
 		 	if (pro9==null){
-		 		text_6.setText("");//			公文用户
+		 		text_6.setText("");//			电报追踪用户
 		 	}else{
 		 		text_6.setText(pro9.getV().toString().trim());
 		 	}
 		 	if (pro10==null){
-		 		text_7.setText("");//			公文密码
+		 		text_7.setText("");//			电报追踪密码
 		 	}else{
 		 		text_7.setText(pro10.getV().toString().trim());
 		 	}
+		 	
+		 	/********************************************************
+		 	 * 待办段
+		 	 *********************************************************/
 		 	if (pro11==null){
-		 		btnCheckButton_2.setSelection(true);// 待办
+		 		btnCheckButton_2.setSelection(false);// 待办
 		 	}else{
 		 		if (pro11.getV().trim().toUpperCase().equals("TRUE")){
 		 			btnCheckButton_2.setSelection(true);// 待办
@@ -281,7 +323,19 @@ public class DiaConfig extends Dialog {
 		 	}else{
 		 		text_9.setText(pro13.getV().toString().trim());
 		 	}
-			Thread.sleep(100);
+
+		 	if (pro14==null){
+		 		btnCheckButton_3.setSelection(false);// 待办
+		 	}else{
+		 		if (pro14.getV().trim().toUpperCase().equals("TRUE")){
+		 			btnCheckButton_3.setSelection(true);// 待办
+		 		}else if (pro11.getV().trim().toUpperCase().equals("FALSE")){
+		 			btnCheckButton_3.setSelection(false);//待办
+		 		}else{
+		 			btnCheckButton_3.setSelection(true);// 待办
+		 		}
+		 	}
+		 	//Thread.sleep(50);
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}finally{
@@ -332,7 +386,7 @@ public class DiaConfig extends Dialog {
 	public Object open() {
 		createContents();
 		init();//20140211
-		setScreenPoint(shell);//居中；
+		setScreenPoint(shell);
 		shell.open();
 		shell.layout();
 		Display display = getParent().getDisplay();
@@ -349,7 +403,7 @@ public class DiaConfig extends Dialog {
 	 */
 	private void createContents() {
 		shell = new Shell(getParent(), getStyle());
-		shell.setSize(455, 372);
+		shell.setSize(455, 395);
 		shell.setText("配置与选项");
 		shell.setLayout(new GridLayout(4, false));
 
@@ -408,113 +462,99 @@ public class DiaConfig extends Dialog {
 		lblNewLabel_4.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
 				false, 1, 1));
 		lblNewLabel_4.setText("电报用户");
-
-		text_4 = new Text(shell, SWT.BORDER);
-		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		
+				text_6 = new Text(shell, SWT.BORDER);
+				text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
 
 		Label lblNewLabel_5 = new Label(shell, SWT.NONE);
 		lblNewLabel_5.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
 				false, 1, 1));
 		lblNewLabel_5.setText("电报密码");
-
-		text_5 = new Text(shell, SWT.BORDER);
-		text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		
+				text_7 = new Text(shell, SWT.BORDER);
+				text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
 		new Label(shell, SWT.NONE);
 
 		btnCheckButton_1 = new Button(shell, SWT.CHECK);
 		btnCheckButton_1.setText("启用公文收文追踪");
 		new Label(shell, SWT.NONE);
 		new Label(shell, SWT.NONE);
-
-		Label label = new Label(shell, SWT.NONE);
-		label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
-				1, 1));
-		label.setText("公文用户");
-
-		text_6 = new Text(shell, SWT.BORDER);
-		text_6.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
-
-		Label lblNewLabel_6 = new Label(shell, SWT.NONE);
-		lblNewLabel_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
-		lblNewLabel_6.setText("公文密码");
-
-		text_7 = new Text(shell, SWT.BORDER);
-		text_7.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
+		
+				Label label = new Label(shell, SWT.NONE);
+				label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
+						1, 1));
+				label.setText("公文用户");
+		
+				text_4 = new Text(shell, SWT.BORDER);
+				text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
+		
+				Label lblNewLabel_6 = new Label(shell, SWT.NONE);
+				lblNewLabel_6.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+						false, 1, 1));
+				lblNewLabel_6.setText("公文密码");
+		
+				text_5 = new Text(shell, SWT.BORDER);
+				text_5.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
+				new Label(shell, SWT.NONE);
+		
+				btnCheckButton_2 = new Button(shell, SWT.CHECK);
+				btnCheckButton_2.setText("启用公文待办追踪");
+				new Label(shell, SWT.NONE);
 		new Label(shell, SWT.NONE);
-
-		btnCheckButton_2 = new Button(shell, SWT.CHECK);
-		btnCheckButton_2.setText("启用公文待办追踪");
-		new Label(shell, SWT.NONE);
-		new Label(shell, SWT.NONE);
-
-		Label lblNewLabel_7 = new Label(shell, SWT.NONE);
-		lblNewLabel_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
-		lblNewLabel_7.setText("待办用户");
-
-		text_8 = new Text(shell, SWT.BORDER);
-		text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
-
-		Label lblNewLabel_8 = new Label(shell, SWT.NONE);
-		lblNewLabel_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
-				false, 1, 1));
-		lblNewLabel_8.setText("待办密码");
-
-		text_9 = new Text(shell, SWT.BORDER);
-		text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
-				1));
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		composite.setLayout(new GridLayout(8, false));
-		GridData gd_composite = new GridData(SWT.FILL, SWT.CENTER, false,
-				false, 4, 1);
-		gd_composite.heightHint = 66;
-		composite.setLayoutData(gd_composite);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-
-		Button btnNewButton = new Button(composite, SWT.NONE);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				save();
-			}
-		});
-		GridData gd_btnNewButton = new GridData(SWT.CENTER, SWT.CENTER, false,
-				false, 1, 1);
-		gd_btnNewButton.widthHint = 90;
-		btnNewButton.setLayoutData(gd_btnNewButton);
-		btnNewButton.setText("保存");
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-
-		Button btnNewButton_1 = new Button(composite, SWT.NONE);
-		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				exit();
-			}
-		});
-		GridData gd_btnNewButton_1 = new GridData(SWT.LEFT, SWT.CENTER, false,
-				false, 1, 1);
-		gd_btnNewButton_1.widthHint = 90;
-		btnNewButton_1.setLayoutData(gd_btnNewButton_1);
-		btnNewButton_1.setText("退出");
+		
+				Label lblNewLabel_7 = new Label(shell, SWT.NONE);
+				lblNewLabel_7.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+						false, 1, 1));
+				lblNewLabel_7.setText("待办用户");
+		
+				text_8 = new Text(shell, SWT.BORDER);
+				text_8.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
+		
+				Label lblNewLabel_8 = new Label(shell, SWT.NONE);
+				lblNewLabel_8.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false,
+						false, 1, 1));
+				lblNewLabel_8.setText("待办密码");
+		
+				text_9 = new Text(shell, SWT.BORDER);
+				text_9.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
+						1));
+				new Label(shell, SWT.NONE);
+				
+				btnCheckButton_3 = new Button(shell, SWT.CHECK);
+				btnCheckButton_3.setText("启动系统时显示");
+				new Label(shell, SWT.NONE);
+				new Label(shell, SWT.NONE);
+		
+				Composite composite = new Composite(shell, SWT.NONE);
+				composite.setLayout(null);
+				GridData gd_composite = new GridData(SWT.FILL, SWT.CENTER, false,
+						false, 4, 1);
+				gd_composite.heightHint = 66;
+				composite.setLayoutData(gd_composite);
+				
+						Button btnNewButton = new Button(composite, SWT.NONE);
+						btnNewButton.setBounds(68, 27, 90, 27);
+						btnNewButton.addSelectionListener(new SelectionAdapter() {
+							@Override
+							public void widgetSelected(SelectionEvent e) {
+								save();
+							}
+						});
+						btnNewButton.setText("保存");
+						
+								Button btnNewButton_1 = new Button(composite, SWT.NONE);
+								btnNewButton_1.setBounds(256, 27, 90, 27);
+								btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+									@Override
+									public void widgetSelected(SelectionEvent e) {
+										exit();
+									}
+								});
+								btnNewButton_1.setText("退出");
 	}
 }

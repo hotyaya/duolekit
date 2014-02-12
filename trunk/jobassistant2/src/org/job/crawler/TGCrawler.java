@@ -42,10 +42,10 @@ public class TGCrawler {
 	}
 	
 	public static void main(String[] args) {
-		new TGCrawler(new Vector<Doccatalog>()).docrawler();
+		new TGCrawler(new Vector<Doccatalog>()).docrawler("liuhui","890");
 	}
 
-	public void docrawler() {
+	public void docrawler(String user,String pass) {
 		CloseableHttpClient httpclient = HttpClients.custom()
 				.setRedirectStrategy(new DefaultRedirectStrategy() {
 					@Override
@@ -87,8 +87,8 @@ public class TGCrawler {
 		HttpResponse response;
 		String username = "ljxxczhk";
 		String password = "a";
-		username = "liuhui";
-		password = "890";
+		username = user;
+		password = pass;
 		
 		/* 创建post连接 */
 		HttpPost httpPost = new HttpPost(url);

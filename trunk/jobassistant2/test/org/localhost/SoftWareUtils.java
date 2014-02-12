@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.Properties;
 
 public class SoftWareUtils {
@@ -158,16 +161,31 @@ public class SoftWareUtils {
 
 	public static void main(String[] args) {
 		
+		try {
+			System.out.println(InetAddress.getLocalHost().getHostName());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Properties pro = System.getProperties();
+		Enumeration enu = pro.keys();
+		while (enu.hasMoreElements()) {
+			String key=enu.nextElement().toString().trim();
+			System.out.println(key+":"+pro.getProperty(key));
+		}
+		
+		
+		
 		System.out.println(pro.toString());
-		Properties local = new Properties();
-		local.put("", "");
-		local.get("");
-
-		System.out.println("CPU  SN:" + SoftWareUtils.getCPUSerial());
-		System.out.println("主板   SN:" + SoftWareUtils.getMotherboardSN());
-		System.out.println("C盘     SN:" + SoftWareUtils.getHardDiskSN("c"));
-		SoftWareUtils.getMac();
+//		Properties local = new Properties();
+//		local.put("", "");
+//		local.get("");
+//
+//		System.out.println("CPU  SN:" + SoftWareUtils.getCPUSerial());
+//		System.out.println("主板   SN:" + SoftWareUtils.getMotherboardSN());
+//		System.out.println("C盘     SN:" + SoftWareUtils.getHardDiskSN("c"));
+//		SoftWareUtils.getMac();
 		//System.out.println("MAC  SN:" + );
 	}
 
