@@ -37,7 +37,7 @@ public class DiaConfig extends Dialog {
 	private Button btnCheckButton_2;
 	private Button btnCheckButton_3;
 
-	private Sysprop pro1 = null;
+	private Sysprop  pro1 = null;
 	private Sysprop  pro2 = null;
 	private Sysprop  pro3 = null;
 	private Sysprop  pro4 = null;
@@ -93,72 +93,87 @@ public class DiaConfig extends Dialog {
 				session.merge(new Sysprop("USERID",text.getText()));
 			}else{
 				session.save(new Sysprop("USERID",text.getText()));
+				pro1 = new Sysprop("USERID",text.getText());
 			}
 			if (pro2!=null){
 				session.merge(new Sysprop("USERNAME",text_1.getText()));
 			}else{
 				session.save(new Sysprop("USERNAME",text_1.getText()));
+				pro2 = new Sysprop("USERNAME",text_1.getText());
 			}
 			if (pro3!=null){
 				session.merge(new Sysprop("USERUNIT",text_2.getText()));
 			}else{
 				session.save(new Sysprop("USERUNIT",text_2.getText()));
+				pro3 = new Sysprop("USERUNIT",text_2.getText());
 			}
 			if (pro4!=null){
 				session.merge(new Sysprop("USERDEPT",text_3.getText()));
 			}else{
 				session.save(new Sysprop("USERDEPT",text_3.getText()));
+				pro4 = new Sysprop("USERDEPT",text_3.getText());
 			}
 			if (pro5!=null){
 				session.merge(new Sysprop("OADO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
 			}else{
 				session.save(new Sysprop("OADO",btnCheckButton_1.getSelection()?"TRUE":"FALSE"));
+				pro5 =new Sysprop("OADO",btnCheckButton_1.getSelection()?"TRUE":"FALSE");
 			}
 			if (pro6!=null){
 				session.merge(new Sysprop("OAUSER",text_4.getText()));
 			}else{
 				session.save(new Sysprop("OAUSER",text_4.getText()));
+				pro6 = new Sysprop("OAUSER",text_4.getText());
 			}
 			if (pro7!=null){
 				session.merge(new Sysprop("OAPASS",text_5.getText()));
 			}else{
 				session.save(new Sysprop("OAPASS",text_5.getText()));
+				pro7 = new Sysprop("OAPASS",text_5.getText());
 			}
 			if (pro8!=null){
 				session.merge(new Sysprop("TGDO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
 			}else{
 				session.save(new Sysprop("TGDO",btnCheckButton.getSelection()?"TRUE":"FALSE"));
+				pro8 = new Sysprop("TGDO",btnCheckButton.getSelection()?"TRUE":"FALSE");
 			}
 			if (pro9!=null){
 				session.merge(new Sysprop("TGUSER",text_6.getText()));
 			}else{
 				session.save(new Sysprop("TGUSER",text_6.getText()));
+				pro9 = new Sysprop("TGUSER",text_6.getText());
 			}
 			if (pro10!=null){
 				session.merge(new Sysprop("TGPASS",text_7.getText()));
 			}else{
 				session.save(new Sysprop("TGPASS",text_7.getText()));
+				pro10 = new Sysprop("TGPASS",text_7.getText());
 			}
 			if (pro11!=null){
 				session.merge(new Sysprop("DBDO",btnCheckButton_2.getSelection()?"TRUE":"FALSE"));
 			}else{
 				session.save(new Sysprop("DBDO",btnCheckButton_2.getSelection()?"TRUE":"FALSE"));
+				pro11 = new Sysprop("DBDO",btnCheckButton_2.getSelection()?"TRUE":"FALSE");
 			}
 			if (pro12!=null){
 				session.merge(new Sysprop("DBUSER",text_8.getText()));
 			}else{
 				session.save(new Sysprop("DBUSER",text_8.getText()));
+				pro12 = new Sysprop("DBUSER",text_8.getText());
 			}
 			if (pro13!=null){
 				session.merge(new Sysprop("DBPASS",text_9.getText()));
 			}else{
 				session.save(new Sysprop("DBPASS",text_9.getText()));
+				pro13 = new Sysprop("DBPASS",text_9.getText());
 			}
 			if (pro14!=null){
 				session.merge(new Sysprop("STARTCONFIG",btnCheckButton_3.getSelection()?"TRUE":"FALSE"));
 			}else{
 				session.save(new Sysprop("STARTCONFIG",btnCheckButton_3.getSelection()?"TRUE":"FALSE"));
+				pro14= new Sysprop("STARTCONFIG",btnCheckButton_3.getSelection()?"TRUE":"FALSE");
 			}
+			
 			//session.save(item);
 			tran.commit();
 			new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "保存成功！", null , 2000l).open();
@@ -169,7 +184,7 @@ public class DiaConfig extends Dialog {
 		}finally{
 			HibernateUtil.closeSession();
 		}
-		init();//重新初始化下！
+		//init();//重新初始化下！
 	}
 	
 	/**
@@ -204,7 +219,8 @@ public class DiaConfig extends Dialog {
 	 */
 	void init(){
 		try{
-			init0();
+			//init0();
+			
 			Session session = HibernateUtil.currentSession();
 			Transaction tran = session.beginTransaction();
 			SyspropDAO dao =new SyspropDAO();
@@ -262,7 +278,8 @@ public class DiaConfig extends Dialog {
 		 			btnCheckButton_1.setSelection(false);// 启用公文追踪
 		 		}else{
 		 			btnCheckButton_1.setSelection(true);// 启用公文追踪
-		 		}		 	}
+		 		}		 	
+		 	}
 		 	if (pro6==null){
 		 		text_4.setText("");//			公文追踪用户
 		 	}else{
@@ -344,7 +361,7 @@ public class DiaConfig extends Dialog {
 	}
 	
 	void exit() {
-		this.getParent().dispose();
+		shell.dispose();
 	}
 
 	public static void main(String[] args) {
@@ -526,6 +543,7 @@ public class DiaConfig extends Dialog {
 				new Label(shell, SWT.NONE);
 				
 				btnCheckButton_3 = new Button(shell, SWT.CHECK);
+				btnCheckButton_3.setEnabled(false);
 				btnCheckButton_3.setText("启动系统时显示");
 				new Label(shell, SWT.NONE);
 				new Label(shell, SWT.NONE);

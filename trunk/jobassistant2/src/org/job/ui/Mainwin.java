@@ -12,11 +12,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,12 +26,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
-import org.job.util.SWTResourceManager;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -50,6 +45,27 @@ public class Mainwin implements INotifyMessage {
 	private Button btnNewButton_5 = null;
 	private Button btnNewButton_6 = null;
 
+	/**
+	 * @author Hui 
+	 */
+	public void exit(){
+		System.exit(0);
+	}
+	/**
+	 * @author Hui
+	 */
+	public void config(){
+		DiaConfig dc = new DiaConfig(shell, SWT.ICON_INFORMATION);
+		dc.open();
+	}
+	/**
+	 * @author Hui
+	 */
+	DiaAbout da = new DiaAbout(new Shell(), SWT.ICON_INFORMATION);
+	public void about(){
+		da.open();
+	}
+	
 	class Tip implements Runnable {
 
 		private String info = null;
@@ -299,14 +315,50 @@ public class Mainwin implements INotifyMessage {
 		Menu menu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menu);
 
-		MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
+		MenuItem mntmNewItem = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem.setText("系统");
+		
+		Menu menu_1 = new Menu(mntmNewItem);
+		mntmNewItem.setMenu(menu_1);
+		
+		MenuItem mntmNewItem_3 = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_3.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				exit();
+			}
+		});
+		mntmNewItem_3.setText("退出");
 
-		MenuItem mntmNewItem_1 = new MenuItem(menu, SWT.NONE);
+		MenuItem mntmNewItem_1 = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem_1.setText("设置");
+		
+		Menu menu_2 = new Menu(mntmNewItem_1);
+		mntmNewItem_1.setMenu(menu_2);
+		
+		MenuItem mntmNewItem_4 = new MenuItem(menu_2, SWT.NONE);
+		mntmNewItem_4.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				config();
+			}
+		});
+		mntmNewItem_4.setText("选项");
 
-		MenuItem mntmNewItem_2 = new MenuItem(menu, SWT.NONE);
+		MenuItem mntmNewItem_2 = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem_2.setText("帮助");
+		
+		Menu menu_3 = new Menu(mntmNewItem_2);
+		mntmNewItem_2.setMenu(menu_3);
+		
+		MenuItem mntmNewItem_5 = new MenuItem(menu_3, SWT.NONE);
+		mntmNewItem_5.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				about();
+			}
+		});
+		mntmNewItem_5.setText("关于");
 
 		Composite composite = new Composite(shell, SWT.BORDER);
 		composite.setFont(SWTResourceManager.getFont("微软雅黑", 11, SWT.NORMAL));
@@ -473,5 +525,4 @@ public class Mainwin implements INotifyMessage {
 
 		init();
 	}
-
 }
