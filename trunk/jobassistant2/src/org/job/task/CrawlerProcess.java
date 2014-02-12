@@ -38,7 +38,6 @@ public class CrawlerProcess implements Runnable {
 		}
 	}
 	
-	
 	/**
 	 * @param args
 	 */
@@ -59,28 +58,34 @@ public class CrawlerProcess implements Runnable {
 		
 		while(true){
 			try{
-				//读入配置文件!
-				//电报爬虫!
-				v.removeAllElements();//20140123
-				//new TGCrawler(v).docrawler("liuhui","890");
-				new TGCrawler(v).docrawler(Application.getV("TGUSER"),Application.getV("TGPASS"));
-				if (v.size() > 0) indb("TG");
-				Thread.sleep(1000 * 2);
+				//TODO 读入配置文件!
 				
-				v.removeAllElements();//20140127
-				//new OACrawler(v).docrawler("zhanglan", "zl", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
-				new OACrawler(v).docrawler(Application.getV("OAUSER"), Application.getV("OAPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
-				if (v.size() > 0) indb("OA");
-				Thread.sleep(1000 * 2);
-
-				v.removeAllElements();//20140211
-				//new DBCrawler(v).docrawler("xxhclh", "a", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
-				new DBCrawler(v).docrawler(Application.getV("DBUSER"), Application.getV("DBPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
-				if (v.size() > 0) indb("DB");//待办公文；
-				Thread.sleep(1000 * 2);
+				//电报爬虫!
+				if (Application.getV("TGDO").trim().toUpperCase().equals("TRUE")){
+					v.removeAllElements();//20140123
+					//new TGCrawler(v).docrawler("liuhui","890");
+					new TGCrawler(v).docrawler(Application.getV("TGUSER"),Application.getV("TGPASS"));
+					if (v.size() > 0) indb("TG");
+					Thread.sleep(1000 * 2);
+				}
+				//OA公文
+				if (Application.getV("OADO").trim().toUpperCase().equals("TRUE")){
+					v.removeAllElements();//20140127
+					//new OACrawler(v).docrawler("zhanglan", "zl", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+					new OACrawler(v).docrawler(Application.getV("OAUSER"), Application.getV("OAPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+					if (v.size() > 0) indb("OA");
+					Thread.sleep(1000 * 2);
+				}
+				//待办
+				if (Application.getV("DBDO").trim().toUpperCase().equals("TRUE")){
+					v.removeAllElements();//20140211
+					//new DBCrawler(v).docrawler("xxhclh", "a", domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+					new DBCrawler(v).docrawler(Application.getV("DBUSER"), Application.getV("DBPASS"), domain.trim(), "10.64.3.55");//加入办公文件的自动收集功能；
+					if (v.size() > 0) indb("DB");//待办公文；
+					Thread.sleep(1000 * 2);
+				}
 				
 				getCount();
-				
 				System.gc();
 				Thread.sleep(1000 * 60 * 5); //5分钟 60 *
 			}catch(Exception ex){
@@ -152,12 +157,16 @@ public class CrawlerProcess implements Runnable {
 					temp ="电报";
 				}else if (ctag.equals("OA")){
 					temp ="公文";
+				}else if (ctag.equals("DB")){
+					temp ="待办";
 				}else{
 					temp ="其它";
 				}
 				System.out.println("\n"+"insert " + newcount + "项" + temp + " recodes ok!" + new Timestamp(System.currentTimeMillis()).toString());
 				notifyListener("NEWFILE"+"|"+ctag+"|"+newcount);
-				mail(info);
+				if (Application.getV("MAILDO")!=null && Application.getV("MAILDO").trim().toUpperCase().equals("TRUE")){
+					new Thread(new MailProcess(info)).start();
+				}
 			}else{
 				System.out.print("+");
 				//mail("-");
@@ -167,26 +176,4 @@ public class CrawlerProcess implements Runnable {
 		}
 	}
 	
-	private void mail(String text) {
-		try{
-			Email email = Email.create();
-			EmailMessage textMessage = new EmailMessage(text, MimeTypes.MIME_TEXT_PLAIN);
-			//email.subject("单位新文件提醒");
-			email.addMessage(textMessage);
-			//email.addText("收到电报如下：\n"+text);
-			email.from("hotyaya@qq.com").to("hotyaya@126.com");
-			email.subject("新文件 "+text);
-			SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
-			mailSession.open();
-			mailSession.sendMail(email);
-			mailSession.close();
-			if (text.equals("-")){
-				System.out.print("-");
-			}else{
-				System.out.print("*发送mail成功!*");
-			}
-		}catch(Exception ex){
-			System.out.print("x");
-		}
-	}
 }
