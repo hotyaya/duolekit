@@ -14,7 +14,7 @@ public class IMClientToAgent extends Thread {
 	public static ChatManager chatmanager;
 
 	public static void main(String[] args) {
-		new IMClientToAgent("127.0.0.1","Compaq-PC","","","agent").start(); //Compaq-PC
+		new IMClientToAgent("10.64.145.245","Compaq-PC","","","agent").start(); //Compaq-PC
 	}
 	
 	public IMClientToAgent(String serveraddress,String domain,String user,String pass,String agent) {
