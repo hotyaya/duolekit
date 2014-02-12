@@ -22,6 +22,6 @@ public class Boot {
 		server.stopfs();
 		//6.通知界面要进行轮训；禁用
 		window.open();
-		new IMClientToAgent("10.64.145.245","Compaq-PC","","","agent").start(); //Compaq-PC
+		new IMClientToAgent("10.64.145.245","Compaq-PC","agent"); //Compaq-PC
 	}
 }
