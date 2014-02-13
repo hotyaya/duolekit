@@ -29,8 +29,25 @@ public class AgentWin implements INotifyObject{
 	private Text text;
 	private Text text_1;
 	private List list;
+	private Combo combo;
 	
-	void send2(){
+	private void init(){
+		String commands[]= new String[10];
+		commands[0]="SYSSTOP";
+		commands[1]="SYS";
+		commands[2]="SYS";
+		commands[3]="SYS";
+		commands[4]="SYS";
+		commands[5]="SYS";
+		commands[6]="SYS";
+		commands[7]="SYS";
+		commands[8]="FA";
+		commands[9]="FO";
+		combo.setItems(commands);
+	}
+	
+	
+	private void send2(){
 		try {
 			String txt = text_1.getText().toString().trim();
 			String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
@@ -172,7 +189,7 @@ public class AgentWin implements INotifyObject{
 		new Label(shlAgent, SWT.NONE);
 		new Label(shlAgent, SWT.NONE);
 		
-		Combo combo = new Combo(shlAgent, SWT.NONE);
+		combo = new Combo(shlAgent, SWT.NONE);
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton = new Button(shlAgent, SWT.NONE);
@@ -190,6 +207,9 @@ public class AgentWin implements INotifyObject{
 			}
 		});
 		btnNewButton_1.setText("发送2");
+		
+		init();//20140213
+
 		shlAgent.open();
 		shlAgent.layout();
 		while (!shlAgent.isDisposed()) {
@@ -206,7 +226,6 @@ public class AgentWin implements INotifyObject{
 		shlAgent = new Shell();
 		shlAgent.setSize(800, 615);
 		shlAgent.setText("链接管理器");
-
 	}
 
 }
