@@ -37,7 +37,12 @@ public class ConnectToAgent extends Thread {
 			newChat = chatmanager.createChat(agent+"@"+domain,//"all@broadcast.railsoft.cn"
 					new MessageListener() {// all@broadcast.hotyaya-ge2w3vb;// user2@hotyaya-ge2w3vb
 						public void processMessage(Chat chat, Message message) {
-							System.out.println("recv: " + message.getBody());
+							try {
+								System.out.println("recv: " + message.getBody());
+								chat.sendMessage(message.getBody());
+							} catch (XMPPException e) {
+								e.printStackTrace();
+							}
 						}
 					});
 			newChat.sendMessage("hi");

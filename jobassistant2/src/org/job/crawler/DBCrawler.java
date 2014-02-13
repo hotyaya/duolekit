@@ -152,7 +152,8 @@ public class DBCrawler {
 		//item.setDocid();
 		item.setType("DB");//待办事项
 		JDateTime jdt = new JDateTime();
-		jdt.parse(((TableRow) node).getColumns()[0].toPlainTextString().trim(),"YYYY.MM.DD");
+		//20140213 改为收文日
+		//jdt.parse(((TableRow) node).getColumns()[0].toPlainTextString().trim(),"YYYY.MM.DD");
 		item.setDocsenddate(Integer.parseInt(jdt.toString("YYYYMMDD")));
 		item.setDocsendtime(((TableRow) node).getColumns()[0].toPlainTextString().trim());//20140108
 		item.setDocsender(((TableRow) node).getColumns()[1].toPlainTextString().trim());
