@@ -1,5 +1,7 @@
 package org.im;
 
+import java.net.InetAddress;
+
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -39,7 +41,13 @@ public class ConnectToAgent extends Thread {
 						}
 					});
 			newChat.sendMessage("hi");
+			newChat.sendMessage("hi:"+ InetAddress.getLocalHost().getHostAddress());
+			newChat.sendMessage("hi");
+			newChat.sendMessage("hi");
+			newChat.sendMessage("hi");
 		} catch (XMPPException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			// 让线程休眠 然后再关闭连接

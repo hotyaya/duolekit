@@ -30,19 +30,20 @@ public class AgentWin implements INotifyObject{
 	private Text text_1;
 	private List list;
 	private Combo combo;
+	private StyledText styledText;
 	
 	private void init(){
-		String commands[]= new String[10];
+		String commands[]= new String[3];
 		commands[0]="SYSSTOP";
-		commands[1]="SYS";
-		commands[2]="SYS";
-		commands[3]="SYS";
-		commands[4]="SYS";
-		commands[5]="SYS";
-		commands[6]="SYS";
-		commands[7]="SYS";
-		commands[8]="FA";
-		commands[9]="FO";
+		commands[1]="FA";
+		commands[2]="FO";
+//		commands[1]="SYS";
+//		commands[2]="SYS";
+//		commands[3]="SYS";
+//		commands[4]="SYS";
+//		commands[5]="SYS";
+//		commands[6]="SYS";
+//		commands[7]="SYS";
 		combo.setItems(commands);
 	}
 	
@@ -67,6 +68,9 @@ public class AgentWin implements INotifyObject{
 				String client = list.getSelection()[0].toString().trim();
 				if (text_1!=null) text_1.setText(client);
 				System.out.println(""+client.substring(0, client.indexOf("/")));
+				
+				String txt = text_1.getText().toString().trim();
+				showMessage(txt.substring((txt.indexOf("[")+1),txt.indexOf("]")));
 			}
 		}
 	}
@@ -94,13 +98,41 @@ public class AgentWin implements INotifyObject{
 
 	@Override
 	public void notifyMessage() {
-		
+		Display.getDefault().syncExec(new MessageTip());
 	}
 	
 	public void uiChatChange(){
 		Display.getDefault().syncExec(new ChatTip());
 	}
 	
+	void showMessage(String threadid){
+		Vector v = JobAgent.chatProcess.getCMC(threadid).getVmesg();
+		if (styledText!=null){
+			styledText.setText("");
+			for (int i=0;i<v.size();i++){
+				styledText.insert("\n"+v.elementAt(i).toString());
+			}
+		}
+	}
+	
+	class MessageTip implements Runnable{
+		@Override
+		public void run() {
+			try{
+				if (text_1.getText()!=null||text_1.getText().length()>0){
+					String txt = text_1.getText().toString().trim();
+					System.out.println("chats:"+txt);
+					if (txt.length()>0){
+						String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
+						showMessage(threadid);
+					}
+				}
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+	}
+
 	class ChatTip implements Runnable{
 		private Vector v = null;
 		@Override
@@ -183,7 +215,7 @@ public class AgentWin implements INotifyObject{
 		scrolledComposite_1.setExpandHorizontal(true);
 		scrolledComposite_1.setExpandVertical(true);
 		
-		StyledText styledText = new StyledText(scrolledComposite_1, SWT.BORDER);
+		styledText = new StyledText(scrolledComposite_1, SWT.BORDER);
 		scrolledComposite_1.setContent(styledText);
 		scrolledComposite_1.setMinSize(styledText.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		new Label(shlAgent, SWT.NONE);

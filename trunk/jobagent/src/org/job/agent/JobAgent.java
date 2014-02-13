@@ -77,6 +77,7 @@ public class JobAgent extends Thread {
 						ChatMessageCollection cmc =  chatProcess.getCMC(arg0.getThreadID());
 						if (cmc!=null){
 							cmc.putMessage(arg1);
+							chatProcess.notifyMessage();
 							System.out.println("加入！" + arg1.getBody());
 						} else{
 							System.out.println("未加入！" + arg1.getBody());
