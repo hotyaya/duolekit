@@ -288,12 +288,29 @@ public class Mainwin implements INotifyMessage {
 		}
 	}
 
+	protected void setScreenPoint(Shell shell) {
+		int width = shell.getMonitor().getClientArea().width;
+		int height = shell.getMonitor().getClientArea().height;
+		int x = shell.getSize().x;
+		int y = shell.getSize().y;
+		if (x > width) {
+			shell.getSize().x = width;
+		}
+		if (y > height) {
+			shell.getSize().y = height;
+		}
+		//shell.setLocation((width - x) / 2, (height - y) / 2);
+		shell.setSize(shell.getSize().x, height);
+		shell.setLocation((width-x), 0);
+	}
+	
 	/**
 	 * Open the window.
 	 */
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
+		setScreenPoint(shell);//20140213
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
