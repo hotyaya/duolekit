@@ -5,11 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Vector;
 
-import jodd.mail.Email;
-import jodd.mail.EmailMessage;
-import jodd.mail.SendMailSession;
-import jodd.mail.SmtpSslServer;
-import jodd.util.MimeTypes;
+import jodd.datetime.JDateTime;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -124,6 +120,7 @@ public class CrawlerProcess implements Runnable {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private void indb(String ctag) {
 		try {
 			int newcount = 0;//记录下本次的新入库数量
@@ -135,13 +132,35 @@ public class CrawlerProcess implements Runnable {
 			int repeatcount =0;//如果已经入库数达到3，退出循环。 (20140122)
 			for (int i = 0; i < v.size(); i++) { //20140123 int i = v.size(); i > 1; i--
 				code = v.elementAt(i).getDoccode(); //20140123 i-1=> i
-				if (dao.findByDoccode(code.trim()).size() <= 0) {
+				List list = dao.findByDoccode(code.trim());
+				if (list.size() <= 0) {
 					session.save(v.elementAt(i)); //20140123 i-1=> i //20140207 dao=> session
 					newcount++;
 					info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
 				} else {
-					//System.out.print(code+"已经入库！");
-					repeatcount++; 
+					if (ctag.equals("DB")){
+						/**
+						 * 20140213
+						 * 如果发现已经存入的公文，又进行了待办处理，变为待办类型，并修改日期，已显示在今天。
+						 */
+						if (list.size()==1){
+							try{
+								Doccatalog dc = ((Doccatalog)list.get(0));
+								dc.setType("DB");
+								dc.setDocsenddate(Integer.parseInt(new JDateTime().toString("YYYYMMDD")));
+								dc.setIstodo(true);//待办标识
+								dc.setIstodotime(new Timestamp(System.currentTimeMillis()));//待办时间
+								session.update(dc);//20140213
+								newcount++;
+								info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
+							}catch(Exception ex){
+								ex.printStackTrace();
+							}
+						}
+					}else{
+						//System.out.print(code+"已经入库！");
+						repeatcount++; 
+					}
 					//System.out.print("_"+repeatcount+"_");
 				}
 				if (repeatcount>3) break; //便于提高效率(20140122)
