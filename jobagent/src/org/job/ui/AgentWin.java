@@ -1,40 +1,75 @@
 package org.job.ui;
 
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Button;
+import org.job.agent.JobAgent;
+import org.job.agent.interf.INotifyObject;
 
-public class AgentWin {
+public class AgentWin implements INotifyObject{
 
 	protected Shell shlAgent;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
-	
+	private List list;
 	/**
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
+			JobAgent jobAgent = new JobAgent("10.64.145.245", "Hui-PC", "agent", "bdesdk", ""); //Compaq-PC
 			AgentWin window = new AgentWin();
+			JobAgent.chatProcess.addListener(window);
+			jobAgent.start();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	@Override
+	public void notifyChat() {
+		uiChatChange();
+	}
+
+	@Override
+	public void notifyMessage() {
+		
+	}
+	
+	public void uiChatChange(){
+		Display.getDefault().syncExec(new ChatTip());
+	}
+	
+	class ChatTip implements Runnable{
+		private Vector v = null;
+		@Override
+		public void run() {
+			Vector v = JobAgent.chatProcess.getThreadCollection();
+			System.out.println("chats:"+v.size());
+			if (list!=null){
+				list.removeAll();
+				for (int i=0;i<v.size();i++){
+					list.add(v.get(i).toString());
+				}
+			}
+		}
+	}
 	
 	protected void setScreenPoint(Shell shell) {
 		int width = shell.getMonitor().getClientArea().width;
@@ -80,7 +115,7 @@ public class AgentWin {
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
-		List list = new List(scrolledComposite, SWT.BORDER);
+		list = new List(scrolledComposite, SWT.BORDER);
 		scrolledComposite.setContent(list);
 		scrolledComposite.setMinSize(list.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -137,4 +172,5 @@ public class AgentWin {
 		shlAgent.setText("Agent代理");
 
 	}
+
 }
