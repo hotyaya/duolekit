@@ -5,6 +5,8 @@ import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -16,10 +18,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.XMPPException;
 import org.job.agent.JobAgent;
 import org.job.agent.interf.INotifyObject;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 
 public class AgentWin implements INotifyObject{
 
@@ -28,11 +30,26 @@ public class AgentWin implements INotifyObject{
 	private Text text_1;
 	private List list;
 	
+	void send2(){
+		try {
+			String txt = text_1.getText().toString().trim();
+			String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
+			System.out.println(":"+threadid);
+			Chat chat = JobAgent.chatProcess.getCMC(threadid).getChat();
+			chat.sendMessage(text.getText());
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	void selectclient(){
 		if (list!=null){
 			if (list.getSelection().length>0){
-				if (text_1!=null) text_1.setText(list.getSelection()[0].toString().trim());
-				//String client = list.getSelection()[0].toString().trim();
+				String client = list.getSelection()[0].toString().trim();
+				if (text_1!=null) text_1.setText(client);
+				System.out.println(""+client.substring(0, client.indexOf("/")));
 			}
 		}
 	}
@@ -166,6 +183,12 @@ public class AgentWin implements INotifyObject{
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Button btnNewButton_1 = new Button(shlAgent, SWT.NONE);
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				send2();
+			}
+		});
 		btnNewButton_1.setText("发送2");
 		shlAgent.open();
 		shlAgent.layout();
