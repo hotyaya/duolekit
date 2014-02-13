@@ -3,7 +3,10 @@ package org.job.agent;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.ConnectionConfiguration;
+import org.jivesoftware.smack.ConnectionCreationListener;
+import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -14,63 +17,100 @@ public class JobAgent extends Thread {
 	public static XMPPConnection con;
 	public static Chat newChat;
 	public static ChatManager chatmanager;
+	public static ChatProcess chatProcess;
+	public String user = "";
+	public String pass = "";
+	public String serveraddress = "";
 
 	public static void main(String[] args) {
-		new JobAgent("127.0.0.1", "Compaq-PC", "agent", "bdesdk", "").start(); // Compaq-PC
+		new JobAgent("10.64.145.245", "Hui-PC", "agent", "bdesdk", "").start(); //Compaq-PC
 	}
 
-	public JobAgent(String serveraddress, String domain, String user,
-			String pass, String agent) {
-		try {
-			// Create a connection to server
-			ConnectionConfiguration config = new ConnectionConfiguration(serveraddress, 5222);
-			con = new XMPPConnection(config);
-			// connect and login with the username and pwd on server
-			con.connect();
-			con.login(user, pass);// 20140208
-			// con.loginAnonymously();
-			// System.out.print(con.getRoster().getEntries().toArray()[0].toString());
-			// System.out.println("\n Authenticated = " +
-			// con.isAuthenticated());
-			// add a listener to receive all messages
-			// addListener();
-			chatmanager = con.getChatManager();
-			// newChat =
-			// chatmanager.createChat(agent+"@"+serveraddress,//"all@broadcast.railsoft.cn"
-			// new MessageListener() {// all@broadcast.hotyaya-ge2w3vb;//
-			// user2@hotyaya-ge2w3vb
-			// public void processMessage(Chat chat, Message message) {
-			// System.out.println("recv: " + message.getBody());
-			// }
-			// });
-			chatmanager.addChatListener(new ChatManagerListener() {
-				@Override
-				public void chatCreated(Chat chat, boolean createdLocally) {
-					if (!createdLocally)
-						chat.addMessageListener(new MessageListener() {
-							@Override
-							public void processMessage(Chat arg0, Message arg1) {
-								System.out.println("" + arg1.getBody());
-							}
-						});
-				}
-			});
-		} catch (XMPPException e) {
-			e.printStackTrace();
-		} finally {
-			// 让线程休眠 然后再关闭连接
-			// con.disconnect();
-		}
+	public JobAgent(String serveraddress, String domain, String user,String pass, String agent) {
+		this.serveraddress = serveraddress;
+		this.user = user;
+		this.pass = pass;
+		chatProcess = new ChatProcess();//20140213
+		ConnectionConfiguration config = new ConnectionConfiguration(serveraddress, 5222);
+		con = new XMPPConnection(config);
+		con.addConnectionListener(new ConnectionListener() {
+			@Override
+			public void connectionClosed() {
+				System.out.println("connectionClosed");
+			}
+
+			@Override
+			public void connectionClosedOnError(Exception arg0) {
+				System.out.println("connectionClosedOnError");
+			}
+
+			@Override
+			public void reconnectingIn(int arg0) {
+				System.out.println("reconnectingIn");
+			}
+
+			@Override
+			public void reconnectionFailed(Exception arg0) {
+				System.out.println("reconnectionFailed");
+			}
+
+			@Override
+			public void reconnectionSuccessful() {
+				System.out.println("reconnectionSuccessful");
+			}
+		});
+		XMPPConnection.addConnectionCreationListener(new ConnectionCreationListener() {
+					@Override
+					public void connectionCreated(Connection arg0) {
+						System.out.println("connectionCreated");
+					}
+				});
+		chatmanager = con.getChatManager();
+		chatmanager.addChatListener(new ChatManagerListener() {
+			@Override
+			public void chatCreated(Chat chat, boolean createdLocally) {
+				chatProcess.setChatMessageCollection(new ChatMessageCollection(chat));
+				if (!createdLocally)
+				chat.addMessageListener(new MessageListener() {
+					@Override
+					public void processMessage(Chat arg0, Message arg1) {
+						ChatMessageCollection cmc =  chatProcess.getCMC(arg0.getThreadID());
+						if (cmc!=null){
+							cmc.putMessage(arg1);
+							System.out.println("加入！" + arg1.getBody());
+						} else{
+							System.out.println("未加入！" + arg1.getBody());
+						}
+					}
+				});
+			}
+		});
 	}
 
 	@Override
 	public void run() {
 		while (isrunnable) {
 			try {
-				Thread.sleep(50);
+				if (!con.isConnected()) {
+					connect();
+					System.out.println("Authenticated:" + con.isAuthenticated());
+				}
+			} catch (XMPPException e) {
+				e.printStackTrace();
+			} finally {
+				// con.disconnect();//让线程休眠 然后再关闭连接
+			}
+			try {
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	boolean connect() throws XMPPException {
+		con.connect();
+		con.login(user, pass);
+		return con.isAuthenticated();
 	}
 }
