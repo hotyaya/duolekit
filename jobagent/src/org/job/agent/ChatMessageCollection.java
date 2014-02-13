@@ -10,6 +10,10 @@ public class ChatMessageCollection {
 	private Chat chat = null;
 	private Vector vmesg = new Vector();
 
+	public Vector getVmesg() {
+		return vmesg;
+	}
+
 	public ChatMessageCollection(Chat chat) {
 		super();
 		this.chat = chat;
@@ -25,7 +29,7 @@ public class ChatMessageCollection {
 
 	@SuppressWarnings("unchecked")
 	public void putMessage(Message arg1) {
-		vmesg.add(arg1);
+		vmesg.add(arg1.getBody());
 		//if (vmesg.size()>20)vmesg.remove(0);
 	}
 
