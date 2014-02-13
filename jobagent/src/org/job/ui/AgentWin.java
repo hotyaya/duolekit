@@ -35,7 +35,6 @@ public class AgentWin implements INotifyObject{
 				//String client = list.getSelection()[0].toString().trim();
 			}
 		}
-		
 	}
 	
 	/**
