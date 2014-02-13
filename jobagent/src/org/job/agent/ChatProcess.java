@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import org.jivesoftware.smack.Chat;
 import org.job.agent.interf.INotifyObject;
 
 public class ChatProcess {
@@ -19,6 +20,15 @@ public class ChatProcess {
 		}
 		return v;
 	} 
+
+	public Vector<ChatMessageCollection> getCMCs(){
+		Vector<ChatMessageCollection> v = new Vector();
+		Enumeration enu = threadidtable.keys();
+		while(enu.hasMoreElements()){
+			v.add(threadidtable.get(enu.nextElement().toString().trim()));
+		}
+		return v;
+	} 
 	
 	public void setChatMessageCollection(ChatMessageCollection cmc) {
 		threadidtable.put(cmc.getThreadId(), cmc);
@@ -28,6 +38,10 @@ public class ChatProcess {
 
 	public ChatMessageCollection getCMC(String threadid) {
 		return threadidtable.get(threadid);
+	}
+	
+	public Chat getCMCChat(String threadid) {
+		return threadidtable.get(threadid).getChat();
 	}
 
 	public void addListener(INotifyObject ino) {

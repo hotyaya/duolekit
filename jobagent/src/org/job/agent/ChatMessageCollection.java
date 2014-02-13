@@ -7,8 +7,8 @@ import org.jivesoftware.smack.packet.Message;
 
 @SuppressWarnings("rawtypes")
 public class ChatMessageCollection {
-	Chat chat = null;
-	Vector vmesg = new Vector();
+	private Chat chat = null;
+	private Vector vmesg = new Vector();
 
 	public ChatMessageCollection(Chat chat) {
 		super();
@@ -26,7 +26,11 @@ public class ChatMessageCollection {
 	@SuppressWarnings("unchecked")
 	public void putMessage(Message arg1) {
 		vmesg.add(arg1);
-		if (vmesg.size()>20)vmesg.remove(0);
+		//if (vmesg.size()>20)vmesg.remove(0);
+	}
+
+	public Chat getChat() {
+		return chat;
 	}
 	
 }

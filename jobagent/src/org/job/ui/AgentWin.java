@@ -18,14 +18,26 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.job.agent.JobAgent;
 import org.job.agent.interf.INotifyObject;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class AgentWin implements INotifyObject{
 
 	protected Shell shlAgent;
 	private Text text;
 	private Text text_1;
-	private Text text_2;
 	private List list;
+	
+	void selectclient(){
+		if (list!=null){
+			if (list.getSelection().length>0){
+				if (text_1!=null) text_1.setText(list.getSelection()[0].toString().trim());
+				//String client = list.getSelection()[0].toString().trim();
+			}
+		}
+		
+	}
+	
 	/**
 	 * Launch the application.
 	 * @param args
@@ -65,7 +77,8 @@ public class AgentWin implements INotifyObject{
 			if (list!=null){
 				list.removeAll();
 				for (int i=0;i<v.size();i++){
-					list.add(v.get(i).toString());
+					String threadid = v.get(i).toString();
+					list.add(JobAgent.chatProcess.getCMC(threadid).getParticipant()+"["+threadid+"]");
 				}
 			}
 		}
@@ -108,14 +121,20 @@ public class AgentWin implements INotifyObject{
 		mntmNewItem_1.setText("退出");
 		
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shlAgent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 2);
+		GridData gd_scrolledComposite = new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 2);
 		gd_scrolledComposite.heightHint = 177;
-		gd_scrolledComposite.widthHint = 185;
+		gd_scrolledComposite.widthHint = 372;
 		scrolledComposite.setLayoutData(gd_scrolledComposite);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 		
 		list = new List(scrolledComposite, SWT.BORDER);
+		list.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				selectclient();
+			}
+		});
 		scrolledComposite.setContent(list);
 		scrolledComposite.setMinSize(list.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
@@ -124,7 +143,7 @@ public class AgentWin implements INotifyObject{
 		new Label(shlAgent, SWT.NONE);
 		
 		ScrolledComposite scrolledComposite_1 = new ScrolledComposite(shlAgent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		GridData gd_scrolledComposite_1 = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		GridData gd_scrolledComposite_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_scrolledComposite_1.heightHint = 150;
 		gd_scrolledComposite_1.widthHint = 430;
 		scrolledComposite_1.setLayoutData(gd_scrolledComposite_1);
@@ -149,11 +168,6 @@ public class AgentWin implements INotifyObject{
 		
 		Button btnNewButton_1 = new Button(shlAgent, SWT.NONE);
 		btnNewButton_1.setText("发送2");
-		
-		text_2 = new Text(shlAgent, SWT.BORDER);
-		GridData gd_text_2 = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
-		gd_text_2.heightHint = 35;
-		text_2.setLayoutData(gd_text_2);
 		shlAgent.open();
 		shlAgent.layout();
 		while (!shlAgent.isDisposed()) {
@@ -168,8 +182,8 @@ public class AgentWin implements INotifyObject{
 	 */
 	protected void createContents() {
 		shlAgent = new Shell();
-		shlAgent.setSize(671, 361);
-		shlAgent.setText("Agent代理");
+		shlAgent.setSize(800, 615);
+		shlAgent.setText("链接管理器");
 
 	}
 
