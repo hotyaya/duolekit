@@ -14,7 +14,7 @@ public class ConnectToAgent extends Thread {
 	public static ChatManager chatmanager;
 
 	public static void main(String[] args) {
-		new ConnectToAgent("127.0.0.1","Compaq-PC","","","agent").start(); //Compaq-PC
+		new ConnectToAgent("10.64.145.245", "Hui-PC","","","agent").start(); //Compaq-PC
 	}
 	
 	public ConnectToAgent(String serveraddress,String domain,String user,String pass,String agent) {
@@ -28,7 +28,7 @@ public class ConnectToAgent extends Thread {
 			//con.login(user, pass);//20140208
 			con.loginAnonymously();
 			// System.out.print(con.getRoster().getEntries().toArray()[0].toString());
-			//System.out.println("\n Authenticated = " + con.isAuthenticated());
+			System.out.println("\n Authenticated = " + con.isAuthenticated());
 			// add a listener to receive all messages
 			// addListener();
 			chatmanager = con.getChatManager();
@@ -38,7 +38,7 @@ public class ConnectToAgent extends Thread {
 							System.out.println("recv: " + message.getBody());
 						}
 					});
-			// newChat.sendMessage("hi");
+			newChat.sendMessage("hi");
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} finally {
@@ -51,9 +51,9 @@ public class ConnectToAgent extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				newChat.sendMessage("test");// point.toString()
+				//newChat.sendMessage("test");// point.toString()
 				//System.out.println("...");
-				Thread.sleep(50);
+				Thread.sleep(5000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
