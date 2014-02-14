@@ -19,7 +19,7 @@ public class Boot {
 		new Thread(crawlerProcess).start(); 
 		//5.启动轮训进程从网页上面取得数据；
 		//6.通知界面要进行轮训；禁用
+		new AgentLinker("10.64.145.245", "Hui-PC", "", "", "agent").start(); // Compaq-PC
 		window.open();
-		new AgentLinker("10.64.145.245","Compaq-PC","","","agent"); //Compaq-PC
 	}
 }

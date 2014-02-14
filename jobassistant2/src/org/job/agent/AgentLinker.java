@@ -49,7 +49,7 @@ public class AgentLinker extends Thread {
 			while (enu.hasMoreElements()) {
 				String key=enu.nextElement().toString().trim();
 				mesg.setProperty(key, pros0.getProperty(key).toString().trim());
-				System.out.println(""+pros0.getProperty(key).toString().trim());
+				//System.out.println(""+pros0.getProperty(key).toString().trim());
 			}
 			mesg.setBody("SYSTEM");
 			newChat.sendMessage(mesg);
