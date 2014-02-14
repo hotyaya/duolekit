@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
+import org.job.Application;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
@@ -83,12 +84,12 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_2 != null) {
 				date = inf[2].substring(0, 8);
 				str = inf[2].substring(4, 8) + "-" + inf[2].substring(9);
-				if (btnNewButton_2.getData() != null
-						&& date.trim().equals(
-								btnNewButton_2.getData().toString().trim())) {
-					if (!btnNewButton_2.getText().equals(str.trim())) {
+				if (btnNewButton_2.getData() != null) {
+					//TODO 20140214 显示
+					if (!date.trim().equals(btnNewButton_2.getData().toString().trim()) || !btnNewButton_2.getText().equals(str.trim())) {
 						btnNewButton_2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 						btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+						text_1.setText(date.trim());//20140214//默认查看最后一天的新文件；
 					}
 				}
 				btnNewButton_2.setData(date.trim());
@@ -97,10 +98,8 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_3 != null) {
 				date = inf[3].substring(0, 8);
 				str = inf[3].substring(4, 8) + "-" + inf[3].substring(9);
-				if (btnNewButton_3.getData() != null
-						&& date.trim().equals(
-								btnNewButton_3.getData().toString().trim())) {
-					if (!btnNewButton_3.getText().equals(str.trim())) {
+				if (btnNewButton_3.getData() != null) {
+					if (!date.trim().equals(btnNewButton_3.getData().toString().trim()) || !btnNewButton_3.getText().equals(str.trim())) {
 						btnNewButton_3.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 						btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
@@ -111,10 +110,8 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_4 != null) {
 				date = inf[4].substring(0, 8);
 				str = inf[4].substring(4, 8) + "-" + inf[4].substring(9);
-				if (btnNewButton_4.getData() != null
-						&& date.trim().equals(
-								btnNewButton_4.getData().toString().trim())) {
-					if (!btnNewButton_4.getText().equals(str.trim())) {
+				if (btnNewButton_4.getData() != null ) {
+					if (!date.trim().equals(btnNewButton_4.getData().toString().trim()) || !btnNewButton_4.getText().equals(str.trim())) {
 						btnNewButton_4.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 						btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
@@ -125,10 +122,8 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_5 != null) {
 				date = inf[5].substring(0, 8);
 				str = inf[5].substring(4, 8) + "-" + inf[5].substring(9);
-				if (btnNewButton_5.getData() != null
-						&& date.trim().equals(
-								btnNewButton_5.getData().toString().trim())) {
-					if (!btnNewButton_5.getText().equals(str.trim())) {
+				if (btnNewButton_5.getData() != null) {
+					if (!date.trim().equals(btnNewButton_5.getData().toString().trim())|| !btnNewButton_5.getText().equals(str.trim())) {
 						btnNewButton_5.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 						btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
@@ -139,10 +134,8 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_6 != null) {
 				date = inf[6].substring(0, 8);
 				str = inf[6].substring(4, 8) + "-" + inf[6].substring(9);
-				if (btnNewButton_6.getData() != null
-						&& date.trim().equals(
-								btnNewButton_6.getData().toString().trim())) {
-					if (!btnNewButton_6.getText().equals(str.trim())) {
+				if (btnNewButton_6.getData() != null ) {
+					if (!date.trim().equals(btnNewButton_6.getData().toString().trim())||!btnNewButton_6.getText().equals(str.trim())) {
 						btnNewButton_6.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 						btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
 					}
@@ -311,6 +304,7 @@ public class Mainwin implements INotifyMessage {
 		Display display = Display.getDefault();
 		createContents();
 		setScreenPoint(shell);//20140213
+		shell.setText(""+Application.getV("USERDEPT").toString()+"");
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
