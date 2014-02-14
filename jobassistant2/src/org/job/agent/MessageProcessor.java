@@ -12,7 +12,7 @@ public class MessageProcessor implements MessageListener {
 	@Override
 	public void processMessage(Chat chat, Message arg1) {
 		try {
-			chat.sendMessage(arg1.getBody());
+			//chat.sendMessage(arg1.getBody());
 			if ((arg1.getProperty("MSGTYPE").equals("CMD"))){
 				String cmd = arg1.getBody();
 				if ((cmd.equals("SYSSTOP"))){
