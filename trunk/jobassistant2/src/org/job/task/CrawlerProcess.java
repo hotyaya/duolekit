@@ -146,13 +146,15 @@ public class CrawlerProcess implements Runnable {
 						if (list.size()==1){
 							try{
 								Doccatalog dc = ((Doccatalog)list.get(0));
-								dc.setType("DB");
-								dc.setDocsenddate(Integer.parseInt(new JDateTime().toString("YYYYMMDD")));
-								dc.setIstodo(true);//待办标识
-								dc.setIstodotime(new Timestamp(System.currentTimeMillis()));//待办时间
-								session.update(dc);//20140213
-								newcount++;
-								info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
+								if (!dc.getType().equals("DB")){
+									dc.setType("DB");
+									dc.setDocsenddate(Integer.parseInt(new JDateTime().toString("YYYYMMDD")));
+									dc.setIstodo(true);//待办标识
+									dc.setIstodotime(new Timestamp(System.currentTimeMillis()));//待办时间
+									session.update(dc);//20140213
+									newcount++;
+									info = info + ";" + v.elementAt(i).getDoccaption() ;//20140123 i-1=> i
+								}
 							}catch(Exception ex){
 								ex.printStackTrace();
 							}
