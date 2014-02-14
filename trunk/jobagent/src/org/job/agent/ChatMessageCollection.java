@@ -29,7 +29,7 @@ public class ChatMessageCollection {
 
 	@SuppressWarnings("unchecked")
 	public void putMessage(Message arg1) {
-		vmesg.add(arg1.getBody());
+		vmesg.add(arg1);
 		//if (vmesg.size()>20)vmesg.remove(0);
 	}
 

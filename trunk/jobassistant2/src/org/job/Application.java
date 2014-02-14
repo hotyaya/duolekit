@@ -1,4 +1,5 @@
 package org.job;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -34,6 +35,7 @@ public class Application {
 				Sysprop pro1 = (Sysprop) io.next();
 				pros.put(pro1.getK(), pro1.getV());
 			}
+			init2();//20140214加入到属性中；
 			return true;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -42,4 +44,22 @@ public class Application {
 			HibernateUtil.closeSession();
 		}
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public static void init2(){
+		Properties pro = System.getProperties();
+		Enumeration enu = pro.keys();
+		while (enu.hasMoreElements()) {
+			String key=enu.nextElement().toString().trim();
+			pros.put(key,pro.getProperty(key).toString().trim());
+			//System.out.println(key+":"+pro.getProperty(key));
+		}
+
+	}
+
+	public static Properties getPros() {
+		return pros;
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package org.job.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -20,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Message;
 import org.job.agent.JobAgent;
 import org.job.agent.interf.INotifyObject;
 
@@ -52,7 +55,7 @@ public class AgentWin implements INotifyObject{
 		try {
 			String txt = text_1.getText().toString().trim();
 			String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
-			System.out.println(":"+threadid);
+			//System.out.println(":"+threadid);
 			Chat chat = JobAgent.chatProcess.getCMC(threadid).getChat();
 			chat.sendMessage(text.getText());
 		} catch (XMPPException e) {
@@ -105,12 +108,15 @@ public class AgentWin implements INotifyObject{
 		Display.getDefault().syncExec(new ChatTip());
 	}
 	
+	@SuppressWarnings("unchecked")
 	void showMessage(String threadid){
-		Vector v = JobAgent.chatProcess.getCMC(threadid).getVmesg();
+		Vector<Message> v = JobAgent.chatProcess.getCMC(threadid).getVmesg();
 		if (styledText!=null){
 			styledText.setText("");
 			for (int i=0;i<v.size();i++){
-				styledText.insert("\n"+v.elementAt(i).toString());
+				styledText.insert("\n"+ " " +v.elementAt(i)==null?"":v.elementAt(i).getBody().toString().trim());
+				Iterator it= v.elementAt(i).getPropertyNames().iterator();
+				while (it.hasNext()){Object o = it.next();if (o!=null) styledText.insert("\n"+o.toString()+":"+v.elementAt(i).getProperty(o.toString().trim()));}
 			}
 		}
 	}

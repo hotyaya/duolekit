@@ -1,6 +1,8 @@
 package org.job.agent;
 
 import java.net.InetAddress;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
@@ -9,6 +11,7 @@ import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
+import org.job.Application;
 
 public class AgentLinker extends Thread {
 	public static XMPPConnection con;
@@ -16,6 +19,7 @@ public class AgentLinker extends Thread {
 	public static ChatManager chatmanager;
 
 	public static void main(String[] args) {
+		Application.init();
 		new AgentLinker("10.64.145.245", "Hui-PC", "", "", "agent").start(); // Compaq-PC
 	}
 
@@ -41,19 +45,26 @@ public class AgentLinker extends Thread {
 											// user2@hotyaya-ge2w3vb
 						public void processMessage(Chat chat, Message message) {
 							try {
-								System.out.println("recv: " + message.getBody());
+								//System.out.println("recv: " + message.getBody());
 								chat.sendMessage(message.getBody());
 							} catch (XMPPException e) {
 								e.printStackTrace();
 							}
 						}
 					});
-			newChat.sendMessage("hi");
-			newChat.sendMessage("hi:"
-					+ InetAddress.getLocalHost().getHostAddress());
-			newChat.sendMessage("hi");
-			newChat.sendMessage("hi");
-			newChat.sendMessage("hi");
+			newChat.sendMessage("HOSTADDRESS:/"+ InetAddress.getLocalHost().getHostAddress());
+			newChat.sendMessage("HOSTNAME:/"+ InetAddress.getLocalHost().getHostName());
+			Message mesg = new Message();
+			Properties pros0 = Application.getPros();
+			Enumeration enu = pros0.keys();
+			while (enu.hasMoreElements()) {
+				String key=enu.nextElement().toString().trim();
+				mesg.setProperty(key, pros0.getProperty(key).toString().trim());
+				System.out.println(""+pros0.getProperty(key).toString().trim());
+			}
+			mesg.setBody("SYSTEM");
+			newChat.sendMessage(mesg);
+
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
