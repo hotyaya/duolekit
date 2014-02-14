@@ -34,6 +34,8 @@ public class AgentWin implements INotifyObject{
 	private List list;
 	private Combo combo;
 	private StyledText styledText;
+	private Text text_2;
+	private Text txtC;
 	
 	private void init(){
 		String commands[]= new String[3];
@@ -50,14 +52,41 @@ public class AgentWin implements INotifyObject{
 		combo.setItems(commands);
 	}
 	
+	private void send1(){
+		try {
+			String txt = text_1.getText().toString().trim();
+			String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
+			Chat chat = JobAgent.chatProcess.getCMC(threadid).getChat();
+			Message msgcmd = new Message();
+			msgcmd.setProperty("MSGTYPE","CMD");
+			msgcmd.setBody(combo.getText());
+			boolean f = combo.getText().toString().trim().toUpperCase().equals("FA");
+			if (f){
+				msgcmd.setProperty("FPORT",text_2.getText().trim());
+				msgcmd.setProperty("FDIR",txtC.getText().trim());
+			}
+			if (f && (text_2.getText()==null ||  txtC.getText()==null)){
+				System.out.println("f-x");
+				return;
+			}
+			chat.sendMessage(msgcmd);
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	private void send2(){
 		try {
 			String txt = text_1.getText().toString().trim();
 			String threadid = txt.substring((txt.indexOf("[")+1),txt.indexOf("]"));
-			//System.out.println(":"+threadid);
 			Chat chat = JobAgent.chatProcess.getCMC(threadid).getChat();
-			chat.sendMessage(text.getText());
+			Message msgcmd = new Message();
+			msgcmd.setBody(text.getText());
+			msgcmd.setProperty("MSGTYPE","INFO");
+			chat.sendMessage(msgcmd);
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -177,7 +206,7 @@ public class AgentWin implements INotifyObject{
 		Display display = Display.getDefault();
 		createContents();
 		setScreenPoint(shlAgent);
-		shlAgent.setLayout(new GridLayout(3, false));
+		shlAgent.setLayout(new GridLayout(7, false));
 		
 		Menu menu = new Menu(shlAgent, SWT.BAR);
 		shlAgent.setMenuBar(menu);
@@ -210,11 +239,10 @@ public class AgentWin implements INotifyObject{
 		scrolledComposite.setMinSize(list.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		text_1 = new Text(shlAgent, SWT.BORDER);
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		new Label(shlAgent, SWT.NONE);
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6, 1));
 		
 		ScrolledComposite scrolledComposite_1 = new ScrolledComposite(shlAgent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		GridData gd_scrolledComposite_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+		GridData gd_scrolledComposite_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1);
 		gd_scrolledComposite_1.heightHint = 150;
 		gd_scrolledComposite_1.widthHint = 430;
 		scrolledComposite_1.setLayoutData(gd_scrolledComposite_1);
@@ -225,17 +253,42 @@ public class AgentWin implements INotifyObject{
 		scrolledComposite_1.setContent(styledText);
 		scrolledComposite_1.setMinSize(styledText.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		new Label(shlAgent, SWT.NONE);
-		new Label(shlAgent, SWT.NONE);
 		
 		combo = new Combo(shlAgent, SWT.NONE);
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
+		Label lblNewLabel = new Label(shlAgent, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNewLabel.setText("port");
+		
+		text_2 = new Text(shlAgent, SWT.BORDER);
+		text_2.setText("1234");
+		GridData gd_text_2 = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_text_2.widthHint = 56;
+		text_2.setLayoutData(gd_text_2);
+		
+		Label lblNewLabel_1 = new Label(shlAgent, SWT.NONE);
+		lblNewLabel_1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNewLabel_1.setText("dir");
+		
+		txtC = new Text(shlAgent, SWT.BORDER);
+		txtC.setText("c:\\");
+		GridData gd_txtC = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+		gd_txtC.widthHint = 47;
+		txtC.setLayoutData(gd_txtC);
+		
 		Button btnNewButton = new Button(shlAgent, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				send1();
+			}
+		});
 		btnNewButton.setText("发送1");
 		new Label(shlAgent, SWT.NONE);
 		
 		text = new Text(shlAgent, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
 		
 		Button btnNewButton_1 = new Button(shlAgent, SWT.NONE);
 		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
