@@ -68,8 +68,7 @@ public class AgentLinker extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				// newChat.sendMessage("test");// point.toString()
-				// System.out.println("...");
+				newChat.sendMessage("heartbeat".toUpperCase().toString());
 				Thread.sleep(5000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
