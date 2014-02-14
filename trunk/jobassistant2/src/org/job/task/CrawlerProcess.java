@@ -123,6 +123,7 @@ public class CrawlerProcess implements Runnable {
 	@SuppressWarnings("rawtypes")
 	private void indb(String ctag) {
 		try {
+			//System.out.print(ctag);
 			int newcount = 0;//记录下本次的新入库数量
 			Session session = HibernateUtil.currentSession();//HibernateSessionFactory.getSession();
 			Transaction tran = session.beginTransaction();
@@ -146,7 +147,11 @@ public class CrawlerProcess implements Runnable {
 						if (list.size()==1){
 							try{
 								Doccatalog dc = ((Doccatalog)list.get(0));
-								if (!dc.getType().equals("DB")){
+								/**
+								 * 如果为公文未待办，或者 ，日期为非今天，都列新
+								 */
+								if (!dc.getType().equals("DB")|| 
+										dc.getDocsenddate().intValue()!=Integer.parseInt(new JDateTime().toString("YYYYMMDD"))){
 									dc.setType("DB");
 									dc.setDocsenddate(Integer.parseInt(new JDateTime().toString("YYYYMMDD")));
 									dc.setIstodo(true);//待办标识
@@ -160,14 +165,14 @@ public class CrawlerProcess implements Runnable {
 							}
 						}
 					}else{
-						//System.out.print(code+"已经入库！");
 						repeatcount++; 
+						//System.out.println(""+repeatcount);
 					}
 					//System.out.print("_"+repeatcount+"_");
 				}
 				if (repeatcount>3) break; //便于提高效率(20140122)
 			}
-			if (repeatcount>3)System.out.print("3");//便于提高效率(20140122)
+			if (repeatcount>3)System.out.print("3@");//便于提高效率(20140122)
 			tran.commit(); //session.getTransaction().commit();
 //			session.disconnect();//20140122看看占不占资源；
 //			session.close();//20140122看看占不占资源；
