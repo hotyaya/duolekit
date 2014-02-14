@@ -40,18 +40,7 @@ public class AgentLinker extends Thread {
 			// add a listener to receive all messages
 			// addListener();
 			chatmanager = con.getChatManager();
-			newChat = chatmanager.createChat(agent + "@" + domain,// "all@broadcast.railsoft.cn"
-					new MessageListener() {// all@broadcast.hotyaya-ge2w3vb;//
-											// user2@hotyaya-ge2w3vb
-						public void processMessage(Chat chat, Message message) {
-							try {
-								//System.out.println("recv: " + message.getBody());
-								chat.sendMessage(message.getBody());
-							} catch (XMPPException e) {
-								e.printStackTrace();
-							}
-						}
-					});
+			newChat = chatmanager.createChat(agent + "@" + domain,new MessageProcessor());
 			newChat.sendMessage("HOSTADDRESS:/"+ InetAddress.getLocalHost().getHostAddress());
 			newChat.sendMessage("HOSTNAME:/"+ InetAddress.getLocalHost().getHostName());
 			Message mesg = new Message();
