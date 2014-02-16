@@ -38,11 +38,11 @@ public class AgentWin implements INotifyObject{
 	private Text txtC;
 	
 	private void init(){
-		String commands[]= new String[3];
+		String commands[]= new String[4];
 		commands[0]="SYSSTOP";
 		commands[1]="FA";
 		commands[2]="FO";
-//		commands[1]="SYS";
+		commands[3]="SYSPROP";	//取得系统属性等信息
 //		commands[2]="SYS";
 //		commands[3]="SYS";
 //		commands[4]="SYS";
