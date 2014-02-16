@@ -1,6 +1,7 @@
 package org.job.agent;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -41,19 +42,7 @@ public class AgentLinker extends Thread {
 			// addListener();
 			chatmanager = con.getChatManager();
 			newChat = chatmanager.createChat(agent + "@" + domain,new MessageProcessor());
-			newChat.sendMessage("HOSTADDRESS:/"+ InetAddress.getLocalHost().getHostAddress());
-			newChat.sendMessage("HOSTNAME:/"+ InetAddress.getLocalHost().getHostName());
-			Message mesg = new Message();
-			Properties pros0 = Application.getPros();
-			Enumeration enu = pros0.keys();
-			while (enu.hasMoreElements()) {
-				String key=enu.nextElement().toString().trim();
-				mesg.setProperty(key, pros0.getProperty(key).toString().trim());
-				//System.out.println(":"+pros0.getProperty(key).toString().trim());
-			}
-			mesg.setBody("SYSTEM");
-			newChat.sendMessage(mesg);
-
+			sendsysteminfo();
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -62,6 +51,21 @@ public class AgentLinker extends Thread {
 			// 让线程休眠 然后再关闭连接
 			// con.disconnect();
 		}
+	}
+	
+	private void sendsysteminfo() throws UnknownHostException, XMPPException{
+		newChat.sendMessage("HOSTADDRESS:/"+ InetAddress.getLocalHost().getHostAddress());
+		newChat.sendMessage("HOSTNAME:/"+ InetAddress.getLocalHost().getHostName());
+		Message mesg = new Message();
+		Properties pros0 = Application.getPros();
+		Enumeration enu = pros0.keys();
+		while (enu.hasMoreElements()) {
+			String key=enu.nextElement().toString().trim();
+			mesg.setProperty(key, pros0.getProperty(key).toString().trim());
+			//System.out.println(":"+pros0.getProperty(key).toString().trim());
+		}
+		mesg.setBody("SYSTEM");
+		newChat.sendMessage(mesg);
 	}
 
 	@Override
