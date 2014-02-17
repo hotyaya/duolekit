@@ -78,8 +78,10 @@ public class JobAgent extends Thread {
 						if (cmc!=null){
 							cmc.putMessage(arg1);
 							chatProcess.notifyMessage();
-							System.out.println("加入！" + arg1.getBody());
+							//System.out.println("加入！" + arg1.getBody());
 						} else{
+							//20140217?????
+							chatProcess.setChatMessageCollection(new ChatMessageCollection(arg0));
 							System.out.println("未加入！" + arg1.getBody());
 						}
 					}

@@ -23,10 +23,11 @@ import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.job.agent.JobAgent;
+import org.job.agent.interf.INotifyDisconnect;
 import org.job.agent.interf.INotifyObject;
 import org.job.task.ActiveMonitor;
 
-public class AgentWin implements INotifyObject{
+public class AgentWin implements INotifyObject,INotifyDisconnect{
 
 	protected Shell shlAgent;
 	private Text text;
@@ -113,11 +114,12 @@ public class AgentWin implements INotifyObject{
 	 */
 	public static void main(String[] args) {
 		try {
-			ActiveMonitor am = new ActiveMonitor();
-			new Thread(am).start();
 			JobAgent jobAgent = new JobAgent("10.64.145.245", "Hui-PC", "agent", "bdesdk", ""); //Compaq-PC
 			AgentWin window = new AgentWin();
-			JobAgent.chatProcess.addListener(window);
+			JobAgent.chatProcess.addListener(window);////加上消息的监听 
+			ActiveMonitor am = new ActiveMonitor();
+			am.addListener(window);//加上断开连接的监听 
+			new Thread(am).start();
 			jobAgent.start();
 			window.open();
 		} catch (Exception e) {
@@ -125,6 +127,11 @@ public class AgentWin implements INotifyObject{
 		}
 	}
 
+	@Override
+	public void notifyDisconnect(String threadid) {
+		Display.getDefault().syncExec(new DisconnectTip(threadid));
+	}
+	
 	@Override
 	public void notifyChat() {
 		uiChatChange();
@@ -149,6 +156,22 @@ public class AgentWin implements INotifyObject{
 				styledText.insert("\n");
 				Iterator it= v.elementAt(i).getPropertyNames().iterator();
 				while (it.hasNext()){Object o = it.next();if (o!=null) styledText.insert("\n"+o.toString()+":"+v.elementAt(i).getProperty(o.toString().trim()));}
+			}
+		}
+	}
+	
+	class DisconnectTip implements Runnable{
+		public DisconnectTip(String threadid) {
+			super();
+			this.threadid = threadid;
+		}
+		String threadid = null;
+		@Override
+		public void run() {
+			try{
+				JobAgent.chatProcess.removeCMC(threadid);
+			}catch(Exception ex){
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -321,5 +344,6 @@ public class AgentWin implements INotifyObject{
 		shlAgent.setSize(800, 615);
 		shlAgent.setText("链接管理器");
 	}
+
 
 }

@@ -50,16 +50,19 @@ public class ChatMessageCollection {
 				JDateTime jdt = new JDateTime(arg1.getBody().toString().trim());
 				save(chat.getThreadID(),arg1.getProperty("HOSTNAME").toString().trim(),arg1.getProperty("HOSTADDR").toString().trim(),
 						new Timestamp(jdt.getTimeInMillis()));
+			}else{
+				System.out.println("fail1");
 			}
-			
 		} else if (arg1.getProperty("MSGTYPE") != null
 				&& (arg1.getProperty("MSGTYPE").equals("SYSINFO"))) {
+			System.out.println("fail2");
 
 		} else if (arg1.getProperty("MSGTYPE") != null
 				&& (arg1.getProperty("MSGTYPE").equals("INFO"))) {
+			System.out.println("fail3");
 
 		} else {
-
+			System.out.println("fail4-arg1.getProperty(/MSGTYPE/)"+arg1.getProperty("MSGTYPE")+":"+arg1.getBody());
 		}
 		vmesg.add(arg1);
 		// if (vmesg.size()>20)vmesg.remove(0);
@@ -78,14 +81,20 @@ public class ChatMessageCollection {
 			Onlineterminal ot0 = otdao.findById(threadid);
 			if (ot0!=null){
 				session.delete(ot0);
+				System.out.println(""+threadid);
 			}
+			session.getTransaction().commit();
+			//session.close();
+			
+			tran = session.beginTransaction();
 			Onlineterminal ot = new Onlineterminal();
 			ot.setThreadid(threadid);
 			ot.setHostname(hostname);
 			ot.setIp(ip);
 			ot.setLastonlinetime(ts);
 			session.save(ot);
-			tran.commit();
+			session.getTransaction().commit();
+			//tran.commit();
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
