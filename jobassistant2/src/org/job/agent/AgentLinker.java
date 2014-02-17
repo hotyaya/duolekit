@@ -2,13 +2,13 @@ package org.job.agent;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
@@ -42,7 +42,7 @@ public class AgentLinker extends Thread {
 			// addListener();
 			chatmanager = con.getChatManager();
 			newChat = chatmanager.createChat(agent + "@" + domain,new MessageProcessor());
-			sendsysteminfo();
+			//sendsysteminfo();
 		} catch (XMPPException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -72,7 +72,12 @@ public class AgentLinker extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				newChat.sendMessage("heartbeat".toUpperCase().toString());
+				Message hb = new Message();
+				hb.setProperty("MSGTYPE", "HB");//为心跳类型；
+				hb.setProperty("HOSTADDR",InetAddress.getLocalHost().getHostAddress());
+				hb.setProperty("HOSTNAME",InetAddress.getLocalHost().getHostName());
+				hb.setBody(new Timestamp(System.currentTimeMillis()).toString());
+				newChat.sendMessage(hb);
 				Thread.sleep(5000);
 			} catch (Exception ex) {
 				ex.printStackTrace();

@@ -19,7 +19,7 @@ public class MessageProcessor implements MessageListener {
 	public void processMessage(Chat chat, Message arg1) {
 		try {
 			//chat.sendMessage(arg1.getBody());
-			if ((arg1.getProperty("MSGTYPE").equals("CMD"))){
+			if (arg1.getProperty("MSGTYPE")!=null && (arg1.getProperty("MSGTYPE").equals("CMD"))){
 				String cmd = arg1.getBody();
 				if ((cmd.equals("SYSSTOP"))){
 					//chat.sendMessage("system stop!");
@@ -28,25 +28,25 @@ public class MessageProcessor implements MessageListener {
 					server = new FServer(Integer.parseInt(arg1.getProperty("FPORT").toString().trim()),
 							arg1.getProperty("FDIR").toString().trim());
 					server.startfs();
-					chat.sendMessage("F-A-OK\n");
+					chat.sendMessage("F-A-OK");
 				}else if (cmd.equals("FO")){
 					server.stopfs();
 					server = null;
-					chat.sendMessage("F-O-OK\n");
+					chat.sendMessage("F-O-OK");
 				}else if (cmd.equals("SYSPROP")){
 					try {
 						sendsysteminfo(chat);
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}
-					chat.sendMessage("SYSPROP-OK\n");
+					chat.sendMessage("SYSPROP-OK");
 				}else{
-					
+					chat.sendMessage("ELSE-OK");
 				}
-			}else if ((arg1.getProperty("MSGTYPE").equals("INFO"))){
-				
+			}else if (arg1.getProperty("MSGTYPE")!=null && (arg1.getProperty("MSGTYPE").equals("INFO"))){
+				chat.sendMessage("recv:"+arg1.getBody()+"");
 			}else{
-				
+				chat.sendMessage("else:");
 			}
 		} catch (XMPPException e) {
 			e.printStackTrace();
@@ -58,6 +58,7 @@ public class MessageProcessor implements MessageListener {
 		chat.sendMessage("HOSTADDRESS:/"+ InetAddress.getLocalHost().getHostAddress());
 		chat.sendMessage("HOSTNAME:/"+ InetAddress.getLocalHost().getHostName());
 		Message mesg = new Message();
+		mesg.setProperty("MSGTYPE", "SYSINFO");
 		Properties pros0 = Application.getPros();
 		Enumeration enu = pros0.keys();
 		while (enu.hasMoreElements()) {
