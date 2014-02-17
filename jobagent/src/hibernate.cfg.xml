@@ -19,6 +19,7 @@
 		<property name="myeclipse.connection.profile">
 			mysqljob
 		</property>
+		<property name="hibernate.connection.autocommit">true</property>
 		<mapping resource="org/job/dao/entity/Onlineterminal.hbm.xml" />
 
 	</session-factory>
