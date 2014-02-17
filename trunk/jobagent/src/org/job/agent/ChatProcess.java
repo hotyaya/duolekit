@@ -10,11 +10,15 @@ import org.jivesoftware.smack.packet.Message;
 import org.job.agent.interf.INotifyObject;
 
 public class ChatProcess {
-	
 	Vector<INotifyObject> v = new Vector<INotifyObject>();
 	Hashtable<String, ChatMessageCollection> threadidtable = new Hashtable<String, ChatMessageCollection>();
 	//Hashtable<String, ChatMessageCollection> participanttable = new Hashtable<String, ChatMessageCollection>();
 
+	public void removeCMC(String threadid){
+		threadidtable.remove(threadid);
+		notifyChat();
+	}
+	
 	public Vector<String> getThreadCollection(){
 		Vector<String> v = new Vector();
 		Enumeration enu = threadidtable.keys();
