@@ -1,6 +1,5 @@
 package org.job.ui;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -25,6 +24,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.job.agent.JobAgent;
 import org.job.agent.interf.INotifyObject;
+import org.job.task.ActiveMonitor;
 
 public class AgentWin implements INotifyObject{
 
@@ -113,6 +113,8 @@ public class AgentWin implements INotifyObject{
 	 */
 	public static void main(String[] args) {
 		try {
+			ActiveMonitor am = new ActiveMonitor();
+			new Thread(am).start();
 			JobAgent jobAgent = new JobAgent("10.64.145.245", "Hui-PC", "agent", "bdesdk", ""); //Compaq-PC
 			AgentWin window = new AgentWin();
 			JobAgent.chatProcess.addListener(window);
@@ -144,6 +146,7 @@ public class AgentWin implements INotifyObject{
 			styledText.setText("");
 			for (int i=0;i<v.size();i++){
 				styledText.insert("\n"+ " " +v.elementAt(i)==null?"":v.elementAt(i).getBody().toString().trim());
+				styledText.insert("\n");
 				Iterator it= v.elementAt(i).getPropertyNames().iterator();
 				while (it.hasNext()){Object o = it.next();if (o!=null) styledText.insert("\n"+o.toString()+":"+v.elementAt(i).getProperty(o.toString().trim()));}
 			}

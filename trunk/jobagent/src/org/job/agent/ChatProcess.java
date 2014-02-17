@@ -5,9 +5,12 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import org.jivesoftware.smack.Chat;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Message;
 import org.job.agent.interf.INotifyObject;
 
 public class ChatProcess {
+	
 	Vector<INotifyObject> v = new Vector<INotifyObject>();
 	Hashtable<String, ChatMessageCollection> threadidtable = new Hashtable<String, ChatMessageCollection>();
 	//Hashtable<String, ChatMessageCollection> participanttable = new Hashtable<String, ChatMessageCollection>();
@@ -34,8 +37,20 @@ public class ChatProcess {
 		threadidtable.put(cmc.getThreadId(), cmc);
 		//participanttable.put(cmc.getParticipant(), cmc);
 		notifyChat();
+		try {//20140217自动获取系统信息
+			requestSystemInfo(cmc.getChat());
+		} catch (XMPPException e) {
+			e.printStackTrace();
+		}
 	}
 
+	void requestSystemInfo(Chat chat) throws XMPPException{
+		Message msgcmd = new Message();
+		msgcmd.setProperty("MSGTYPE","CMD");
+		msgcmd.setBody("SYSPROP");
+		chat.sendMessage(msgcmd);
+	}
+	
 	public ChatMessageCollection getCMC(String threadid) {
 		return threadidtable.get(threadid);
 	}
