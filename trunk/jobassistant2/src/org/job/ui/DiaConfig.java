@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.job.HibernateUtil;
+import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Sysprop;
 import org.job.dao.entity.SyspropDAO;
 
