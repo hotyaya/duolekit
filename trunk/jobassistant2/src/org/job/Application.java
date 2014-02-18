@@ -24,7 +24,7 @@ public class Application {
 	
 	public static boolean init() {
 		try {
-			Session session = HibernateUtil.currentSession();
+			Session session = org.job.dao.HibernateUtil.currentSession();
 			Transaction tran = null;
 			tran = session.beginTransaction();
 			SyspropDAO dao = new SyspropDAO();
@@ -41,7 +41,7 @@ public class Application {
 			ex.printStackTrace();
 			return false;
 		} finally {
-			HibernateUtil.closeSession();
+			org.job.dao.HibernateUtil.closeSession();
 		}
 	}
 	
