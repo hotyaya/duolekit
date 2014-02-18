@@ -14,6 +14,7 @@ public class Onlineterminal implements java.io.Serializable {
 	private String ip;
 	private String hostname;
 	private Timestamp lastonlinetime;
+	private Boolean isactive;
 
 	// Constructors
 
@@ -29,11 +30,12 @@ public class Onlineterminal implements java.io.Serializable {
 
 	/** full constructor */
 	public Onlineterminal(String threadid, String ip, String hostname,
-			Timestamp lastonlinetime) {
+			Timestamp lastonlinetime, Boolean isactive) {
 		this.threadid = threadid;
 		this.ip = ip;
 		this.hostname = hostname;
 		this.lastonlinetime = lastonlinetime;
+		this.isactive = isactive;
 	}
 
 	// Property accessors
@@ -68,6 +70,14 @@ public class Onlineterminal implements java.io.Serializable {
 
 	public void setLastonlinetime(Timestamp lastonlinetime) {
 		this.lastonlinetime = lastonlinetime;
+	}
+
+	public Boolean getIsactive() {
+		return this.isactive;
+	}
+
+	public void setIsactive(Boolean isactive) {
+		this.isactive = isactive;
 	}
 
 }

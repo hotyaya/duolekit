@@ -81,7 +81,7 @@ public class JobAgent extends Thread {
 							//System.out.println("加入！" + arg1.getBody());
 						} else{
 							//20140217?????
-							chatProcess.setChatMessageCollection(new ChatMessageCollection(arg0));
+							//chatProcess.setChatMessageCollection(new ChatMessageCollection(arg0));
 							System.out.println("未加入！" + arg1.getBody());
 						}
 					}

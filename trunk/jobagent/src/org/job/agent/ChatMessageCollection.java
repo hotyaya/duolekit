@@ -6,9 +6,9 @@ import java.util.Vector;
 import jodd.datetime.JDateTime;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.packet.Message;
+import org.job.dao.HibernateSessionFactory;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Onlineterminal;
 import org.job.dao.entity.OnlineterminalDAO;
@@ -73,33 +73,36 @@ public class ChatMessageCollection {
 	}
 
 	void save(String threadid, String hostname, String ip, Timestamp ts) {
+		Session session = null;
 		try {
-			Session session = HibernateUtil.currentSession();
-			Transaction tran = null;
-			tran = session.beginTransaction();
+			session = HibernateSessionFactory.getSession();
+			session.beginTransaction();
 			OnlineterminalDAO otdao = new  OnlineterminalDAO();
 			Onlineterminal ot0 = otdao.findById(threadid);
 			if (ot0!=null){
-				session.delete(ot0);
-				System.out.println(""+threadid);
+				ot0.setIp(ip);
+				ot0.setLastonlinetime(ts);
+				ot0.setIsactive(true);
+				otdao.merge(ot0);
+				System.out.println(""+"更新"+ts);
+			}else{
+				Onlineterminal ot = new Onlineterminal();
+				ot.setThreadid(threadid);
+				ot.setHostname(hostname);
+				ot.setIp(ip);
+				ot.setLastonlinetime(ts);
+				ot.setIsactive(true);
+				otdao.save(ot);
+				System.out.println(""+"新建"+ts);
 			}
-			session.getTransaction().commit();
-			//session.close();
-			
-			tran = session.beginTransaction();
-			Onlineterminal ot = new Onlineterminal();
-			ot.setThreadid(threadid);
-			ot.setHostname(hostname);
-			ot.setIp(ip);
-			ot.setLastonlinetime(ts);
-			session.save(ot);
 			session.getTransaction().commit();
 			//tran.commit();
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally{
-			HibernateUtil.closeSession();
+			//HibernateUtil.closeSession();
+			session.close();
 		}
 	}
 }

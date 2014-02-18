@@ -25,6 +25,7 @@ public class OnlineterminalDAO extends BaseHibernateDAO {
 	// property constants
 	public static final String IP = "ip";
 	public static final String HOSTNAME = "hostname";
+	public static final String ISACTIVE = "isactive";
 
 	public void save(Onlineterminal transientInstance) {
 		log.debug("saving Onlineterminal instance");
@@ -96,6 +97,10 @@ public class OnlineterminalDAO extends BaseHibernateDAO {
 
 	public List findByHostname(Object hostname) {
 		return findByProperty(HOSTNAME, hostname);
+	}
+
+	public List findByIsactive(Object isactive) {
+		return findByProperty(ISACTIVE, isactive);
 	}
 
 	public List findAll() {
