@@ -3,8 +3,10 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Sysprop;
 import org.job.dao.entity.SyspropDAO;
 
@@ -24,7 +26,7 @@ public class Application {
 	
 	public static boolean init() {
 		try {
-			Session session = org.job.dao.HibernateUtil.currentSession();
+			Session session = HibernateUtil.currentSession();
 			Transaction tran = null;
 			tran = session.beginTransaction();
 			SyspropDAO dao = new SyspropDAO();
@@ -41,7 +43,7 @@ public class Application {
 			ex.printStackTrace();
 			return false;
 		} finally {
-			org.job.dao.HibernateUtil.closeSession();
+			HibernateUtil.closeSession();
 		}
 	}
 	
