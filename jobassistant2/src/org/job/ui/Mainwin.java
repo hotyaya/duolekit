@@ -427,7 +427,7 @@ public class Mainwin implements INotifyMessage {
 				.getFont("微软雅黑", 14, SWT.NORMAL));
 		lblNewLabel_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
 				false, 1, 1));
-		lblNewLabel_1.setText("提示信息");
+		lblNewLabel_1.setText("!");
 
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new FillLayout(SWT.HORIZONTAL));
