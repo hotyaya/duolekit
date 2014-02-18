@@ -19,5 +19,8 @@
         <property name="lastonlinetime" type="java.sql.Timestamp">
             <column name="lastonlinetime" length="19" not-null="true" />
         </property>
+        <property name="isactive" type="java.lang.Boolean">
+            <column name="isactive" precision="1" scale="0" />
+        </property>
     </class>
 </hibernate-mapping>

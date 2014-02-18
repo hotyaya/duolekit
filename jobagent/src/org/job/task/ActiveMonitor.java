@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.job.agent.interf.INotifyDisconnect;
 import org.job.agent.interf.INotifyObject;
+import org.job.dao.HibernateSessionFactory;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Onlineterminal;
 import org.job.dao.entity.OnlineterminalDAO;
@@ -36,41 +37,43 @@ public class ActiveMonitor implements Runnable {
 	 * 
 	 */
 	void check() {
+		Session session = null;
 		try {
-			Session session = HibernateUtil.currentSession();
-			Transaction tran = null;
-			tran = session.beginTransaction();
+			session = HibernateSessionFactory.getSession();
+			session.beginTransaction();
 			OnlineterminalDAO otdao = new  OnlineterminalDAO();
-			//Onlineterminal ot0 = otdao.findById(threadid);
 			List list = otdao.findAll();
 			Iterator io = list.iterator();
-			Vector<Onlineterminal> vv = new Vector<Onlineterminal>();
+			//Vector<Onlineterminal> vv = new Vector<Onlineterminal>();
 			while (io.hasNext()) {
 				Onlineterminal ot = (Onlineterminal) io.next();
 				JDateTime jdt = new JDateTime(ot.getLastonlinetime());
 				jdt.addSecond(isec);
 				JDateTime jdtnow = new JDateTime();
 				if (jdtnow.isBefore(jdt)){
-					//System.out.println("库jdt加20秒:"+jdt);
-					//System.out.println("jdtnow:"+jdtnow);
-					//System.out.println("jdtnow.isBefore(jdt):"+jdtnow.isBefore(jdt)+"是在"+isec+"秒内");
+//					System.out.println("库jdt加20秒:"+jdt);
+//					System.out.println("jdtnow:"+jdtnow);
+//					System.out.println("jdtnow.isBefore(jdt):"+jdtnow.isBefore(jdt)+"是在"+isec+"秒内");
 				}else{
-					vv.add(ot);
+//					System.out.println("库jdt加20秒:"+jdt);
+//					System.out.println("jdtnow:"+jdtnow);
+//					System.out.println("jdtnow.isBefore(jdt):"+jdtnow.isBefore(jdt)+"是在"+isec+"秒内");
+					//vv.add(ot);
+					//otdao.delete(ot);
+					ot.setIsactive(false);
+					otdao.merge(ot);
+					notifyDisconnect(ot.getThreadid());
 				}
 			}
-			tran.commit();
-			
-			tran = session.beginTransaction();
-			for (int i=0;i<vv.size();i++){
-				session.delete(vv.elementAt(i));System.out.println("delete:删除成功！");
-				notifyDisconnect(vv.elementAt(i).getThreadid());
-			}
-			tran.commit();
-			///session.close();
+			//for (int i=0;i<vv.size();i++){
+				//session.delete(vv.elementAt(i));System.out.println("delete:删除成功！");
+				//notifyDisconnect(vv.elementAt(i).getThreadid());
+			//}
+			session.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			HibernateUtil.closeSession();
+			session.close();
 		}
 	}
 	
