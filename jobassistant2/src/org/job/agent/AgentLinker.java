@@ -18,6 +18,7 @@ public class AgentLinker extends Thread {
 	public static XMPPConnection con;
 	public static Chat newChat;
 	public static ChatManager chatmanager;
+	private static boolean isrun = true;
 
 	public static void main(String[] args) {
 		Application.init();
@@ -45,6 +46,7 @@ public class AgentLinker extends Thread {
 			//sendsysteminfo();
 		} catch (XMPPException e) {
 			e.printStackTrace();
+			isrun = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -70,17 +72,18 @@ public class AgentLinker extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (isrun) {
 			try {
 				Message hb = new Message();
 				hb.setProperty("MSGTYPE", "HB");//为心跳类型；
 				hb.setProperty("HOSTADDR",InetAddress.getLocalHost().getHostAddress());
 				hb.setProperty("HOSTNAME",InetAddress.getLocalHost().getHostName());
 				hb.setBody(new Timestamp(System.currentTimeMillis()).toString());
-				newChat.sendMessage(hb);
+				if (newChat!=null)newChat.sendMessage(hb);
 				Thread.sleep(5000);
 			} catch (Exception ex) {
 				ex.printStackTrace();
+				isrun = false;
 			}
 		}
 	}
