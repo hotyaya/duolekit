@@ -1,6 +1,8 @@
 package org.job.ui;
 
 //import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
@@ -35,6 +37,8 @@ import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -48,6 +52,24 @@ public class Mainwin implements INotifyMessage {
 	private Button btnNewButton_5 = null;
 	private Button btnNewButton_6 = null;
 
+	private void doubleclick_copy(){
+		if (table.getSelection().length>0){
+			TableItem item = table.getSelection()[0];
+			if (item.getData()!=null){
+				Doccatalog cata = (Doccatalog)item.getData();
+				String temp = cata.getDoccaption().toString()!=null?cata.getDoccaption().toString():"";
+				temp = temp + "\n" + cata.getBaseurl()+cata.getUrl();
+				StringSelection ss = new StringSelection(temp); 
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null); 
+				new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "成功保存到剪贴板！", null , 1000l).open();
+			}else{
+				new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "无效数据，无法保存到剪贴板！", null , 2000l).open();
+			}
+		}else{
+			new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "未选中！", null , 2000l).open();
+		}
+	}
+	
 	/**
 	 * @author Hui 
 	 */
@@ -231,7 +253,7 @@ public class Mainwin implements INotifyMessage {
 	void query() {
 		try {
 			for (int i = table.getItemCount(); i > 0; i--)
-				table.getItems()[i - 1].dispose();
+			table.getItems()[i - 1].dispose();
 			session = HibernateUtil.currentSession();// HibernateSessionFactory.getSession();
 			session.beginTransaction();
 			DoccatalogDAO catadao = new DoccatalogDAO();
@@ -532,6 +554,12 @@ public class Mainwin implements INotifyMessage {
 		scrolledComposite.setExpandVertical(true);
 
 		table = new Table(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				doubleclick_copy();
+			}
+		});
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		scrolledComposite.setContent(table);

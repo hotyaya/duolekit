@@ -164,7 +164,7 @@ public class OACrawler {
 			String href = ((LinkTag)((TableRow) node).getColumns()[2].getChild(0)).getAttribute("href");
 			if (href!=null) item.setUrl(""+ href);
 		}
-//		item.setBaseurl(""+url);
+		item.setBaseurl(""+"http://10.64.3.55/gwcl/");
 		item.setIndate(Integer.parseInt(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD")));
 		item.setIntimestamp(new Timestamp(System.currentTimeMillis()));
 		item.setIshidden(filter(caption));

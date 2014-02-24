@@ -30,6 +30,7 @@ import org.apache.http.protocol.HttpContext;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
+import org.htmlparser.tags.LinkTag;
 import org.htmlparser.tags.TableRow;
 import org.htmlparser.util.ParserException;
 import org.job.dao.entity.Doccatalog;
@@ -180,8 +181,17 @@ public class TGCrawler {
 		item.setDoccode(((TableRow) node).getColumns()[2].toPlainTextString().trim());
 		item.setContact("");
 		item.setPhone("");
-		item.setBaseurl("");
-		item.setUrl("");
+		item.setBaseurl("http://10.64.3.46:8080/tele/");
+		if (((TableRow) node).getColumns()[3].getChild(0) instanceof LinkTag){
+			String href = ((LinkTag)((TableRow) node).getColumns()[3].getChild(0)).getAttribute("href");
+			//javascript:winOpen('bFileInfoContent1.asp?F00=89267'
+			try{
+				if (href!=null) item.setUrl(""+ href.substring(href.indexOf('\'')+1,(href.length()-2)));
+			}catch(Exception ex){
+				System.out.print("href_x");
+			}
+		}
+		//item.setUrl("");
 		item.setIndate(Integer.parseInt(new JDateTime(System.currentTimeMillis()).toString("YYYYMMDD")));
 		item.setIntimestamp(new Timestamp(System.currentTimeMillis()));
 		item.setIshidden(filter(caption));
