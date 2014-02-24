@@ -33,6 +33,8 @@ import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -319,6 +321,12 @@ public class Mainwin implements INotifyMessage {
 	 */
 	protected void createContents() {
 		shell = new Shell();
+		shell.addShellListener(new ShellAdapter() {
+			@Override
+			public void shellClosed(ShellEvent e) {
+				System.exit(0);
+			}
+		});
 		shell.setSize(400, 800);
 		shell.setText("电报公文提醒系统");
 		shell.setLayout(new GridLayout(1, false));
