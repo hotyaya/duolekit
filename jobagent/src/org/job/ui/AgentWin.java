@@ -1,6 +1,7 @@
 package org.job.ui;
 
-import java.sql.Timestamp;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -20,12 +21,12 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.job.agent.JobAgent;
-import org.job.agent.interf.INotifyDisconnect;
 import org.job.agent.interf.INotifyObject;
 import org.job.dao.HibernateSessionFactory;
 import org.job.dao.entity.Onlineterminal;
@@ -43,6 +44,11 @@ public class AgentWin implements INotifyObject {
 	private Text text_2;
 	private Text txtC;
 
+	private void copy(){
+		StringSelection ss = new StringSelection(styledText.getText()!=null?styledText.getText():""); 
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null); 
+	}
+	
 	private void init() {
 		String commands[] = new String[4];
 		commands[0] = "SYSSTOP";
@@ -270,7 +276,7 @@ public class AgentWin implements INotifyObject {
 		Display display = Display.getDefault();
 		createContents();
 		setScreenPoint(shlAgent);
-		shlAgent.setLayout(new GridLayout(7, false));
+		shlAgent.setLayout(new GridLayout(8, false));
 
 		Menu menu = new Menu(shlAgent, SWT.BAR);
 		shlAgent.setMenuBar(menu);
@@ -308,6 +314,7 @@ public class AgentWin implements INotifyObject {
 		text_1 = new Text(shlAgent, SWT.BORDER);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 6,
 				1));
+		new Label(shlAgent, SWT.NONE);
 
 		ScrolledComposite scrolledComposite_1 = new ScrolledComposite(shlAgent,
 				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -323,6 +330,16 @@ public class AgentWin implements INotifyObject {
 		scrolledComposite_1.setContent(styledText);
 		scrolledComposite_1.setMinSize(styledText.computeSize(SWT.DEFAULT,
 				SWT.DEFAULT));
+		
+		Button btnNewButton_2 = new Button(shlAgent, SWT.NONE);
+		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				copy();
+			}
+		});
+		btnNewButton_2.setFont(SWTResourceManager.getFont("宋体", 13, SWT.NORMAL));
+		btnNewButton_2.setText("复制");
 		new Label(shlAgent, SWT.NONE);
 
 		combo = new Combo(shlAgent, SWT.NONE);
@@ -361,6 +378,7 @@ public class AgentWin implements INotifyObject {
 		});
 		btnNewButton.setText("发送1");
 		new Label(shlAgent, SWT.NONE);
+		new Label(shlAgent, SWT.NONE);
 
 		text = new Text(shlAgent, SWT.BORDER);
 		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
@@ -373,6 +391,7 @@ public class AgentWin implements INotifyObject {
 			}
 		});
 		btnNewButton_1.setText("发送2");
+		new Label(shlAgent, SWT.NONE);
 
 		init();// 20140213
 
