@@ -96,8 +96,7 @@ public class AgentWin implements INotifyObject {
 	private void send2() {
 		try {
 			String txt = text_1.getText().toString().trim();
-			String threadid = txt.substring((txt.indexOf("[") + 1),
-					txt.indexOf("]"));
+			String threadid = txt.substring((txt.indexOf("[") + 1),txt.indexOf("]"));
 			Chat chat = JobAgent.chatProcess.getCMC(threadid).getChat();
 			Message msgcmd = new Message();
 			msgcmd.setBody(text.getText());
@@ -211,8 +210,7 @@ public class AgentWin implements INotifyObject {
 					String txt = text_1.getText().toString().trim();
 					// System.out.println("chats:"+txt);
 					if (txt.length() > 0) {
-						String threadid = txt.substring((txt.indexOf("[") + 1),
-								txt.indexOf("]"));
+						String threadid = txt.substring((txt.indexOf("[") + 1),txt.indexOf("]"));
 						showMessage(threadid);
 					}
 				}
