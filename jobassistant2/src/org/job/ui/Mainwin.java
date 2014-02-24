@@ -3,16 +3,24 @@ package org.job.ui;
 //import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.io.IOException;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
 
+import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -31,14 +39,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
 import org.job.Application;
+import org.job.crawler.register.TGCrawlerRegister;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -60,7 +65,10 @@ public class Mainwin implements INotifyMessage {
 				String temp = cata.getDoccaption().toString()!=null?cata.getDoccaption().toString():"";
 				temp = temp + "\n" + cata.getBaseurl()+cata.getUrl();
 				StringSelection ss = new StringSelection(temp); 
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null); 
+				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+				if (cata.getType().toUpperCase().equals("TG")){
+					startBrowser(cata.getBaseurl()+cata.getUrl());
+				}
 				new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "成功保存到剪贴板！", null , 1000l).open();
 			}else{
 				new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "无效数据，无法保存到剪贴板！", null , 2000l).open();
@@ -68,6 +76,30 @@ public class Mainwin implements INotifyMessage {
 		}else{
 			new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "未选中！", null , 2000l).open();
 		}
+	}
+
+	void startBrowser(String url){
+		TGCrawlerRegister register = new TGCrawlerRegister();
+		register.docrawler(Application.getV("TGUSER"),Application.getV("TGPASS"));
+		if (register.isRunok()){
+			Browser.clearSessions();
+			CookieStore cs = register.getCookieStore();  
+			List<Cookie> cookies = cs.getCookies();
+			for ( Cookie cookie : cookies ){
+				System.out.println(cookie.toString());
+				Browser.setCookie(cookie.getName() + "=" + cookie.getValue() + ";expires=Sun,22-Feb-2099 00:00:00 GMT", "http://" + cookie.getDomain() + cookie.getPath() );  
+			}  
+			try {
+				url ="http://10.64.3.46";
+				//Runtime.getRuntime().exec("iexplore.exe ");//+url
+				//ProcessBuilder builder = new ProcessBuilder("c:\\Program Files\\Internet Explorer\\iexplore", url);
+				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore", url);
+				builder.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	/**
