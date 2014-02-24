@@ -32,6 +32,8 @@ import org.job.dao.HibernateSessionFactory;
 import org.job.dao.entity.Onlineterminal;
 import org.job.dao.entity.OnlineterminalDAO;
 import org.job.task.ActiveMonitor;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 
 public class AgentWin implements INotifyObject {
 
@@ -409,6 +411,12 @@ public class AgentWin implements INotifyObject {
 	 */
 	protected void createContents() {
 		shlAgent = new Shell();
+		shlAgent.addShellListener(new ShellAdapter() {
+			@Override
+			public void shellClosed(ShellEvent e) {
+				System.exit(0);
+			}
+		});
 		shlAgent.setSize(800, 615);
 		shlAgent.setText("链接管理器");
 	}
