@@ -1,4 +1,4 @@
-package org.job;
+package org.job.test;
 
 import java.sql.Timestamp;
 
