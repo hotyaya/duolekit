@@ -1,4 +1,4 @@
-package org.job;
+package org.job.test;
 
 import org.hibernate.Session;
 import org.job.dao.HibernateSessionFactory;
