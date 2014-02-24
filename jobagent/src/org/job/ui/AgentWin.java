@@ -172,18 +172,16 @@ public class AgentWin implements INotifyObject {
 		if (styledText != null) {
 			styledText.setText("");
 			for (int i = 0; i < v.size(); i++) {
-				styledText.insert("\n" + " " + v.elementAt(i) == null ? "" : v
-						.elementAt(i).getBody().toString().trim());
+				if (v.elementAt(i).getProperty("MSGTYPE") != null && (v.elementAt(i).getProperty("MSGTYPE").equals("HB"))) {
+					continue;
+				}
+				styledText.insert("\n" + " " + v.elementAt(i) == null ? "" : v.elementAt(i).getBody().toString().trim());
 				styledText.insert("\n");
 				Iterator it = v.elementAt(i).getPropertyNames().iterator();
 				while (it.hasNext()) {
 					Object o = it.next();
 					if (o != null)
-						styledText.insert("\n"
-								+ o.toString()
-								+ ":"
-								+ v.elementAt(i).getProperty(
-										o.toString().trim()));
+						styledText.insert("\n"+ o.toString()+ ":"+ v.elementAt(i).getProperty(o.toString().trim()));
 				}
 			}
 		}
