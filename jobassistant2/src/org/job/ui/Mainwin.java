@@ -4,6 +4,7 @@ package org.job.ui;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
@@ -22,6 +23,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -44,6 +46,7 @@ import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
+import org.job.ui.browserexample.BrowserExample;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -90,16 +93,47 @@ public class Mainwin implements INotifyMessage {
 				Browser.setCookie(cookie.getName() + "=" + cookie.getValue() + ";expires=Sun,22-Feb-2099 00:00:00 GMT", "http://" + cookie.getDomain() + cookie.getPath() );  
 			}  
 			try {
-				url ="http://10.64.3.46";
+				//url ="http://10.64.3.46";
 				//Runtime.getRuntime().exec("iexplore.exe ");//+url
 				//ProcessBuilder builder = new ProcessBuilder("c:\\Program Files\\Internet Explorer\\iexplore", url);
 				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore", url);
 				builder.start();
-			} catch (IOException e) {
+				//startb(url);
+			} catch (Exception e) {//IO
 				e.printStackTrace();
 			}
 		}
 		
+	}
+	
+	/**
+	 * 暂不用；
+	 * @param url
+	 */
+	private void startb(String url){
+		String iconLocation = "document.gif";
+//		Display display = new Display();
+		Shell shell1 = new Shell(shell);
+		shell1.setLayout(new FillLayout());
+		shell1.setText("SWT");//getResourceString("window.title")
+		InputStream stream = BrowserExample.class.getResourceAsStream(iconLocation);
+//		Image icon = new Image(display, stream);
+//		shell1.setImage(icon);
+		try {
+			stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		BrowserExample app = new BrowserExample(shell1, true,url);
+		//app.setShellDecoration(icon, true);
+		shell1.open();
+//		while (!shell1.isDisposed()) {
+//			if (!display.readAndDispatch())
+//				display.sleep();
+//		}
+//		icon.dispose();
+//		app.dispose();
+//		display.dispose();
 	}
 	
 	/**
