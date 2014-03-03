@@ -1,15 +1,11 @@
 package org.job.crawler.register;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,6 +16,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.client.HttpClients;
@@ -28,8 +25,7 @@ import org.apache.http.protocol.HttpContext;
 
 public class TGCrawlerRegister {
 	CloseableHttpClient httpclient = null;
-	HttpClientContext context = null;
-	CookieStore cookieStore = null;
+	CookieStore cookieStore = new BasicCookieStore();;
 	boolean runok = false;
 	
 	public TGCrawlerRegister(){
@@ -74,8 +70,8 @@ public class TGCrawlerRegister {
 						}
 						return isRedirect;
 					}
-				}).build();
-
+				}).setDefaultCookieStore(cookieStore).build();
+		
 		String url = "http://10.64.3.46:8080/checkuser.asp";
 		HttpResponse response;
 		String username = "ljxxczhk";
@@ -90,11 +86,9 @@ public class TGCrawlerRegister {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("UserName", username));
 		nvps.add(new BasicNameValuePair("PassWord", password));
-		context = HttpClientContext.create();
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, "gb2312"));
-			response = httpclient.execute(httpPost,context);// 不打印登录情况
-			cookieStore = context.getCookieStore();
+			response = httpclient.execute(httpPost);// 不打印登录情况
 //			//System.out.println(response.getStatusLine().toString());
 //			/* 判断登录是否成功 */
 //			HttpEntity entity = response.getEntity();
