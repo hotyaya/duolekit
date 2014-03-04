@@ -15,6 +15,7 @@ import org.apache.http.auth.AuthSchemeProvider;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.AuthSchemes;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -26,6 +27,7 @@ import org.apache.http.impl.auth.BasicSchemeFactory;
 import org.apache.http.impl.auth.DigestSchemeFactory;
 import org.apache.http.impl.auth.KerberosSchemeFactory;
 import org.apache.http.impl.auth.SPNegoSchemeFactory;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -39,7 +41,10 @@ import org.job.crawler.ntlm.JCIFSNTLMSchemeFactory;
 import org.job.dao.entity.Doccatalog;
 
 
-public class DBCrawlerRegister {
+public class DBCrawlerRegister implements IRegister{
+	CloseableHttpClient httpclient = null;
+	CookieStore cookieStore = new BasicCookieStore();
+	boolean runok = false;
 
 	public DBCrawlerRegister(){
 	}
@@ -58,6 +63,7 @@ public class DBCrawlerRegister {
 		        .build();
 		CloseableHttpClient httpclient = HttpClients.custom()
 		        .setDefaultAuthSchemeRegistry(authSchemeRegistry)
+		        .setDefaultCookieStore(cookieStore)
 		        .build();
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
 		credsProvider.setCredentials(AuthScope.ANY,
@@ -102,11 +108,24 @@ public class DBCrawlerRegister {
 			} finally {
 				response2.close();
 			}
+			runok = true;
 		} catch (ClientProtocolException e) {
+			runok = false;
 			System.out.print("e2");
 		} catch (IOException e) {
+			runok = false;
 			System.out.print("e3");
 		}
+	}
+
+	@Override
+	public CookieStore getCookieStore() {
+		return cookieStore;
+	}
+
+	@Override
+	public boolean isRunok() {
+		return runok;
 	}
 	
 }

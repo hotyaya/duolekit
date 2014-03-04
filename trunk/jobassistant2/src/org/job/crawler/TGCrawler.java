@@ -20,6 +20,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -85,7 +86,7 @@ public class TGCrawler {
 				}).build();
 
 		String url = "http://10.64.3.46:8080/checkuser.asp";
-		HttpResponse response;
+		CloseableHttpResponse response = null;
 		String username = "ljxxczhk";
 		String password = "a";
 		username = user;
@@ -133,6 +134,12 @@ public class TGCrawler {
 			//e.printStackTrace();
 			System.out.print("x3");
 			//System.out.print("IOException ");
+		}finally {//20140304
+			try {
+				response.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	/**
