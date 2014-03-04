@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.util.List;
 
 import jodd.datetime.JDateTime;
@@ -23,7 +24,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,6 +41,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.hibernate.Session;
 import org.job.Application;
+import org.job.crawler.register.DBCrawlerRegister;
+import org.job.crawler.register.IRegister;
+import org.job.crawler.register.OACrawlerRegister;
 import org.job.crawler.register.TGCrawlerRegister;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Doccatalog;
@@ -60,103 +63,170 @@ public class Mainwin implements INotifyMessage {
 	private Button btnNewButton_5 = null;
 	private Button btnNewButton_6 = null;
 
-	private void doubleclick_copy(){
-		if (table.getSelection().length>0){
+	private void doubleclick_copy() {
+		if (table.getSelection().length > 0) {
 			TableItem item = table.getSelection()[0];
-			if (item.getData()!=null){
-				Doccatalog cata = (Doccatalog)item.getData();
-				String temp = cata.getDoccaption().toString()!=null?cata.getDoccaption().toString():"";
-				temp = temp + "\n" + cata.getBaseurl()+cata.getUrl();
-				StringSelection ss = new StringSelection(temp); 
+			if (item.getData() != null) {
+				Doccatalog cata = (Doccatalog) item.getData();
+				String temp = cata.getDoccaption().toString() != null ? cata.getDoccaption().toString() : "";
+				//temp = temp + "\n" + cata.getBaseurl() + cata.getUrl();
+				StringSelection ss = new StringSelection(temp);
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-				if (cata.getType().toUpperCase().equals("TG")){
-					startBrowser(cata.getBaseurl()+cata.getUrl());
+				if (cata.getType().toUpperCase().equals("TG")) {
+					startBrowser(cata.getBaseurl() + cata.getUrl(), 0);
+				} else if (cata.getType().toUpperCase().equals("OA")) {
+					startBrowser(cata.getBaseurl() + cata.getUrl(), 1);
+				} else if (cata.getType().toUpperCase().equals("DB")) {
+					startBrowser(cata.getBaseurl() + cata.getUrl(), 2);
+				} else {
+					System.out.println("" + cata.getBaseurl() + cata.getUrl());
 				}
-				new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "成功保存到剪贴板！", null , 1000l).open();
-			}else{
-				new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "无效数据，无法保存到剪贴板！", null , 2000l).open();
+				//new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION,"成功保存到剪贴板！", null, 1000l).open();
+			} else {
+				//new AutoCloseDialog(shell, AutoCloseDialog.ERROR,"无效数据，无法保存到剪贴板！", null, 2000l).open();
 			}
-		}else{
-			new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "未选中！", null , 2000l).open();
+		} else {
+			new AutoCloseDialog(shell, AutoCloseDialog.ERROR, "未选中！", null,
+					2000l).open();
 		}
 	}
 
-	void startBrowser(String url){
-		TGCrawlerRegister register = new TGCrawlerRegister();
-		register.docrawler(Application.getV("TGUSER"),Application.getV("TGPASS"));
-		if (register.isRunok()){
+	int istartcount = 0;
+
+	void startBrowser(String url, int itype) {
+
+		String domain = "";
+		try {
+			domain = InetAddress.getLocalHost().getHostName();
+		} catch (Exception ex) {
+			System.out.print("mw_i");
+		}
+
+		IRegister register = null;
+		switch (itype) {
+		case 0:
+			register = new TGCrawlerRegister();
+			register.docrawler(Application.getV("TGUSER"),
+					Application.getV("TGPASS"), "", "");
+			break;
+		case 1:
+			register = new OACrawlerRegister();
+			register.docrawler(Application.getV("OAUSER"),
+					Application.getV("OAPASS"), domain.trim(), "10.64.3.55");
+			break;
+		case 2:
+			register = new DBCrawlerRegister();
+			register.docrawler(Application.getV("OAUSER"),
+					Application.getV("OAPASS"), domain.trim(), "10.64.3.55");
+			break;
+		}
+		if (register == null)
+			return;
+		if (register.isRunok()) {
 			Browser.clearSessions();
-			CookieStore cs = register.getCookieStore();  
+			CookieStore cs = register.getCookieStore();
 			List<Cookie> cookies = cs.getCookies();
-			for ( Cookie cookie : cookies ){
+			for (Cookie cookie : cookies) {
 				System.out.println(cookie.toString());
-				Browser.setCookie(cookie.getName() + "=" + cookie.getValue() + ";expires=Sun,22-Feb-2099 00:00:00 GMT", "http://" + cookie.getDomain() + cookie.getPath() );  
-			}  
+				Browser.setCookie(cookie.getName() + "=" + cookie.getValue()
+						+ ";expires=Sun,22-Feb-2099 00:00:00 GMT", "http://"
+						+ cookie.getDomain() + cookie.getPath());
+			}
+		} else {
+			return;
+		}
+
+		switch (itype) {
+		case 0:
 			try {
-				//url ="http://10.64.3.46";
-				//Runtime.getRuntime().exec("iexplore.exe ");//+url
-				//ProcessBuilder builder = new ProcessBuilder("c:\\Program Files\\Internet Explorer\\iexplore", url);
-				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore", url);
+				if (istartcount < 2) {// 20140304启动两次试试
+					startb(url, 0);
+					istartcount++;
+				}
+				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
 				builder.start();
-				//startb(url);
-			} catch (Exception e) {//IO
+			} catch (Exception e) {// IO
 				e.printStackTrace();
 			}
+			break;
+		case 1:
+			//startb(url, 0);
+			try {
+				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
+				builder.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
+		case 2:
+			try {
+				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
+				builder.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			break;
 		}
-		
+
 	}
-	
+
 	/**
 	 * 暂不用；
+	 * 
 	 * @param url
 	 */
-	private void startb(String url){
+	private void startb(String url, int i) {
 		String iconLocation = "document.gif";
-//		Display display = new Display();
+		// Display display = new Display();
 		Shell shell1 = new Shell(shell);
 		shell1.setLayout(new FillLayout());
-		shell1.setText("SWT");//getResourceString("window.title")
-		InputStream stream = BrowserExample.class.getResourceAsStream(iconLocation);
-//		Image icon = new Image(display, stream);
-//		shell1.setImage(icon);
+		shell1.setText("SWT");// getResourceString("window.title")
+		InputStream stream = BrowserExample.class
+				.getResourceAsStream(iconLocation);
+		// Image icon = new Image(display, stream);
+		// shell1.setImage(icon);
 		try {
 			stream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		BrowserExample app = new BrowserExample(shell1, true,url);
-		//app.setShellDecoration(icon, true);
-		shell1.open();
-//		while (!shell1.isDisposed()) {
-//			if (!display.readAndDispatch())
-//				display.sleep();
-//		}
-//		icon.dispose();
-//		app.dispose();
-//		display.dispose();
+		BrowserExample app = new BrowserExample(shell1, true, url);
+		// app.setShellDecoration(icon, true);
+		if (i == 1)
+			shell1.open();
+		// while (!shell1.isDisposed()) {
+		// if (!display.readAndDispatch())
+		// display.sleep();
+		// }
+		// icon.dispose();
+		// app.dispose();
+		// display.dispose();
 	}
-	
-	/**
-	 * @author Hui 
-	 */
-	public void exit(){
-		System.exit(0);
-	}
+
 	/**
 	 * @author Hui
 	 */
-	public void config(){
+	public void exit() {
+		System.exit(0);
+	}
+
+	/**
+	 * @author Hui
+	 */
+	public void config() {
 		DiaConfig dc = new DiaConfig(shell, SWT.ICON_INFORMATION);
 		dc.open();
 	}
+
 	/**
 	 * @author Hui
 	 */
 	DiaAbout da = new DiaAbout(new Shell(), SWT.ICON_INFORMATION);
-	public void about(){
+
+	public void about() {
 		da.open();
 	}
-	
+
 	class Tip implements Runnable {
 
 		private String info = null;
@@ -175,11 +245,15 @@ public class Mainwin implements INotifyMessage {
 				date = inf[2].substring(0, 8);
 				str = inf[2].substring(4, 8) + "-" + inf[2].substring(9);
 				if (btnNewButton_2.getData() != null) {
-					//TODO 20140214 显示
-					if (!date.trim().equals(btnNewButton_2.getData().toString().trim()) || !btnNewButton_2.getText().equals(str.trim())) {
-						btnNewButton_2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						text_1.setText(date.trim());//20140214//默认查看最后一天的新文件；
+					// TODO 20140214 显示
+					if (!date.trim().equals(
+							btnNewButton_2.getData().toString().trim())
+							|| !btnNewButton_2.getText().equals(str.trim())) {
+						btnNewButton_2.setBackground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						btnNewButton_2.setForeground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						text_1.setText(date.trim());// 20140214//默认查看最后一天的新文件；
 					}
 				}
 				btnNewButton_2.setData(date.trim());
@@ -189,9 +263,13 @@ public class Mainwin implements INotifyMessage {
 				date = inf[3].substring(0, 8);
 				str = inf[3].substring(4, 8) + "-" + inf[3].substring(9);
 				if (btnNewButton_3.getData() != null) {
-					if (!date.trim().equals(btnNewButton_3.getData().toString().trim()) || !btnNewButton_3.getText().equals(str.trim())) {
-						btnNewButton_3.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					if (!date.trim().equals(
+							btnNewButton_3.getData().toString().trim())
+							|| !btnNewButton_3.getText().equals(str.trim())) {
+						btnNewButton_3.setBackground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						btnNewButton_3.setForeground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_3.setData(date.trim());
@@ -200,10 +278,14 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_4 != null) {
 				date = inf[4].substring(0, 8);
 				str = inf[4].substring(4, 8) + "-" + inf[4].substring(9);
-				if (btnNewButton_4.getData() != null ) {
-					if (!date.trim().equals(btnNewButton_4.getData().toString().trim()) || !btnNewButton_4.getText().equals(str.trim())) {
-						btnNewButton_4.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+				if (btnNewButton_4.getData() != null) {
+					if (!date.trim().equals(
+							btnNewButton_4.getData().toString().trim())
+							|| !btnNewButton_4.getText().equals(str.trim())) {
+						btnNewButton_4.setBackground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						btnNewButton_4.setForeground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_4.setData(date.trim());
@@ -213,9 +295,13 @@ public class Mainwin implements INotifyMessage {
 				date = inf[5].substring(0, 8);
 				str = inf[5].substring(4, 8) + "-" + inf[5].substring(9);
 				if (btnNewButton_5.getData() != null) {
-					if (!date.trim().equals(btnNewButton_5.getData().toString().trim())|| !btnNewButton_5.getText().equals(str.trim())) {
-						btnNewButton_5.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+					if (!date.trim().equals(
+							btnNewButton_5.getData().toString().trim())
+							|| !btnNewButton_5.getText().equals(str.trim())) {
+						btnNewButton_5.setBackground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						btnNewButton_5.setForeground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_5.setData(date.trim());
@@ -224,10 +310,14 @@ public class Mainwin implements INotifyMessage {
 			if (btnNewButton_6 != null) {
 				date = inf[6].substring(0, 8);
 				str = inf[6].substring(4, 8) + "-" + inf[6].substring(9);
-				if (btnNewButton_6.getData() != null ) {
-					if (!date.trim().equals(btnNewButton_6.getData().toString().trim())||!btnNewButton_6.getText().equals(str.trim())) {
-						btnNewButton_6.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
-						btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_RED));
+				if (btnNewButton_6.getData() != null) {
+					if (!date.trim().equals(
+							btnNewButton_6.getData().toString().trim())
+							|| !btnNewButton_6.getText().equals(str.trim())) {
+						btnNewButton_6.setBackground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
+						btnNewButton_6.setForeground(shell.getDisplay()
+								.getSystemColor(SWT.COLOR_RED));
 					}
 				}
 				btnNewButton_6.setData(date.trim());
@@ -304,10 +394,11 @@ public class Mainwin implements INotifyMessage {
 			temp = "文件";
 		}
 
-		if (cata.getIstodo()!=null && cata.getIstodo()){
-			item.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_YELLOW));
+		if (cata.getIstodo() != null && cata.getIstodo()) {
+			item.setBackground(shell.getDisplay().getSystemColor(
+					SWT.COLOR_YELLOW));
 		}
-		
+
 		item.setText(0, "" + temp);
 		// item.setText(2, ""+ cata.getDocsendtime());
 		// item.setText(3, ""+ cata.getDocsender());
@@ -319,7 +410,7 @@ public class Mainwin implements INotifyMessage {
 	void query() {
 		try {
 			for (int i = table.getItemCount(); i > 0; i--)
-			table.getItems()[i - 1].dispose();
+				table.getItems()[i - 1].dispose();
 			session = HibernateUtil.currentSession();// HibernateSessionFactory.getSession();
 			session.beginTransaction();
 			DoccatalogDAO catadao = new DoccatalogDAO();
@@ -382,19 +473,19 @@ public class Mainwin implements INotifyMessage {
 		if (y > height) {
 			shell.getSize().y = height;
 		}
-		//shell.setLocation((width - x) / 2, (height - y) / 2);
+		// shell.setLocation((width - x) / 2, (height - y) / 2);
 		shell.setSize(shell.getSize().x, height);
-		shell.setLocation((width-x), 0);
+		shell.setLocation((width - x), 0);
 	}
-	
+
 	/**
 	 * Open the window.
 	 */
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		setScreenPoint(shell);//20140213
-		shell.setText(""+Application.getV("USERDEPT").toString()+"");
+		setScreenPoint(shell);// 20140213
+		shell.setText("" + Application.getV("USERDEPT").toString() + "");
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -424,10 +515,10 @@ public class Mainwin implements INotifyMessage {
 
 		MenuItem mntmNewItem = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem.setText("系统");
-		
+
 		Menu menu_1 = new Menu(mntmNewItem);
 		mntmNewItem.setMenu(menu_1);
-		
+
 		MenuItem mntmNewItem_3 = new MenuItem(menu_1, SWT.NONE);
 		mntmNewItem_3.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -439,10 +530,10 @@ public class Mainwin implements INotifyMessage {
 
 		MenuItem mntmNewItem_1 = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem_1.setText("设置");
-		
+
 		Menu menu_2 = new Menu(mntmNewItem_1);
 		mntmNewItem_1.setMenu(menu_2);
-		
+
 		MenuItem mntmNewItem_4 = new MenuItem(menu_2, SWT.NONE);
 		mntmNewItem_4.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -454,10 +545,10 @@ public class Mainwin implements INotifyMessage {
 
 		MenuItem mntmNewItem_2 = new MenuItem(menu, SWT.CASCADE);
 		mntmNewItem_2.setText("帮助");
-		
+
 		Menu menu_3 = new Menu(mntmNewItem_2);
 		mntmNewItem_2.setMenu(menu_3);
-		
+
 		MenuItem mntmNewItem_5 = new MenuItem(menu_3, SWT.NONE);
 		mntmNewItem_5.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -544,7 +635,8 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_2.getData() != null)
 					text_1.setText(btnNewButton_2.getData().toString());
 				btnNewButton_2.setBackground(new Color(null, 240, 240, 240));
-				btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				btnNewButton_2.setForeground(shell.getDisplay().getSystemColor(
+						SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_3.addSelectionListener(new SelectionAdapter() {
@@ -553,7 +645,8 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_3.getData() != null)
 					text_1.setText(btnNewButton_3.getData().toString());
 				btnNewButton_3.setBackground(new Color(null, 240, 240, 240));
-				btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				btnNewButton_3.setForeground(shell.getDisplay().getSystemColor(
+						SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_4.addSelectionListener(new SelectionAdapter() {
@@ -562,7 +655,8 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_4.getData() != null)
 					text_1.setText(btnNewButton_4.getData().toString());
 				btnNewButton_4.setBackground(new Color(null, 240, 240, 240));
-				btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				btnNewButton_4.setForeground(shell.getDisplay().getSystemColor(
+						SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_5.addSelectionListener(new SelectionAdapter() {
@@ -571,7 +665,8 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_5.getData() != null)
 					text_1.setText(btnNewButton_5.getData().toString());
 				btnNewButton_5.setBackground(new Color(null, 240, 240, 240));
-				btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				btnNewButton_5.setForeground(shell.getDisplay().getSystemColor(
+						SWT.COLOR_BLACK));
 			}
 		});
 		btnNewButton_6.addSelectionListener(new SelectionAdapter() {
@@ -580,7 +675,8 @@ public class Mainwin implements INotifyMessage {
 				if (btnNewButton_6.getData() != null)
 					text_1.setText(btnNewButton_6.getData().toString());
 				btnNewButton_6.setBackground(new Color(null, 240, 240, 240));
-				btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+				btnNewButton_6.setForeground(shell.getDisplay().getSystemColor(
+						SWT.COLOR_BLACK));
 			}
 		});
 
