@@ -50,6 +50,7 @@ import org.job.dao.entity.Doccatalog;
 import org.job.dao.entity.DoccatalogDAO;
 import org.job.interf.INotifyMessage;
 import org.job.ui.browserexample.BrowserExample;
+import org.job.util.IEPath;
 
 public class Mainwin implements INotifyMessage {
 	protected Shell shell = null;
@@ -136,14 +137,16 @@ public class Mainwin implements INotifyMessage {
 			return;
 		}
 
+		String iepath = IEPath.getIEpath().replaceAll("\\\\", "//");
 		switch (itype) {
 		case 0:
 			try {
-				if (istartcount < 2) {// 20140304启动两次试试
+				if (istartcount < 1) {// 20140304启动两次试试
 					startb(url, 0);
 					istartcount++;
 				}
-				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
+				//C:\\Program Files (x86)\\Internet Explorer\\iexplore
+				ProcessBuilder builder = new ProcessBuilder(iepath,url);
 				builder.start();
 			} catch (Exception e) {// IO
 				e.printStackTrace();
@@ -152,7 +155,8 @@ public class Mainwin implements INotifyMessage {
 		case 1:
 			//startb(url, 0);
 			try {
-				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
+				//C:\\Program Files (x86)\\Internet Explorer\\iexplore
+				ProcessBuilder builder = new ProcessBuilder(iepath,url);
 				builder.start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -160,7 +164,8 @@ public class Mainwin implements INotifyMessage {
 			break;
 		case 2:
 			try {
-				ProcessBuilder builder = new ProcessBuilder("C:\\Program Files (x86)\\Internet Explorer\\iexplore",url);
+				//C:\\Program Files (x86)\\Internet Explorer\\iexplore
+				ProcessBuilder builder = new ProcessBuilder(iepath,url);
 				builder.start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -194,13 +199,14 @@ public class Mainwin implements INotifyMessage {
 		// app.setShellDecoration(icon, true);
 		if (i == 1)
 			shell1.open();
-		// while (!shell1.isDisposed()) {
-		// if (!display.readAndDispatch())
-		// display.sleep();
-		// }
-		// icon.dispose();
-		// app.dispose();
-		// display.dispose();
+//		 while (!shell1.isDisposed()) {
+//		 if (!display.readAndDispatch())
+//		 display.sleep();
+//		 }
+		 //icon.dispose();
+		 //app.dispose();
+//		 display.dispose();
+		shell1.dispose();
 	}
 
 	/**
