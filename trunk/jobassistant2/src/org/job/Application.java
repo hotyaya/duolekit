@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.job.dao.HibernateUtil;
 import org.job.dao.entity.Sysprop;
 import org.job.dao.entity.SyspropDAO;
+import org.job.task.GetConfigFromNetwork;
 
 public class Application {
 	static Properties pros = new Properties();
@@ -22,6 +23,21 @@ public class Application {
 	 */
 	public static void init0() {
 		
+	}
+	
+	/**
+	 * 从网络获取配置信息
+	 */
+	public static void init1() {
+		GetConfigFromNetwork df = new GetConfigFromNetwork();
+		df.execute();
+		Properties pro = df.getNetProperties();
+		Enumeration enu = pro.keys();
+		while (enu.hasMoreElements()) {
+			String key=enu.nextElement().toString().trim();
+			pros.put(key.toUpperCase(),pro.getProperty(key).toString().trim());
+			//System.out.println(key+":"+pro.getProperty(key));
+		}
 	}
 	
 	public static boolean init() {

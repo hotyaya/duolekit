@@ -54,5 +54,6 @@
 	<classpathentry kind="lib" path="lib/ftplib/spring-beans-2.5.5.jar"/>
 	<classpathentry kind="lib" path="lib/ftplib/spring-context-2.5.5.jar"/>
 	<classpathentry kind="lib" path="lib/ftplib/spring-core-2.5.5.jar"/>
+	<classpathentry kind="lib" path="commons-net-3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
