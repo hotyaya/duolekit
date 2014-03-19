@@ -1,12 +1,12 @@
 #Fat Jar Configuration File
-#Fri Feb 01 16:15:12 CST 2013
+#Tue Feb 25 09:01:16 CST 2014
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
 onejar.checkbox=false
-jarname=dw3dclient_fat.jar
+jarname=jobagentservice.jar
 manifest.mergeall=true
-manifest.mainclass=cn.railsoft.simulate.client.ui.Demo
+manifest.mainclass=org.job.ui.AgentWin
 manifest.file=<createnew>
 jarname.isextern=false
 onejar.expand=

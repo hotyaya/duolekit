@@ -64,15 +64,24 @@ public class Mainwin implements INotifyMessage {
 	private Button btnNewButton_5 = null;
 	private Button btnNewButton_6 = null;
 
-	private void doubleclick_copy() {
+	private void select(){
 		if (table.getSelection().length > 0) {
 			TableItem item = table.getSelection()[0];
 			if (item.getData() != null) {
 				Doccatalog cata = (Doccatalog) item.getData();
 				String temp = cata.getDoccaption().toString() != null ? cata.getDoccaption().toString() : "";
-				//temp = temp + "\n" + cata.getBaseurl() + cata.getUrl();
 				StringSelection ss = new StringSelection(temp);
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+				//new AutoCloseDialog(shell, AutoCloseDialog.INFORMATION, "已复制到粘贴板!", null,1000l).open();
+			} 
+		}
+	}
+	
+	private void doubleclick_copy() {
+		if (table.getSelection().length > 0) {
+			TableItem item = table.getSelection()[0];
+			if (item.getData() != null) {
+				Doccatalog cata = (Doccatalog) item.getData();
 				if (cata.getType().toUpperCase().equals("TG")) {
 					startBrowser(cata.getBaseurl() + cata.getUrl(), 0);
 				} else if (cata.getType().toUpperCase().equals("OA")) {
@@ -722,6 +731,12 @@ public class Mainwin implements INotifyMessage {
 		scrolledComposite.setExpandVertical(true);
 
 		table = new Table(scrolledComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		table.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				select();
+			}
+		});
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {

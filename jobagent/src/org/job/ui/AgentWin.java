@@ -46,6 +46,10 @@ public class AgentWin implements INotifyObject {
 	private Text text_2;
 	private Text txtC;
 
+	private void exit(){
+		System.exit(0);
+	}
+	
 	private void copy(){
 		StringSelection ss = new StringSelection(styledText.getText()!=null?styledText.getText():""); 
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null); 
@@ -286,6 +290,12 @@ public class AgentWin implements INotifyObject {
 		mntmNewItem.setMenu(menu_1);
 
 		MenuItem mntmNewItem_1 = new MenuItem(menu_1, SWT.NONE);
+		mntmNewItem_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				exit();
+			}
+		});
 		mntmNewItem_1.setText("退出");
 
 		ScrolledComposite scrolledComposite = new ScrolledComposite(shlAgent,
@@ -410,7 +420,7 @@ public class AgentWin implements INotifyObject {
 		shlAgent.addShellListener(new ShellAdapter() {
 			@Override
 			public void shellClosed(ShellEvent e) {
-				System.exit(0);
+				exit();
 			}
 		});
 		shlAgent.setSize(800, 615);
