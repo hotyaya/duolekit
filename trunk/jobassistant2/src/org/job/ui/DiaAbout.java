@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.job.Application;
 import org.job.dao.entity.Sysprop;
 import org.job.dao.entity.SyspropDAO;
 import org.eclipse.swt.custom.StyledText;
@@ -69,7 +70,9 @@ public class DiaAbout extends Dialog {
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setFont(SWTResourceManager.getFont("宋体", 14, SWT.NORMAL));
 		styledText.setEditable(false);
-		styledText.setText("\r\n    感谢您使用本办公软件系统！\r\n\r\n    技术支持电话：021-24236\r\n");
+		styledText.setText("\r\n    感谢您使用("+
+				Application.getV("SYSVERSION")+"-"+Application.getV("SUBVERSION")+")"
+				+"办公软件系统！\r\n\r\n    技术支持电话：021-24236\r\n"+"\r\n    ["+Application.getV("PUBDATE")+"]");
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
 		Button btnNewButton = new Button(shell, SWT.CENTER);
