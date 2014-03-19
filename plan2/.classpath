@@ -28,5 +28,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="jodd-3.4.10.jar"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

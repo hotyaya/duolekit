@@ -16,7 +16,7 @@ public class Test {
 			session.beginTransaction();
 			TagDAO dao = new TagDAO();
 			Tag tag = new Tag();
-			//tag.setTagid(111);//转为触发器 
+			tag.setPtagid(0);
 			tag.setName("关系");
 			dao.save(tag);
 			session.getTransaction().commit();
