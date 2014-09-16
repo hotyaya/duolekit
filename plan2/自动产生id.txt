@@ -16,4 +16,9 @@ END^
 SET TERM ; ^
 
 
+--唯一索引
+ALTER TABLE TAG
+  ADD CONSTRAINT TAG_INDEX01
+  UNIQUE (NAME);
+
 在hibernate中用increment项产生ID
