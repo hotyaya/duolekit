@@ -38,7 +38,7 @@ public class MailProcess implements Runnable {
 			//email.addText("收到电报如下：\n"+text);
 			email.from("hotyaya@qq.com").to("hotyaya@126.com");
 			email.subject("新文件 "+text);
-			SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "Bdesdk2759").createSession();
+			SendMailSession mailSession = new SmtpSslServer("smtp.qq.com","hotyaya@qq.com", "").createSession();
 			mailSession.open();
 			mailSession.sendMail(email);
 			mailSession.close();
